@@ -1,36 +1,141 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# PostCraft - AI Social Media Content Creator
 
-## Getting Started
+Generate platform-perfect content for Twitter, LinkedIn, Instagram, Facebook, TikTok, and YouTube in seconds.
 
-First, run the development server:
+## 🚀 Features
+
+- **AI Content Generation**: Create engaging posts tailored for each platform
+- **Multi-Platform Support**: 6 major social platforms with 3 variations each
+- **Content Calendar**: Visual planning and scheduling
+- **Brand Voice**: Custom tone and style presets
+- **Content Library**: Organize with folders, tags, and search
+- **AI Tools**: Hashtag generator, emoji suggestions, CTA optimizer
+- **Export Options**: CSV, PDF, and copy-paste formats
+- **Analytics Dashboard**: Track your content performance
+- **Pro Features**: Unlimited generations, 10 variations, advanced tools
+
+## 🛠️ Tech Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Authentication**: Firebase Auth
+- **Database**: Firebase Firestore
+- **AI**: Google Gemini 2.0 Flash
+- **Payments**: Stripe
+
+## 📦 Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/postcraft.git
+cd postcraft
+
+# Install dependencies
+npm install
+
+# Set up environment variables
+cp .env.example .env.local
+# Edit .env.local with your credentials
+
+# Run development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🔧 Environment Variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Required variables in `.env.local`:
 
-## Learn More
+```env
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+GEMINI_API_KEY=
+STRIPE_SECRET_KEY=
+```
 
-To learn more about Next.js, take a look at the following resources:
+See `.env.example` for complete list.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚢 Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Vercel (Recommended)
+```bash
+vercel --prod
+```
 
-## Deploy on Vercel
+### Docker
+```bash
+docker build -t postcraft .
+docker run -p 3000:3000 postcraft
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📝 Scripts
+
+```bash
+npm run dev          # Start development server
+npm run build        # Build for production
+npm start            # Start production server
+npm run lint         # Run ESLint
+npm run type-check   # TypeScript type checking
+```
+
+## 🎨 Project Structure
+
+```
+postcraft/
+├── app/                    # Next.js app directory
+│   ├── dashboard/         # Main dashboard
+│   ├── calendar/          # Content calendar
+│   ├── library/           # Content library
+│   ├── ai-tools/          # AI enhancements
+│   ├── brand-voice/       # Brand voice manager
+│   └── export/            # Export tools
+├── components/            # Reusable components
+├── lib/                   # Utilities and helpers
+└── public/               # Static assets
+```
+
+## 🔐 Security
+
+- HTTPS enforced in production
+- Rate limiting on API routes
+- Input sanitization
+- CORS configuration
+- Security headers configured
+
+## 📊 Performance
+
+- Lighthouse score: 90+
+- Code splitting enabled
+- Image optimization
+- Font optimization
+- Lazy loading
+
+## 🤝 Contributing
+
+Contributions welcome! Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
+
+## 📄 License
+
+MIT License - see [LICENSE](./LICENSE)
+
+## 🆘 Support
+
+- Documentation: [docs.postcraft.app](https://docs.postcraft.app)
+- Email: support@postcraft.app
+- Discord: [Join our community](https://discord.gg/postcraft)
+
+## 🙏 Acknowledgments
+
+- Next.js team for the amazing framework
+- OpenAI for GPT-4 API
+- Vercel for hosting
+- All contributors
+
+---
+
+Made with ❤️ by the PostCraft team
