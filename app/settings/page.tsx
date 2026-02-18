@@ -30,7 +30,7 @@ function SectionCard({ children, className = '', delay = 0 }: { children: React.
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay, duration: 0.6 }}
-      className={`glass-card rounded-[2.5rem] border-white/5 shadow-2xl overflow-hidden relative ${className}`}
+      className={`glass-card rounded-2xl sm:rounded-[2.5rem] border-white/5 shadow-2xl overflow-hidden relative ${className}`}
     >
       <div className="absolute top-0 left-0 w-full h-1 premium-gradient opacity-10" />
       {children}
@@ -143,7 +143,7 @@ export default function SettingsPage() {
     <div className="container mx-auto max-w-4xl animate-in fade-in duration-700">
 
       {/* Cinematic Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
         <div className="relative">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -153,7 +153,7 @@ export default function SettingsPage() {
             <Settings className="h-4 w-4 text-primary" />
             <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">System Overlord</span>
           </motion.div>
-          <h1 className="text-5xl font-black tracking-tighter text-white">COMMAND <span className="text-gradient">CENTER</span></h1>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-white">COMMAND <span className="text-gradient">CENTER</span></h1>
         </div>
       </div>
 
@@ -161,10 +161,10 @@ export default function SettingsPage() {
 
         {/* Subscription Control */}
         <SectionCard delay={0.1}>
-          <div className="p-10">
+          <div className="p-5 sm:p-8 md:p-10">
             <SectionHeader icon={Crown} label="Access Level" accent="#0EA5E9" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
               <div className="space-y-6">
                 <div className="p-6 bg-white/[0.02] border border-white/5 rounded-3xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 premium-gradient blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity" />
@@ -188,7 +188,7 @@ export default function SettingsPage() {
                 {!isPro && (
                   <motion.div
                     whileHover={{ scale: 1.02 }}
-                    className="p-8 glass-card border-primary/30 rounded-[2rem] relative overflow-hidden shadow-2xl shadow-primary/10"
+                    className="p-5 sm:p-8 glass-card border-primary/30 rounded-[2rem] relative overflow-hidden shadow-2xl shadow-primary/10"
                   >
                     <div className="absolute inset-0 premium-gradient opacity-5" />
                     <div className="relative z-10 text-center">
@@ -198,7 +198,7 @@ export default function SettingsPage() {
                       <button
                         onClick={handleUpgrade}
                         disabled={upgrading}
-                        className="w-full py-5 premium-gradient rounded-2xl text-white text-[10px] font-black tracking-[0.3em] uppercase shadow-xl shadow-primary/20 flex items-center justify-center gap-3 disabled:opacity-50"
+                        className="w-full py-4 sm:py-5 premium-gradient rounded-2xl text-white text-[10px] font-black tracking-[0.1em] sm:tracking-[0.3em] uppercase shadow-xl shadow-primary/20 flex items-center justify-center gap-2 sm:gap-3 disabled:opacity-50"
                       >
                         {upgrading ? 'CALIBRATING CORE...' : 'Upgrade Now — $9/mo'}
                         <ChevronRight className="h-4 w-4" />
@@ -220,10 +220,10 @@ export default function SettingsPage() {
 
         {/* Profile Matrix */}
         <SectionCard delay={0.2}>
-          <div className="p-10">
+          <div className="p-5 sm:p-8 md:p-10">
             <SectionHeader icon={User} label="Identity Matrix" accent="#8B5CF6" />
 
-            <div className="flex flex-col md:flex-row gap-12">
+            <div className="flex flex-col md:flex-row gap-6 sm:gap-12">
               <div className="flex flex-col items-center gap-6 md:w-48">
                 <div className="relative group">
                   <div className="absolute inset-0 premium-gradient blur-2xl opacity-20 group-hover:opacity-40 transition-opacity rounded-full" />
@@ -279,16 +279,16 @@ export default function SettingsPage() {
 
         {/* Frequency & Signals */}
         <SectionCard delay={0.3}>
-          <div className="p-10">
+          <div className="p-5 sm:p-8 md:p-10">
             <SectionHeader icon={Bell} label="Signal Frequency" accent="#F59E0B" />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
               {([
                 { key: 'email', icon: Mail, label: 'NEURAL UPLINK', sub: 'Email notifications' },
                 { key: 'push', icon: Monitor, label: 'DIRECT SIGNAL', sub: 'Browser alerts' },
                 { key: 'weekly', icon: BarChart2, label: 'DATA RECAP', sub: 'Weekly summary' },
               ] as const).map(({ key, icon: Icon, label, sub }) => (
-                <div key={key} className="p-8 bg-white/[0.02] border border-white/5 rounded-[2rem] flex flex-col items-center text-center group hover:border-white/10 transition-all relative overflow-hidden">
+                <div key={key} className="p-5 sm:p-8 bg-white/[0.02] border border-white/5 rounded-[1.5rem] sm:rounded-[2rem] flex flex-col items-center text-center group hover:border-white/10 transition-all relative overflow-hidden">
                   <div className="absolute top-0 right-0 w-24 h-24 premium-gradient blur-[60px] opacity-0 group-hover:opacity-10 transition-opacity" />
                   <div className="w-14 h-14 rounded-2xl bg-white/[0.03] flex items-center justify-center mb-6">
                     <Icon className="h-6 w-6 text-white/20 group-hover:text-white transition-colors" />
@@ -304,10 +304,10 @@ export default function SettingsPage() {
 
         {/* Danger Matrix */}
         <SectionCard delay={0.4} className="border-red-500/10">
-          <div className="p-10">
+          <div className="p-5 sm:p-8 md:p-10">
             <SectionHeader icon={AlertTriangle} label="Termination Matrix" accent="#EF4444" />
 
-            <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8">
               <div className="max-w-md">
                 <p className="text-sm font-medium text-white/40 leading-relaxed">
                   Initiating a total account termination will permanently erase all neural patterns, brand voices, and operational history from the PostCraft matrix.

@@ -1,13 +1,15 @@
 'use client';
 
 import { useState } from 'react';
-import { Hash, Smile, Target, Sparkles, Copy, Check } from 'lucide-react';
+import { Hash, Smile, Target, Sparkles, Copy, Check, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AIEnhancementsPage() {
   const [activeTab, setActiveTab] = useState<'hashtags' | 'emojis' | 'cta'>('hashtags');
   const [input, setInput] = useState('');
   const [results, setResults] = useState<string[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const hashtagSuggestions = [
     '#ContentMarketing', '#SocialMedia', '#DigitalMarketing', '#Marketing',
@@ -34,6 +36,7 @@ export default function AIEnhancementsPage() {
   const handleGenerate = async () => {
     if (!input.trim()) return;
 
+    setLoading(true);
     setResults([]);
 
     try {
@@ -62,6 +65,8 @@ export default function AIEnhancementsPage() {
       } else {
         setResults(ctaSuggestions);
       }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -72,63 +77,51 @@ export default function AIEnhancementsPage() {
   };
 
   return (
-    <div className="container mx-auto max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-cool-blue to-white bg-clip-text text-transparent mb-2">
-          AI Enhancements
-        </h1>
-        <p className="text-cool-blue/60">Smart suggestions to boost your content</p>
+    <div className="space-y-4 sm:space-y-8">
+      {/* Header */}
+      <div className="flex items-center gap-3 sm:gap-4">
+        <div className="h-10 w-10 sm:h-14 sm:w-14 premium-gradient rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+          <Zap className="h-5 w-5 sm:h-7 sm:w-7 text-white" />
+        </div>
+        <div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-gradient tracking-tight">AI Enhancements</h1>
+          <p className="text-white/40 font-medium text-xs sm:text-base hidden sm:block">Smart suggestions to boost your content</p>
+        </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6">
-        <button
-          onClick={() => setActiveTab('hashtags')}
-          className={`flex items-center gap-2 px-4 py-3 rounded-xl font-bold transition-all ${activeTab === 'hashtags'
-              ? 'text-white shadow-lg'
-              : 'bg-[#22222A] border border-cool-blue/10 text-cool-blue/70 hover:text-cool-blue'
+      <div className="p-1 glass-card rounded-xl sm:rounded-2xl flex items-center gap-1">
+        {[
+          { id: 'hashtags', label: 'Hashtags', icon: Hash },
+          { id: 'emojis', label: 'Emojis', icon: Smile },
+          { id: 'cta', label: 'CTA', icon: Target }
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id as any)}
+            className={`relative flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-black tracking-wider transition-all ${
+              activeTab === tab.id ? 'text-white' : 'text-white/30 hover:text-white/60'
             }`}
-          style={activeTab === 'hashtags' ? {
-            background: 'linear-gradient(to right, #0EA5E9, rgba(14, 165, 233, 0.8))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          } : {}}
-        >
-          <Hash className="h-5 w-5" />
-          Hashtags
-        </button>
-        <button
-          onClick={() => setActiveTab('emojis')}
-          className={`flex items-center gap-2 px-4 py-3 rounded-xl font-bold transition-all ${activeTab === 'emojis'
-              ? 'text-white shadow-lg'
-              : 'bg-[#22222A] border border-cool-blue/10 text-cool-blue/70 hover:text-cool-blue'
-            }`}
-          style={activeTab === 'emojis' ? {
-            background: 'linear-gradient(to right, #0EA5E9, rgba(14, 165, 233, 0.8))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          } : {}}
-        >
-          <Smile className="h-5 w-5" />
-          Emojis
-        </button>
-        <button
-          onClick={() => setActiveTab('cta')}
-          className={`flex items-center gap-2 px-4 py-3 rounded-xl font-bold transition-all ${activeTab === 'cta'
-              ? 'text-white shadow-lg'
-              : 'bg-[#22222A] border border-cool-blue/10 text-cool-blue/70 hover:text-cool-blue'
-            }`}
-          style={activeTab === 'cta' ? {
-            background: 'linear-gradient(to right, #0EA5E9, rgba(14, 165, 233, 0.8))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          } : {}}
-        >
-          <Target className="h-5 w-5" />
-          Call-to-Action
-        </button>
+          >
+            {activeTab === tab.id && (
+              <motion.div
+                layoutId="active-tool-tab"
+                className="absolute inset-0 premium-gradient rounded-lg sm:rounded-xl shadow-lg shadow-primary/20"
+              />
+            )}
+            <tab.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 relative z-10" />
+            <span className="relative z-10">{tab.label}</span>
+          </button>
+        ))}
       </div>
 
       {/* Input Section */}
-      <div className="bg-gradient-to-br from-[#22222A] to-[#1E1E27] border border-cool-blue/10 rounded-2xl p-6 mb-6">
-        <label className="block text-sm font-bold text-cool-blue mb-3">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-white/5"
+      >
+        <label className="block text-[10px] sm:text-xs font-black text-white/40 uppercase tracking-widest mb-2 sm:mb-3">
           {activeTab === 'hashtags' && 'Enter your topic or keywords'}
           {activeTab === 'emojis' && 'Describe your content mood'}
           {activeTab === 'cta' && 'What action do you want?'}
@@ -137,50 +130,71 @@ export default function AIEnhancementsPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => e.key === 'Enter' && handleGenerate()}
           placeholder={
             activeTab === 'hashtags' ? 'e.g., social media marketing' :
               activeTab === 'emojis' ? 'e.g., exciting product launch' :
                 'e.g., get more engagement'
           }
-          className="w-full px-4 py-3 bg-[#1A1A1F] border border-cool-blue/20 rounded-xl focus:ring-2 focus:border-[#0EA5E9] text-white placeholder-cool-blue/40 mb-4"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-white text-sm sm:text-base placeholder-white/20 mb-3 sm:mb-4 outline-none transition-all"
         />
         <button
           onClick={handleGenerate}
-          className="flex items-center gap-2 px-6 py-3 text-white font-bold rounded-xl hover:opacity-90 transition-all"
-          style={{
-            background: 'linear-gradient(to right, #0EA5E9, rgba(14, 165, 233, 0.8))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          }}
+          disabled={!input.trim() || loading}
+          className="w-full flex items-center justify-center gap-2 px-4 sm:px-6 py-3 sm:py-3.5 premium-gradient text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-xl shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <Sparkles className="h-5 w-5" />
-          Generate Suggestions
+          {loading ? (
+            <>
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                className="h-4 w-4 border-2 border-white/20 border-t-white rounded-full"
+              />
+              Generating...
+            </>
+          ) : (
+            <>
+              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5" />
+              Generate Suggestions
+            </>
+          )}
         </button>
-      </div>
+      </motion.div>
 
       {/* Results */}
-      {results.length > 0 && (
-        <div className="bg-gradient-to-br from-[#22222A] to-[#1E1E27] border border-cool-blue/10 rounded-2xl p-6">
-          <h3 className="text-xl font-bold text-white mb-4">Suggestions</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {results.map((item, i) => (
-              <button
-                key={i}
-                onClick={() => copyToClipboard(item)}
-                className="flex items-center justify-between gap-2 p-3 bg-[#1A1A1F] border border-cool-blue/10 hover:border-[#0EA5E9] rounded-xl transition-all group"
-              >
-                <span className="text-cool-blue group-hover:text-white text-sm font-medium truncate">
-                  {item}
-                </span>
-                {copied === item ? (
-                  <Check className="h-4 w-4 text-green-400 flex-shrink-0" />
-                ) : (
-                  <Copy className="h-4 w-4 text-cool-blue/60 group-hover:text-[#0EA5E9] flex-shrink-0" />
-                )}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {results.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-white/5"
+          >
+            <h3 className="text-base sm:text-xl font-black text-white mb-3 sm:mb-4 uppercase tracking-wider">Suggestions</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
+              {results.map((item, i) => (
+                <motion.button
+                  key={i}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: i * 0.05 }}
+                  onClick={() => copyToClipboard(item)}
+                  className="flex items-center justify-between gap-2 p-2.5 sm:p-3 bg-white/[0.03] border border-white/10 hover:border-primary/50 hover:bg-white/[0.06] rounded-lg sm:rounded-xl transition-all group"
+                >
+                  <span className="text-white/70 group-hover:text-white text-xs sm:text-sm font-medium truncate">
+                    {item}
+                  </span>
+                  {copied === item ? (
+                    <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
+                  ) : (
+                    <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white/20 group-hover:text-primary flex-shrink-0" />
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -35,7 +35,7 @@ function TonePill({ tone }: { tone: string }) {
   const color = TONE_COLOR[tone] ?? '#0EA5E9';
   return (
     <span
-      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest"
+      className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-tight sm:tracking-widest"
       style={{ background: `${color}10`, color, border: `1px solid ${color}20` }}
     >
       <div className="h-1.5 w-1.5 rounded-full" style={{ background: color }} />
@@ -134,7 +134,7 @@ export default function BrandVoicePage() {
     <div className="container mx-auto max-w-5xl animate-in fade-in duration-700">
 
       {/* Cinematic Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+      <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
         <div className="relative">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -144,7 +144,7 @@ export default function BrandVoicePage() {
             <Palette className="h-4 w-4 text-primary" />
             <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Aura Configurator</span>
           </motion.div>
-          <h1 className="text-5xl font-black tracking-tighter text-white">BRAND <span className="text-gradient">VOICE</span></h1>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-white">GENETIC <span className="text-gradient">AURA</span></h1>
         </div>
 
         {!isFormOpen && (
@@ -159,7 +159,7 @@ export default function BrandVoicePage() {
                 : 'bg-white/5 border border-white/10 text-white/20 cursor-not-allowed'}`}
           >
             <Plus className="h-4 w-4" />
-            Generate New Profile
+            SYNTHESIZE NEW CORE
           </motion.button>
         )}
       </div>
@@ -170,11 +170,11 @@ export default function BrandVoicePage() {
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 20 }}
-            className="mb-12 glass-card rounded-[2.5rem] border-white/5 overflow-hidden shadow-2xl relative"
+            className="mb-8 sm:mb-12 glass-card rounded-2xl sm:rounded-[2.5rem] border-white/5 overflow-hidden shadow-2xl relative"
           >
             <div className="absolute top-0 left-0 w-full h-1 premium-gradient opacity-30" />
 
-            <div className="flex items-center justify-between p-8 border-b border-white/5">
+            <div className="flex items-center justify-between p-5 sm:p-8 border-b border-white/5">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 premium-gradient rounded-xl flex items-center justify-center">
                   <Sparkles className="h-5 w-5 text-white" />
@@ -207,7 +207,7 @@ export default function BrandVoicePage() {
             </div>
 
             {creationMode === 'harvest' && (
-              <div className="p-10 border-b border-white/5 bg-primary/[0.02]">
+              <div className="p-5 sm:p-10 border-b border-white/5 bg-primary/[0.02]">
                 <div className="max-w-2xl mx-auto">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
@@ -231,7 +231,7 @@ export default function BrandVoicePage() {
               </div>
             )}
 
-            <div className="p-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+            <div className="p-5 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
               <div className="space-y-8">
                 <div>
                   <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">Designation</label>
@@ -309,19 +309,19 @@ export default function BrandVoicePage() {
                 </div>
               </div>
 
-              <div className="md:col-span-2 pt-6 flex items-center gap-4">
+              <div className="md:col-span-2 pt-4 sm:pt-6 flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                   onClick={handleSave}
                   disabled={!formData.name.trim()}
-                  className="px-10 py-5 premium-gradient text-white text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl shadow-xl shadow-primary/20 disabled:opacity-40"
+                  className="flex-1 sm:flex-none px-6 sm:px-10 py-4 sm:py-5 premium-gradient text-white text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl shadow-xl shadow-primary/20 disabled:opacity-40 text-center"
                 >
                   Confirm Configuration
                 </motion.button>
                 <button
                   onClick={handleCancel}
-                  className="px-10 py-5 bg-white/5 border border-white/10 text-white/40 text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl hover:text-white hover:border-white/20 transition-all"
+                  className="flex-1 sm:flex-none px-6 sm:px-10 py-4 sm:py-5 bg-white/5 border border-white/10 text-white/40 text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl hover:text-white hover:border-white/20 transition-all text-center"
                 >
                   Abort
                 </button>
@@ -338,18 +338,26 @@ export default function BrandVoicePage() {
             key={voice.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className={`group relative glass-card rounded-[2.5rem] p-10 border-white/5 transition-all overflow-hidden
-                        ${voice.isDefault ? 'border-primary/30 ring-1 ring-primary/20' : 'hover:border-white/20'}`}
+            whileHover={{ scale: 1.01 }}
+            className={`group relative glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 border-white/5 transition-all overflow-hidden
+                        ${voice.isDefault ? 'border-primary/40 ring-2 ring-primary/10 shadow-[0_0_50px_-12px_rgba(236,88,0,0.2)]' : 'hover:border-white/20'}`}
           >
+            {voice.isDefault && (
+              <motion.div
+                animate={{ opacity: [0.1, 0.3, 0.1] }}
+                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 bg-primary/5 pointer-events-none"
+              />
+            )}
             <div className="absolute top-0 right-0 w-64 h-64 blur-[100px] opacity-0 group-hover:opacity-10 transition-opacity" style={{ background: TONE_COLOR[voice.tone] }} />
 
-            <div className="flex items-start justify-between mb-8">
-              <div className="flex items-center gap-5">
-                <div className="w-16 h-16 rounded-[1.25rem] flex items-center justify-center bg-white/[0.03] border border-white/10 group-hover:scale-110 transition-transform">
-                  <Palette className="h-7 w-7" style={{ color: TONE_COLOR[voice.tone] }} />
+            <div className="flex items-start justify-between mb-5 sm:mb-8">
+              <div className="flex items-center gap-3 sm:gap-5 min-w-0">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[1.25rem] flex items-center justify-center bg-white/[0.03] border border-white/10 group-hover:scale-110 transition-transform shrink-0">
+                  <Palette className="h-5 w-5 sm:h-7 sm:w-7" style={{ color: TONE_COLOR[voice.tone] }} />
                 </div>
-                <div>
-                  <h3 className="text-2xl font-black text-white tracking-tighter uppercase">{voice.name}</h3>
+                <div className="min-w-0">
+                  <h3 className="text-lg sm:text-2xl font-black text-white tracking-tighter uppercase truncate">{voice.name}</h3>
                   <div className="mt-2">
                     <TonePill tone={voice.tone} />
                   </div>
@@ -417,13 +425,21 @@ export default function BrandVoicePage() {
         ))}
 
         {!isPro && voices.length === 1 && (
-          <div className="glass-card rounded-[2.5rem] p-10 border-white/5 border-dashed flex flex-col items-center justify-center text-center opacity-40">
-            <div className="w-16 h-16 rounded-[1.25rem] bg-white/[0.03] flex items-center justify-center mb-6">
-              <Zap className="h-8 w-8 text-white/20" />
+          <div className="glass-card rounded-2xl sm:rounded-[2.5rem] p-8 sm:p-12 border-white/5 border-dashed flex flex-col items-center justify-center text-center relative overflow-hidden group">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.5rem] bg-white/[0.03] border border-white/5 flex items-center justify-center mb-6 relative">
+              <Zap className="h-8 w-8 text-white/10" />
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+                className="absolute inset-[-4px] border border-primary/20 rounded-[1.75rem] border-t-transparent"
+              />
             </div>
-            <h4 className="text-sm font-black text-white/30 uppercase tracking-[0.3em]">SLOT RESTRICTED</h4>
-            <p className="text-xs font-medium text-white/10 mt-2">Upgrade to PRO for infinite Aura slots.</p>
-            <Link href="/settings" className="mt-8 px-6 py-3 premium-gradient rounded-xl text-white text-[10px] font-black tracking-widest uppercase opacity-0 group-hover:opacity-100 transition-opacity">Upgrade</Link>
+            <h4 className="text-sm font-black text-white/30 uppercase tracking-[0.4em] mb-2">NEURAL SLOT LOCKED</h4>
+            <p className="text-[10px] font-bold text-white/10 uppercase tracking-widest max-w-[150px] leading-relaxed">Upgrade to PRO for infinite multidimensional profiles.</p>
+            <Link href="/settings" className="mt-8 px-8 py-4 premium-gradient rounded-2xl text-white text-[10px] font-black tracking-widest uppercase shadow-xl shadow-primary/20 hover:scale-105 transition-all">
+              Initialize Pro Uplink
+            </Link>
           </div>
         )}
       </div>

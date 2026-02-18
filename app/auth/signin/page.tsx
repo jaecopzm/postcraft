@@ -70,18 +70,18 @@ export default function SignIn() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="max-w-md w-full relative z-10"
       >
-        <div className="glass-card rounded-[3rem] p-12 border-white/5 shadow-2xl relative overflow-hidden">
+        <div className="glass-card rounded-2xl sm:rounded-[3rem] p-6 sm:p-10 md:p-12 border-white/5 shadow-2xl relative overflow-hidden">
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
 
-          <div className="text-center mb-10">
+          <div className="text-center mb-8 sm:mb-10">
             <motion.div
               whileHover={{ scale: 1.05, rotate: 5 }}
-              className="inline-flex p-4 premium-gradient rounded-3xl shadow-2xl shadow-primary/30 mb-8"
+              className="inline-flex p-3 sm:p-4 premium-gradient rounded-2xl sm:rounded-3xl shadow-2xl shadow-primary/30 mb-6 sm:mb-8"
             >
-              <Sparkles className="h-10 w-10 text-white" />
+              <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
             </motion.div>
-            <h1 className="text-4xl font-black text-white tracking-widest uppercase mb-3">PostCraft</h1>
-            <p className="text-white/30 text-xs font-bold tracking-[0.3em] uppercase">Intelligence for creators</p>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-widest uppercase mb-2 sm:mb-3">PostCraft</h1>
+            <p className="text-white/30 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase">Intelligence for creators</p>
           </div>
 
           <AnimatePresence mode="wait">
@@ -107,7 +107,7 @@ export default function SignIn() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/50 text-white font-medium transition-all outline-none placeholder-white/10"
+                className="w-full px-5 sm:px-6 py-3.5 sm:py-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/50 text-white font-medium transition-all outline-none placeholder-white/10"
                 placeholder="architect@creators.com"
               />
             </div>
@@ -121,7 +121,7 @@ export default function SignIn() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full px-6 py-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/50 text-white font-medium transition-all outline-none placeholder-white/10"
+                className="w-full px-5 sm:px-6 py-3.5 sm:py-4 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/10 focus:border-primary/50 text-white font-medium transition-all outline-none placeholder-white/10"
                 placeholder="••••••••••••"
               />
             </div>
@@ -131,7 +131,7 @@ export default function SignIn() {
               disabled={isLoading}
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full premium-gradient text-white font-black py-5 px-8 rounded-2xl transition-all shadow-2xl shadow-primary/20 flex items-center justify-center gap-3 group relative overflow-hidden"
+              className="w-full premium-gradient text-white font-black py-4 sm:py-5 px-6 sm:px-8 rounded-2xl transition-all shadow-2xl shadow-primary/20 flex items-center justify-center gap-3 group relative overflow-hidden"
             >
               <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               {isLoading ? (
@@ -150,7 +150,7 @@ export default function SignIn() {
               <div className="w-full border-t border-white/5"></div>
             </div>
             <div className="relative flex justify-center text-[10px]">
-              <span className="px-4 bg-[#0A0A0B] text-white/20 font-black tracking-[0.3em]">SYNCHRONIZE</span>
+              <span className="px-4 bg-[#0A0A0B] text-white/20 font-black tracking-[0.2em] sm:tracking-[0.3em]">SYNCHRONIZE</span>
             </div>
           </div>
 
@@ -159,7 +159,7 @@ export default function SignIn() {
             disabled={isLoading}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-white text-black font-black py-5 px-8 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 hover:shadow-white/10 group"
+            className="w-full bg-white text-black font-black py-4 sm:py-5 px-6 sm:px-8 rounded-2xl transition-all shadow-xl flex items-center justify-center gap-3 hover:shadow-white/10 group"
           >
             {isLoading ? (
               <div className="animate-spin rounded-full h-5 w-5 border-2 border-charcoal/30 border-t-charcoal" />
@@ -186,7 +186,7 @@ export default function SignIn() {
           </div>
         </div>
 
-        <p className="text-center text-[8px] text-white/10 font-black tracking-[0.5em] uppercase mt-12">
+        <p className="text-center text-[8px] text-white/10 font-black tracking-[0.3em] sm:tracking-[0.5em] uppercase mt-8 sm:mt-12">
           Encrypted Protocol v4.0.2 // Zero Trust Architecture
         </p>
       </motion.div>

@@ -36,6 +36,15 @@
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-white;
     font-feature-settings: "cv11", "ss01";
+    /* Prevent horizontal overflow on mobile */
+    overflow-x: hidden;
+  }
+
+  /* Smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+    /* Support for iOS safe areas */
+    padding-bottom: env(safe-area-inset-bottom);
   }
 }
 
@@ -55,19 +64,48 @@
   .premium-button {
     @apply relative overflow-hidden transition-all duration-300 active:scale-95;
   }
+
+  /* Hide scrollbar utility */
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Safe area padding for mobile bottom nav */
+  .safe-area-pb {
+    padding-bottom: max(0.5rem, env(safe-area-inset-bottom));
+  }
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
+/* Custom Scrollbar — desktop only */
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-charcoal;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-white/10 rounded-full border-2 border-charcoal hover:bg-white/20 transition-colors;
+  }
 }
 
-::-webkit-scrollbar-track {
-  @apply bg-charcoal;
-}
+/* Hide scrollbar on mobile */
+@media (max-width: 1023px) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
 
-::-webkit-scrollbar-thumb {
-  @apply bg-white/10 rounded-full border-2 border-charcoal hover:bg-white/20 transition-colors;
+  * {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }
 
 /* Glow Effects */

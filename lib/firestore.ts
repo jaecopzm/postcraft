@@ -66,6 +66,16 @@ export interface StagedPost {
   publishedAt?: Date;
 }
 
+export interface ScheduledPost {
+  id?: string;
+  userId: string;
+  date: string;
+  time: string;
+  platform: string;
+  content: string;
+  createdAt: Date;
+}
+
 export interface BrandVoice {
   id?: string;
   userId: string;
@@ -266,4 +276,37 @@ export async function getUserSubscription(userId: string): Promise<SubscriptionS
     renewsAt: data.subscription.renewsAt?.toDate(),
     endsAt: data.subscription.endsAt?.toDate()
   } as SubscriptionStatus;
+}
+
+// Scheduled Posts
+export async function schedulePost(userId: string, post: Omit<ScheduledPost, 'id' | 'userId' | 'createdAt'>) {
+  const scheduledRef = collection(db, 'scheduledPosts');
+  const docRef = await addDoc(scheduledRef, {
+    ...post,
+    userId,
+    createdAt: Timestamp.now()
+  });
+  return docRef.id;
+}
+
+export async function getScheduledPosts(userId: string): Promise<ScheduledPost[]> {
+  const scheduledRef = collection(db, 'scheduledPosts');
+  const q = query(scheduledRef, where('userId', '==', userId));
+
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map(doc => ({
+    id: doc.id,
+    ...doc.data(),
+    createdAt: doc.data().createdAt.toDate()
+  })) as ScheduledPost[];
+}
+
+export async function deleteScheduledPost(postId: string) {
+  const postRef = doc(db, 'scheduledPosts', postId);
+  await deleteDoc(postRef);
+}
+
+export async function updateScheduledPost(postId: string, updates: Partial<ScheduledPost>) {
+  const postRef = doc(db, 'scheduledPosts', postId);
+  await updateDoc(postRef, updates);
 }

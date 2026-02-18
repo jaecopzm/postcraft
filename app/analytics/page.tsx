@@ -26,23 +26,23 @@ function StatCard({
   return (
     <motion.div
       whileHover={{ y: -5, scale: 1.02 }}
-      className="glass-card rounded-3xl p-8 relative overflow-hidden group border-white/5"
+      className="glass-card rounded-3xl p-5 sm:p-8 relative overflow-hidden group border-white/5"
     >
       <div
         className="absolute -right-4 -top-4 w-32 h-32 blur-3xl opacity-0 group-hover:opacity-20 transition-opacity"
         style={{ background: accent }}
       />
 
-      <div className="flex items-start justify-between mb-8">
-        <div className="p-4 premium-gradient rounded-2xl shadow-lg shadow-primary/20">
-          <Icon className="h-6 w-6 text-white" />
+      <div className="flex items-start justify-between mb-4 sm:mb-8">
+        <div className="p-3 sm:p-4 premium-gradient rounded-2xl shadow-lg shadow-primary/20">
+          <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
         </div>
         <ArrowUpRight className="h-5 w-5 text-white/20 group-hover:text-primary transition-colors" />
       </div>
 
       <div className="space-y-1">
         <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{label}</p>
-        <p className="text-4xl font-black text-white tracking-tight">{value}</p>
+        <p className="text-2xl sm:text-4xl font-black text-white tracking-tight">{value}</p>
         {sub && <p className="text-xs font-bold text-white/20 uppercase tracking-widest pt-2">{sub}</p>}
       </div>
     </motion.div>
@@ -129,14 +129,14 @@ export default function AnalyticsPage() {
       className="space-y-10"
     >
       {/* Header */}
-      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="flex items-center gap-6">
-          <div className="h-16 w-16 premium-gradient rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
-            <BarChart3 className="h-8 w-8 text-white" />
+      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
+        <div className="flex items-center gap-4 sm:gap-6">
+          <div className="h-12 w-12 sm:h-16 sm:w-16 premium-gradient rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+            <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
           </div>
           <div>
-            <h1 className="text-5xl font-extrabold text-gradient mb-2 tracking-tight">Intelligence</h1>
-            <p className="text-white/40 font-medium">Deep insights into your creative momentum.</p>
+            <h1 className="text-3xl sm:text-5xl font-extrabold text-gradient mb-1 sm:mb-2 tracking-tight">Intelligence</h1>
+            <p className="text-white/40 font-medium text-sm sm:text-base">Deep insights into your creative momentum.</p>
           </div>
         </div>
       </motion.div>
@@ -150,17 +150,17 @@ export default function AnalyticsPage() {
       </motion.div>
 
       {/* Data Visuals */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
         {/* Platform DNA */}
-        <motion.div variants={itemVariants} className="glass-card rounded-[2.5rem] p-10 border-white/5 relative overflow-hidden">
+        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 border-white/5 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none" />
 
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center justify-between mb-6 sm:mb-10">
             <div>
-              <h3 className="text-2xl font-black text-white tracking-widest uppercase">Platform DNA</h3>
+              <h3 className="text-lg sm:text-2xl font-black text-white tracking-widest uppercase">Platform DNA</h3>
               <p className="text-white/20 text-xs font-bold tracking-[0.2em] mt-1">DISTRIBUTION BREAKDOWN</p>
             </div>
-            <div className="px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
+            <div className="px-3 sm:px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
               <span className="text-[10px] font-black text-primary tracking-widest uppercase">{total} TOTAL</span>
             </div>
           </div>
@@ -206,12 +206,12 @@ export default function AnalyticsPage() {
         </motion.div>
 
         {/* Neural Map / Top Topics */}
-        <motion.div variants={itemVariants} className="glass-card rounded-[2.5rem] p-10 border-white/5 relative overflow-hidden">
+        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 border-white/5 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none" />
 
-          <div className="flex items-center justify-between mb-10">
+          <div className="flex items-center justify-between mb-6 sm:mb-10">
             <div>
-              <h3 className="text-2xl font-black text-white tracking-widest uppercase">Neural Map</h3>
+              <h3 className="text-lg sm:text-2xl font-black text-white tracking-widest uppercase">Neural Map</h3>
               <p className="text-white/20 text-xs font-bold tracking-[0.2em] mt-1">TOP RECURRING TOPICS</p>
             </div>
             <div className="p-3 bg-white/5 rounded-xl border border-white/10">

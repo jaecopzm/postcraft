@@ -90,7 +90,7 @@ export default function CommandCenterPage() {
     return (
         <div className="container mx-auto max-w-6xl animate-in fade-in duration-700">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
                 <div>
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
@@ -100,12 +100,12 @@ export default function CommandCenterPage() {
                         <Rocket className="h-4 w-4 text-primary" />
                         <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Mission Control</span>
                     </motion.div>
-                    <h1 className="text-5xl font-black tracking-tighter text-white uppercase">Command <span className="text-gradient">Center</span></h1>
+                    <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-white uppercase">Command <span className="text-gradient">Center</span></h1>
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <div className="glass-card px-6 py-4 rounded-2xl border-white/5 flex items-center gap-4">
-                        <div className="h-10 w-10 bg-orange-500/10 rounded-xl flex items-center justify-center">
+                    <div className="glass-card px-5 sm:px-6 py-4 rounded-2xl border-white/5 flex items-center gap-4">
+                        <div className="h-10 w-10 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
                             <TrendingUp className="h-5 w-5 text-orange-500" />
                         </div>
                         <div>
@@ -116,7 +116,7 @@ export default function CommandCenterPage() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
                 {/* Left Column: Metrics & Heatmap */}
                 <div className="lg:col-span-1 space-y-8">
                     <PresenceHeatmap publishedDates={publishedDates} />

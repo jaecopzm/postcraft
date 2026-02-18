@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Download, FileText, Table, Copy, Check } from 'lucide-react';
+import { Download, FileText, Table, Copy, Check, Package } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ExportPage() {
   const [selectedFormat, setSelectedFormat] = useState<'csv' | 'pdf' | 'copy'>('csv');
@@ -41,110 +42,119 @@ export default function ExportPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const formats = [
+    { id: 'csv', label: 'CSV/Excel', desc: 'Spreadsheet', icon: Table },
+    { id: 'pdf', label: 'PDF Report', desc: 'Document', icon: FileText },
+    { id: 'copy', label: 'Copy Format', desc: 'Clipboard', icon: Copy }
+  ];
+
   return (
-    <div className="container mx-auto max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold bg-gradient-to-r from-white via-cool-blue to-white bg-clip-text text-transparent mb-2">
-          Export & Integration
-        </h1>
-        <p className="text-cool-blue/60">Export your content in multiple formats</p>
-      </div>
-
-      {/* Format Selection */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <button
-          onClick={() => setSelectedFormat('csv')}
-          className={`p-6 rounded-2xl border transition-all ${
-            selectedFormat === 'csv'
-              ? 'border-[#0EA5E9] shadow-lg'
-              : 'bg-[#22222A] border-cool-blue/10 hover:border-cool-blue/20'
-          }`}
-          style={selectedFormat === 'csv' ? {
-            background: 'linear-gradient(to bottom right, rgba(14, 165, 233, 0.1), rgba(14, 165, 233, 0.05))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          } : {}}
-        >
-          <Table className="h-8 w-8 mb-3" style={{ color: selectedFormat === 'csv' ? '#0EA5E9' : '#D1EAF0' }} />
-          <h3 className="text-lg font-bold text-white mb-1">CSV/Excel</h3>
-          <p className="text-sm text-cool-blue/60">Spreadsheet format</p>
-        </button>
-
-        <button
-          onClick={() => setSelectedFormat('pdf')}
-          className={`p-6 rounded-2xl border transition-all ${
-            selectedFormat === 'pdf'
-              ? 'border-[#0EA5E9] shadow-lg'
-              : 'bg-[#22222A] border-cool-blue/10 hover:border-cool-blue/20'
-          }`}
-          style={selectedFormat === 'pdf' ? {
-            background: 'linear-gradient(to bottom right, rgba(14, 165, 233, 0.1), rgba(14, 165, 233, 0.05))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          } : {}}
-        >
-          <FileText className="h-8 w-8 mb-3" style={{ color: selectedFormat === 'pdf' ? '#0EA5E9' : '#D1EAF0' }} />
-          <h3 className="text-lg font-bold text-white mb-1">PDF Report</h3>
-          <p className="text-sm text-cool-blue/60">Formatted document</p>
-        </button>
-
-        <button
-          onClick={() => setSelectedFormat('copy')}
-          className={`p-6 rounded-2xl border transition-all ${
-            selectedFormat === 'copy'
-              ? 'border-[#0EA5E9] shadow-lg'
-              : 'bg-[#22222A] border-cool-blue/10 hover:border-cool-blue/20'
-          }`}
-          style={selectedFormat === 'copy' ? {
-            background: 'linear-gradient(to bottom right, rgba(14, 165, 233, 0.1), rgba(14, 165, 233, 0.05))',
-            boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-          } : {}}
-        >
-          <Copy className="h-8 w-8 mb-3" style={{ color: selectedFormat === 'copy' ? '#0EA5E9' : '#D1EAF0' }} />
-          <h3 className="text-lg font-bold text-white mb-1">Copy Format</h3>
-          <p className="text-sm text-cool-blue/60">Quick clipboard</p>
-        </button>
-      </div>
-
-      {/* Preview */}
-      <div className="bg-gradient-to-br from-[#22222A] to-[#1E1E27] border border-cool-blue/10 rounded-2xl p-6 mb-6">
-        <h3 className="text-xl font-bold text-white mb-4">Preview</h3>
-        <div className="space-y-4">
-          {mockContent.map((item, i) => (
-            <div key={i} className="bg-[#1A1A1F] border border-cool-blue/10 rounded-xl p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-bold" style={{ color: '#0EA5E9' }}>{item.platform}</span>
-                <span className="text-xs text-cool-blue/60">{item.date}</span>
-              </div>
-              <p className="text-sm text-cool-blue/80">{item.content}</p>
-            </div>
-          ))}
+    <div className="space-y-4 sm:space-y-8">
+      {/* Header */}
+      <div className="flex items-center gap-3 sm:gap-4">
+        <div className="h-10 w-10 sm:h-14 sm:w-14 premium-gradient rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+          <Package className="h-5 w-5 sm:h-7 sm:w-7 text-white" />
+        </div>
+        <div>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-gradient tracking-tight">Export & Integration</h1>
+          <p className="text-white/40 font-medium text-xs sm:text-base hidden sm:block">Export your content in multiple formats</p>
         </div>
       </div>
 
+      {/* Format Selection */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+        {formats.map((format) => (
+          <motion.button
+            key={format.id}
+            whileHover={{ y: -4 }}
+            whileTap={{ scale: 0.98 }}
+            onClick={() => setSelectedFormat(format.id as any)}
+            className={`relative p-4 sm:p-6 rounded-xl sm:rounded-2xl border transition-all ${
+              selectedFormat === format.id
+                ? 'border-primary/50 bg-primary/10'
+                : 'glass-card border-white/5 hover:border-white/10'
+            }`}
+          >
+            {selectedFormat === format.id && (
+              <motion.div
+                layoutId="selected-format"
+                className="absolute inset-0 bg-primary/5 rounded-xl sm:rounded-2xl border-2 border-primary/30"
+              />
+            )}
+            <div className="relative z-10">
+              <format.icon className={`h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-3 ${
+                selectedFormat === format.id ? 'text-primary' : 'text-white/40'
+              }`} />
+              <h3 className="text-sm sm:text-lg font-black text-white mb-0.5 sm:mb-1 uppercase tracking-wider">{format.label}</h3>
+              <p className="text-xs sm:text-sm text-white/40 font-medium">{format.desc}</p>
+            </div>
+          </motion.button>
+        ))}
+      </div>
+
+      {/* Preview */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-white/5"
+      >
+        <h3 className="text-base sm:text-xl font-black text-white mb-3 sm:mb-4 uppercase tracking-wider">Preview</h3>
+        <div className="space-y-2 sm:space-y-4">
+          {mockContent.map((item, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: i * 0.1 }}
+              className="bg-white/[0.03] border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:bg-white/[0.06] transition-all"
+            >
+              <div className="flex items-center justify-between mb-1.5 sm:mb-2">
+                <span className="text-xs sm:text-sm font-black text-primary uppercase tracking-wider">{item.platform}</span>
+                <span className="text-[10px] sm:text-xs text-white/40 font-medium">{item.date}</span>
+              </div>
+              <p className="text-xs sm:text-sm text-white/70 font-medium">{item.content}</p>
+            </motion.div>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Export Button */}
-      <button
+      <motion.button
+        whileHover={{ scale: 1.02 }}
+        whileTap={{ scale: 0.98 }}
         onClick={() => {
           if (selectedFormat === 'csv') handleExportCSV();
           else if (selectedFormat === 'pdf') handleExportPDF();
           else handleCopyAll();
         }}
-        className="w-full flex items-center justify-center gap-3 px-6 py-4 text-white font-bold rounded-xl hover:opacity-90 transition-all"
-        style={{
-          background: 'linear-gradient(to right, #0EA5E9, rgba(14, 165, 233, 0.8))',
-          boxShadow: '0 10px 15px -3px rgba(14, 165, 233, 0.2)'
-        }}
+        className="w-full flex items-center justify-center gap-2 sm:gap-3 px-4 sm:px-6 py-3 sm:py-4 premium-gradient text-white text-xs sm:text-sm font-black uppercase tracking-widest rounded-xl shadow-xl shadow-primary/20 transition-all"
       >
-        {copied ? (
-          <>
-            <Check className="h-5 w-5" />
-            Copied to Clipboard!
-          </>
-        ) : (
-          <>
-            <Download className="h-5 w-5" />
-            Export as {selectedFormat.toUpperCase()}
-          </>
-        )}
-      </button>
+        <AnimatePresence mode="wait">
+          {copied ? (
+            <motion.div
+              key="copied"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className="flex items-center gap-2"
+            >
+              <Check className="h-4 w-4 sm:h-5 sm:w-5" />
+              Copied to Clipboard!
+            </motion.div>
+          ) : (
+            <motion.div
+              key="export"
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0 }}
+              className="flex items-center gap-2"
+            >
+              <Download className="h-4 w-4 sm:h-5 sm:w-5" />
+              Export as {selectedFormat.toUpperCase()}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.button>
     </div>
   );
 }

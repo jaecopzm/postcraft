@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2 } from 'lucide-react';
+import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Twitter, Linkedin, Instagram, Facebook, Music, Youtube } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import PlatformPreviewWithVariations from '../../components/PlatformPreviewWithVariations';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -71,19 +71,19 @@ export default function Dashboard() {
   }
 
   const platforms = [
-    { id: 'twitter', name: 'Twitter/X', icon: '𝕏' },
-    { id: 'linkedin', name: 'LinkedIn', icon: '💼' },
-    { id: 'instagram', name: 'Instagram', icon: '📸' },
-    { id: 'facebook', name: 'Facebook', icon: '👥' },
-    { id: 'tiktok', name: 'TikTok', icon: '🎵' },
-    { id: 'youtube', name: 'YouTube', icon: '📺' }
+    { id: 'twitter', name: 'Twitter/X', icon: Twitter },
+    { id: 'linkedin', name: 'LinkedIn', icon: Linkedin },
+    { id: 'instagram', name: 'Instagram', icon: Instagram },
+    { id: 'facebook', name: 'Facebook', icon: Facebook },
+    { id: 'tiktok', name: 'TikTok', icon: Music },
+    { id: 'youtube', name: 'YouTube', icon: Youtube }
   ];
 
   const tones = [
-    { value: 'professional', label: 'Professional', icon: '💼' },
-    { value: 'casual', label: 'Casual', icon: '😊' },
-    { value: 'enthusiastic', label: 'Enthusiastic', icon: '🚀' },
-    { value: 'informative', label: 'Informative', icon: '📚' }
+    { value: 'professional', label: 'Professional', icon: Target },
+    { value: 'casual', label: 'Casual', icon: Sparkles },
+    { value: 'enthusiastic', label: 'Enthusiastic', icon: Zap },
+    { value: 'informative', label: 'Informative', icon: TrendingUp }
   ];
 
   const handleGenerate = async () => {
@@ -208,23 +208,24 @@ export default function Dashboard() {
       className="space-y-10"
     >
       {/* Header */}
-      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
-          <h1 className="text-5xl font-extrabold text-gradient mb-3">Create Magic</h1>
-          <p className="text-white/40 font-medium">Power up your social presence with AI excellence.</p>
+          <h1 className="text-3xl sm:text-5xl font-extrabold text-gradient mb-2 sm:mb-3">Create Magic</h1>
+          <p className="text-white/40 font-medium text-sm sm:text-base">Power up your social presence with AI excellence.</p>
         </div>
-        <div className="flex gap-4">
+        {/* Stats — scrollable on mobile */}
+        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
           {stats.map((stat, idx) => (
-            <div key={idx} className="flex flex-col items-center px-6 py-3 glass-card rounded-2xl border-white/5">
-              <span className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">{stat.label}</span>
-              <span className={`text-xl font-black ${stat.color}`}>{stat.value}</span>
+            <div key={idx} className="flex flex-col items-center px-4 sm:px-6 py-3 glass-card rounded-2xl border-white/5 shrink-0">
+              <span className="text-[9px] sm:text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">{stat.label}</span>
+              <span className={`text-lg sm:text-xl font-black ${stat.color}`}>{stat.value}</span>
             </div>
           ))}
         </div>
       </motion.div>
 
       {/* Generation Form */}
-      <motion.div variants={itemVariants} className="glass-card rounded-[2.5rem] p-10 relative overflow-hidden">
+      <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 relative overflow-hidden">
         {/* Subtle inner glow */}
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] -mr-32 -mt-32" />
 
@@ -239,7 +240,7 @@ export default function Dashboard() {
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="What's on your mind today?"
-              className="w-full px-8 py-6 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/20 focus:border-primary/50 text-white text-lg font-medium placeholder-white/20 transition-all outline-none shadow-inner"
+              className="w-full px-5 sm:px-8 py-4 sm:py-6 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/20 focus:border-primary/50 text-white text-base sm:text-lg font-medium placeholder-white/20 transition-all outline-none shadow-inner"
             />
           </div>
 
@@ -247,9 +248,10 @@ export default function Dashboard() {
             {/* Platforms */}
             <div className="space-y-4">
               <label className="text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">Distribution channels</label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {platforms.map((platform) => {
                   const isSelected = selectedPlatforms.includes(platform.id);
+                  const IconComponent = platform.icon;
                   return (
                     <motion.button
                       key={platform.id}
@@ -267,9 +269,9 @@ export default function Dashboard() {
                         : 'border-white/5 bg-white/5 hover:border-white/20'
                         }`}
                     >
-                      <span className="text-xl mb-1">{platform.icon}</span>
-                      <span className={`text-[10px] font-bold uppercase tracking-wider ${isSelected ? 'text-white' : 'text-white/40'}`}>
-                        {platform.id}
+                      <IconComponent className={`h-5 w-5 sm:h-6 sm:w-6 mb-1 ${isSelected ? 'text-primary' : 'text-white/40'}`} />
+                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-white' : 'text-white/40'}`}>
+                        {platform.name.split('/')[0]}
                       </span>
                       {isSelected && (
                         <motion.div
@@ -288,24 +290,27 @@ export default function Dashboard() {
             {/* Tone */}
             <div className="space-y-4">
               <label className="text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">Campaign Vibe</label>
-              <div className="grid grid-cols-2 gap-3">
-                {tones.map((t) => (
-                  <motion.button
-                    key={t.value}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setTone(t.value)}
-                    className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 ${tone === t.value
-                      ? 'border-primary bg-primary/10'
-                      : 'border-white/5 bg-white/5 hover:border-white/20'
-                      }`}
-                  >
-                    <span className="text-2xl">{t.icon}</span>
-                    <span className={`text-xs font-bold uppercase tracking-widest ${tone === t.value ? 'text-white' : 'text-white/40'}`}>
-                      {t.label}
-                    </span>
-                  </motion.button>
-                ))}
+              <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                {tones.map((t) => {
+                  const IconComponent = t.icon;
+                  return (
+                    <motion.button
+                      key={t.value}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => setTone(t.value)}
+                      className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 ${tone === t.value
+                        ? 'border-primary bg-primary/10'
+                        : 'border-white/5 bg-white/5 hover:border-white/20'
+                        }`}
+                    >
+                      <IconComponent className={`h-5 w-5 shrink-0 ${tone === t.value ? 'text-primary' : 'text-white/40'}`} />
+                      <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-white' : 'text-white/40'}`}>
+                        {t.label}
+                      </span>
+                    </motion.button>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -340,21 +345,21 @@ export default function Dashboard() {
             whileTap={{ scale: 0.98 }}
             onClick={handleGenerate}
             disabled={generating || !topic.trim() || selectedPlatforms.length === 0}
-            className="w-full relative group premium-button premium-gradient rounded-[1.5rem] py-6 px-8 text-white font-black text-xl tracking-widest shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full relative group premium-button premium-gradient rounded-xl sm:rounded-[1.5rem] py-3 sm:py-6 px-4 sm:px-8 text-white font-black text-sm sm:text-xl tracking-wider sm:tracking-widest shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <span className="relative z-10 flex items-center justify-center gap-4">
+            <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-4">
               {generating ? (
                 <>
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="h-6 w-6 border-3 border-white/30 border-t-white rounded-full"
+                    className="h-4 w-4 sm:h-6 sm:w-6 border-2 border-white/30 border-t-white rounded-full"
                   />
                   CRAFTING...
                 </>
               ) : (
                 <>
-                  <Sparkles className="h-7 w-7" />
+                  <Sparkles className="h-4 w-4 sm:h-7 sm:w-7" />
                   GENERATE UNIVERSE
                 </>
               )}
@@ -372,20 +377,20 @@ export default function Dashboard() {
             className="space-y-8"
           >
             <div className="flex items-center gap-4">
-              <div className="h-12 w-12 premium-gradient rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20">
-                <Target className="h-6 w-6 text-white" />
+              <div className="h-10 w-10 sm:h-12 sm:w-12 premium-gradient rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
+                <Target className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
               </div>
-              <h2 className="text-3xl font-black text-white tracking-tight uppercase">Platform Previews</h2>
+              <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight uppercase">Platform Previews</h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
               {results.map((result, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  className="glass-card rounded-[2rem] p-8 border-white/5 hover:border-white/10 transition-colors"
+                  className="glass-card rounded-2xl sm:rounded-[2rem] p-4 sm:p-8 border-white/5 hover:border-white/10 transition-colors"
                 >
                   <PlatformPreviewWithVariations
                     platform={result.platform}

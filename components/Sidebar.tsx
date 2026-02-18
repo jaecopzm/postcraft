@@ -23,6 +23,11 @@ export default function Sidebar() {
   const [isPro, setIsPro] = useState(false);
   const [generationsUsed, setGenerationsUsed] = useState(0);
 
+  // Close sidebar on route change (mobile)
+  useEffect(() => {
+    setIsMobileOpen(false);
+  }, [pathname]);
+
   useEffect(() => {
     if (user) {
       fetchUserStatus();
@@ -34,7 +39,6 @@ export default function Sidebar() {
     try {
       const [{ isPro: proStatus }, userData] = await Promise.all([
         getUserSubscription(user.uid),
-        // We'll add a getProfile or just read the users collection directly
         getDoc(doc(db, 'users', user.uid)).then(d => d.data())
       ]);
 
@@ -70,12 +74,13 @@ export default function Sidebar() {
 
   return (
     <>
-      {/* ── Mobile toggle ── */}
+      {/* ── Mobile hamburger toggle ── */}
       <motion.button
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         onClick={() => setIsMobileOpen(!isMobileOpen)}
         className="lg:hidden fixed top-4 left-4 z-50 p-2.5 glass-card rounded-xl shadow-xl active:scale-95"
+        aria-label="Toggle menu"
       >
         <AnimatePresence mode="wait">
           {isMobileOpen ? (
@@ -84,6 +89,7 @@ export default function Sidebar() {
               initial={{ rotate: -90, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: 90, opacity: 0 }}
+              transition={{ duration: 0.15 }}
             >
               <X className="h-5 w-5 text-primary" />
             </motion.div>
@@ -93,6 +99,7 @@ export default function Sidebar() {
               initial={{ rotate: 90, opacity: 0 }}
               animate={{ rotate: 0, opacity: 1 }}
               exit={{ rotate: -90, opacity: 0 }}
+              transition={{ duration: 0.15 }}
             >
               <Menu className="h-5 w-5 text-cool-blue" />
             </motion.div>
@@ -104,15 +111,20 @@ export default function Sidebar() {
       <motion.aside
         initial={false}
         animate={{
+          // Desktop: always visible, width changes on collapse
+          // Mobile: slides in/out from left
+          x: 0,
           width: isCollapsed ? 72 : 320,
-          x: isMobileOpen ? 0 : (typeof window !== 'undefined' && window.innerWidth < 1024 ? -320 : 0)
         }}
+        transition={{ type: 'tween', duration: 0.25, ease: 'easeInOut' }}
         className={`
           fixed top-0 left-0 z-40 h-screen
-          bg-[#0A0A0B]/80 backdrop-blur-2xl
+          bg-[#0A0A0B]/90 backdrop-blur-2xl
           border-r border-white/5
-          lg:translate-x-0
+          ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
+          transition-transform duration-250 lg:transition-none
         `}
+        style={{ width: isCollapsed ? 72 : 320 }}
       >
         {/* Subtle glow background */}
         <div className="absolute top-0 left-0 w-full h-[500px] bg-primary/5 blur-[120px] pointer-events-none" />
@@ -165,7 +177,7 @@ export default function Sidebar() {
           </AnimatePresence>
 
           {/* ── Navigation ── */}
-          <nav className="flex-1 space-y-2 overflow-y-auto no-scrollbar">
+          <nav className="flex-1 space-y-1 overflow-y-auto no-scrollbar">
             {navigation.map((item, idx) => {
               const Icon = item.icon;
               const active = isActive(item.href);
@@ -175,7 +187,7 @@ export default function Sidebar() {
                   key={item.name}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: idx * 0.05 }}
+                  transition={{ delay: idx * 0.04 }}
                 >
                   <Link
                     href={item.href}
@@ -337,7 +349,8 @@ export default function Sidebar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-md z-30"
+            transition={{ duration: 0.2 }}
+            className="lg:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-30"
             onClick={() => setIsMobileOpen(false)}
           />
         )}
