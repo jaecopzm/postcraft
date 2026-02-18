@@ -67,8 +67,17 @@ function Toggle({ on, onChange }: { on: boolean; onChange: () => void }) {
   );
 }
 
+import { useRouter } from 'next/navigation';
+
 export default function SettingsPage() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, loading, router]);
   const [isPro, setIsPro] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
   const [displayName, setDisplayName] = useState(user?.displayName || '');

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
@@ -19,11 +19,44 @@ export default function Dashboard() {
   const [historyId, setHistoryId] = useState<string | null>(null);
   const [generating, setGenerating] = useState(false);
   const [staging, setStaging] = useState<string | null>(null);
+  const [stats, setStats] = useState([
+    { label: 'Generated', value: '...', icon: Sparkles, color: 'text-primary' },
+    { label: 'This Month', value: '...', icon: TrendingUp, color: 'text-accent' },
+    { label: 'Avg. Time', value: '8s', icon: Clock, color: 'text-white' }
+  ]);
 
-  if (!loading && !user) {
-    router.push('/auth/signin');
-    return null;
-  }
+  useEffect(() => {
+    if (user) {
+      fetchAnalytics();
+    }
+  }, [user]);
+
+  const fetchAnalytics = async () => {
+    try {
+      const idToken = await user!.getIdToken();
+      const response = await fetch('/api/analytics', {
+        headers: {
+          'Authorization': `Bearer ${idToken}`
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setStats([
+          { label: 'Generated', value: data.totalGenerations?.toString() || '0', icon: Sparkles, color: 'text-primary' },
+          { label: 'This Month', value: data.monthTotal?.toString() || '0', icon: TrendingUp, color: 'text-accent' },
+          { label: 'Avg. Time', value: `${data.avgTime || 8}s`, icon: Clock, color: 'text-white' }
+        ]);
+      }
+    } catch (error) {
+      console.error('Failed to fetch dashboard stats:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, loading, router]);
 
   if (loading) {
     return (
@@ -51,12 +84,6 @@ export default function Dashboard() {
     { value: 'casual', label: 'Casual', icon: '😊' },
     { value: 'enthusiastic', label: 'Enthusiastic', icon: '🚀' },
     { value: 'informative', label: 'Informative', icon: '📚' }
-  ];
-
-  const stats = [
-    { label: 'Generated', value: '24', icon: Sparkles, color: 'text-primary' },
-    { label: 'This Month', value: '8', icon: TrendingUp, color: 'text-accent' },
-    { label: 'Avg. Time', value: '8s', icon: Clock, color: 'text-white' }
   ];
 
   const handleGenerate = async () => {

@@ -49,10 +49,19 @@ function StatCard({
   );
 }
 
+import { useRouter } from 'next/navigation';
+
 export default function AnalyticsPage() {
   const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [analytics, setAnalytics] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     if (user) fetchAnalytics();

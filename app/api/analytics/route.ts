@@ -41,13 +41,25 @@ export async function GET(request: NextRequest) {
 
     const now = new Date();
     const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
-    const totalGenerations = userData.generationCounts?.[monthKey] || 0;
+    const monthTotal = userData.generationCounts?.[monthKey] || 0;
+
+    // Calculate lifetime total across all month keys
+    const generationCounts = userData.generationCounts || {};
+    let lifetimeTotal = Object.values(generationCounts).reduce((a: any, b: any) => a + b, 0) as number;
+
+    // Fallback: if lifetimeTotal is 0 but we have content, trust the content count
+    const totalFromHistory = contentSnapshot.size;
+    if (lifetimeTotal < totalFromHistory) {
+      lifetimeTotal = totalFromHistory;
+    }
 
     return NextResponse.json({
-      totalGenerations,
+      totalGenerations: lifetimeTotal,
+      monthTotal,
       platformBreakdown,
       dailyUsage: [], // Placeholder for now
-      topTopics: [] // Placeholder for now
+      topTopics: [], // Placeholder for now
+      avgTime: 8 // Baseline placeholder in seconds
     });
   } catch (error) {
     console.error('Analytics GET error:', error);

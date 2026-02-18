@@ -46,15 +46,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
-  useEffect(() => {
-    getRedirectResult(auth).catch((error) => {
-      console.error('Redirect sign-in error:', error);
-    });
-  }, []);
-
   const signInWithGoogle = async () => {
-    const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider);
+    try {
+      const { signInWithPopup, GoogleAuthProvider } = await import('firebase/auth');
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+    } catch (error) {
+      console.error('Google Sign-in error:', error);
+      throw error;
+    }
   };
 
   const signInWithEmail = async (email: string, password: string) => {

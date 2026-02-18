@@ -3,6 +3,9 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Plus, Clock, CalendarDays, X, Sparkles, Target, Zap, Activity } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 interface ScheduledContent {
   id: string;
@@ -32,9 +35,26 @@ const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June',
 const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 export default function CalendarPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, loading, router]);
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const [scheduled, setScheduled] = useState<ScheduledContent[]>([]);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+
+  if (loading) {
+    return (
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   const today = new Date();
   const year = currentDate.getFullYear();

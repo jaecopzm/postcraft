@@ -6,12 +6,21 @@ import { Heart, Clock, History, Search, SlidersHorizontal, Star, Sparkles, Filte
 import PlatformPreview from '../../components/PlatformPreview';
 import { motion, AnimatePresence } from 'framer-motion';
 
+import { useRouter } from 'next/navigation';
+
 export default function HistoryPage() {
   const { user, loading: authLoading } = useAuth();
+  const router = useRouter();
   const [history, setHistory] = useState<any[]>([]);
   const [filter, setFilter] = useState<'all' | 'favorites'>('all');
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/auth/signin');
+    }
+  }, [user, authLoading, router]);
 
   useEffect(() => {
     if (user) fetchHistory();
@@ -187,8 +196,8 @@ export default function HistoryPage() {
                       whileTap={{ scale: 0.9 }}
                       onClick={() => toggleFavorite(entry.id, entry.favorite)}
                       className={`p-4 rounded-2xl border-2 transition-all ${entry.favorite
-                          ? 'bg-accent/10 border-accent/20 text-accent'
-                          : 'bg-white/5 border-white/10 text-white/20 hover:text-white hover:border-white/30'
+                        ? 'bg-accent/10 border-accent/20 text-accent'
+                        : 'bg-white/5 border-white/10 text-white/20 hover:text-white hover:border-white/30'
                         }`}
                     >
                       <Heart className={`h-6 w-6 ${entry.favorite ? 'fill-accent' : ''}`} />
