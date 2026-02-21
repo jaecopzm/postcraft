@@ -5,6 +5,7 @@ export const generationSchema = z.object({
   platforms: z.array(z.enum(['twitter', 'linkedin', 'instagram', 'facebook', 'tiktok', 'youtube'])).min(1),
   tone: z.enum(['professional', 'casual', 'enthusiastic', 'informative']),
   variationCount: z.number().min(1).max(5).default(3),
+  brandGuide: z.string().optional(),
 });
 
 export type GenerationRequest = z.infer<typeof generationSchema>;

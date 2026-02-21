@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ErrorBoundary } from "../components/ErrorBoundary";
+import { ToastProvider } from "../components/Toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -17,19 +18,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "PostCraft - AI Social Media Content Creator",
+  title: "DraftRapid - AI Social Media Content Creator",
   description: "Generate optimized social media content for all platforms with AI. Create engaging posts for Twitter, LinkedIn, Instagram, Facebook, TikTok, and YouTube in seconds.",
   keywords: ["AI content", "social media", "content creation", "marketing", "automation"],
-  authors: [{ name: "PostCraft" }],
+  authors: [{ name: "DraftRapid" }],
   openGraph: {
-    title: "PostCraft - AI Social Media Content Creator",
+    title: "DraftRapid - AI Social Media Content Creator",
     description: "Generate platform-perfect content for every channel in seconds",
     type: "website",
     locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PostCraft - AI Social Media Content Creator",
+    title: "DraftRapid - AI Social Media Content Creator",
     description: "Generate platform-perfect content for every channel in seconds",
   },
   robots: {
@@ -49,7 +50,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ErrorBoundary>
-          <AuthProvider>{children}</AuthProvider>
+          <ToastProvider>
+            <AuthProvider>{children}</AuthProvider>
+          </ToastProvider>
         </ErrorBoundary>
       </body>
     </html>

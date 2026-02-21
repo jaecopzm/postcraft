@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { topic, platforms, tone, variationCount } = validation.data;
+    const { topic, platforms, tone, variationCount, brandGuide } = validation.data;
 
     // 3. Rate limiting (bound to userId)
     const rateLimitResult = await rateLimit(userId, 20, 60000); // 20 requests per minute for authenticated users
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     // 4. Generate content for each platform
     const results = await Promise.all(
       platforms.map(async (platform) => {
-        const variations = await generateContent(topic, platform, tone, variationCount);
+        const variations = await generateContent(topic, platform, tone, variationCount, brandGuide);
         return {
           platform,
           variations: variations.map((content, index) => ({

@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Hash, Smile, Target, Sparkles, Copy, Check, Zap } from 'lucide-react';
+import { Hash, Smile, Target, Sparkles, Copy, Check, Zap, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function AIEnhancementsPage() {
-  const [activeTab, setActiveTab] = useState<'hashtags' | 'emojis' | 'cta'>('hashtags');
+  const [activeTab, setActiveTab] = useState<'hashtags' | 'emojis' | 'cta' | 'reply'>('hashtags');
   const [input, setInput] = useState('');
   const [results, setResults] = useState<string[]>([]);
   const [copied, setCopied] = useState<string | null>(null);
@@ -40,13 +40,18 @@ export default function AIEnhancementsPage() {
     setResults([]);
 
     try {
-      const response = await fetch('/api/ai-tools', {
+      const endpoint = activeTab === 'reply' ? '/api/ai-replies' : '/api/ai-tools';
+      const body = activeTab === 'reply'
+        ? { comment: input.trim(), tone: 'professional' }
+        : {
+          type: activeTab,
+          input: input.trim()
+        };
+
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: activeTab === 'hashtags' ? 'hashtags' : activeTab === 'cta' ? 'cta' : 'hashtags',
-          input: input.trim()
-        })
+        body: JSON.stringify(body)
       });
 
       if (!response.ok) {
@@ -54,7 +59,7 @@ export default function AIEnhancementsPage() {
       }
 
       const data = await response.json();
-      setResults(data.results || []);
+      setResults(data.results || data.replies || []);
     } catch (error) {
       console.error('Generation failed:', error);
       // Fallback to mock data
@@ -62,8 +67,10 @@ export default function AIEnhancementsPage() {
         setResults(hashtagSuggestions.slice(0, 10));
       } else if (activeTab === 'emojis') {
         setResults(emojiSuggestions);
-      } else {
+      } else if (activeTab === 'cta') {
         setResults(ctaSuggestions);
+      } else {
+        setResults(['Thank you so much for the feedback! 🙌', 'Glad you found this helpful! 🚀', 'Interesting perspective, thanks for sharing.']);
       }
     } finally {
       setLoading(false);
@@ -90,18 +97,18 @@ export default function AIEnhancementsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="p-1 glass-card rounded-xl sm:rounded-2xl flex items-center gap-1">
+      <div className="p-1 glass-card rounded-xl sm:rounded-2xl flex items-center gap-1 overflow-x-auto hide-scrollbar">
         {[
           { id: 'hashtags', label: 'Hashtags', icon: Hash },
           { id: 'emojis', label: 'Emojis', icon: Smile },
-          { id: 'cta', label: 'CTA', icon: Target }
+          { id: 'cta', label: 'CTA', icon: Target },
+          { id: 'reply', label: 'Auto-Reply', icon: MessageSquare }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`relative flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-black tracking-wider transition-all ${
-              activeTab === tab.id ? 'text-white' : 'text-white/30 hover:text-white/60'
-            }`}
+            className={`relative flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-black tracking-wider transition-all ${activeTab === tab.id ? 'text-white' : 'text-white/30 hover:text-white/60'
+              }`}
           >
             {activeTab === tab.id && (
               <motion.div
@@ -125,6 +132,7 @@ export default function AIEnhancementsPage() {
           {activeTab === 'hashtags' && 'Enter your topic or keywords'}
           {activeTab === 'emojis' && 'Describe your content mood'}
           {activeTab === 'cta' && 'What action do you want?'}
+          {activeTab === 'reply' && 'Paste the comment you want to reply to'}
         </label>
         <input
           type="text"
@@ -134,7 +142,8 @@ export default function AIEnhancementsPage() {
           placeholder={
             activeTab === 'hashtags' ? 'e.g., social media marketing' :
               activeTab === 'emojis' ? 'e.g., exciting product launch' :
-                'e.g., get more engagement'
+                activeTab === 'cta' ? 'e.g., get more engagement' :
+                  'e.g., "Love this post! How do I start?"'
           }
           className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-white text-sm sm:text-base placeholder-white/20 mb-3 sm:mb-4 outline-none transition-all"
         />

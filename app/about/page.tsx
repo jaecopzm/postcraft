@@ -35,13 +35,13 @@ export default function AboutPage() {
                     <section className="text-center">
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8">
                             <Sparkles className="h-4 w-4 text-primary" />
-                            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">The Genesis of PostCraft</span>
+                            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">The Genesis of DraftRapid</span>
                         </motion.div>
                         <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
                             NARRATING THE <span className="text-gradient">FUTURE</span>
                         </motion.h1>
                         <motion.p variants={itemVariants} className="text-xl md:text-2xl text-white/40 font-medium max-w-2xl mx-auto leading-relaxed">
-                            PostCraft isn't just a tool; it's a Neural Forge designed to bridge the gap between human creativity and machine intelligence.
+                            DraftRapid isn't just a tool; it's a Neural Forge designed to bridge the gap between human creativity and machine intelligence.
                         </motion.p>
                     </section>
 
@@ -87,7 +87,7 @@ export default function AboutPage() {
                                 <Activity className="h-16 w-16 text-primary mx-auto mb-8 animate-pulse" />
                                 <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-6">The Neural Forge</h2>
                                 <p className="text-lg text-white/40 max-w-xl mx-auto leading-relaxed mb-10">
-                                    Built on top of cutting-edge LLM architectures, PostCraft is continuously evolving. We're not just creating content; we're refining the way humanity interacts with information.
+                                    Built on top of cutting-edge LLM architectures, DraftRapid is continuously evolving. We're not just creating content; we're refining the way humanity interacts with information.
                                 </p>
                                 <Link href="/auth/signup" className="inline-flex items-center gap-3 px-10 py-5 premium-gradient rounded-full text-white text-[10px] font-black tracking-[0.3em] uppercase shadow-2xl shadow-primary/20 hover:scale-105 transition-all">
                                     Join the Evolution

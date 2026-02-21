@@ -1,4 +1,4 @@
-# PostCraft - AI Social Media Content Creator
+# DraftRapid - AI Social Media Content Creator
 
 Generate platform-perfect content for Twitter, LinkedIn, Instagram, Facebook, TikTok, and YouTube in seconds.
 
@@ -28,8 +28,8 @@ Generate platform-perfect content for Twitter, LinkedIn, Instagram, Facebook, Ti
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/postcraft.git
-cd postcraft
+git clone https://github.com/yourusername/draftrapid.git
+cd draftrapid
 
 # Install dependencies
 npm install
@@ -67,8 +67,8 @@ vercel --prod
 
 ### Docker
 ```bash
-docker build -t postcraft .
-docker run -p 3000:3000 postcraft
+docker build -t draftrapid .
+docker run -p 3000:3000 draftrapid
 ```
 
 See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed instructions.
@@ -86,7 +86,7 @@ npm run type-check   # TypeScript type checking
 ## 🎨 Project Structure
 
 ```
-postcraft/
+draftrapid/
 ├── app/                    # Next.js app directory
 │   ├── dashboard/         # Main dashboard
 │   ├── calendar/          # Content calendar
@@ -125,9 +125,9 @@ MIT License - see [LICENSE](./LICENSE)
 
 ## 🆘 Support
 
-- Documentation: [docs.postcraft.app](https://docs.postcraft.app)
-- Email: support@postcraft.app
-- Discord: [Join our community](https://discord.gg/postcraft)
+- Documentation: [docs.draftrapid.app](https://docs.draftrapid.app)
+- Email: support@draftrapid.app
+- Discord: [Join our community](https://discord.gg/draftrapid)
 
 ## 🙏 Acknowledgments
 
@@ -138,4 +138,4 @@ MIT License - see [LICENSE](./LICENSE)
 
 ---
 
-Made with ❤️ by the PostCraft team
+Made with ❤️ by the DraftRapid team

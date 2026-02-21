@@ -147,7 +147,7 @@ export default function Sidebar() {
                   animate={{ opacity: 1, x: 0 }}
                   className="text-2xl font-bold text-gradient tracking-tight"
                 >
-                  PostCraft
+                  DraftRapid
                 </motion.h1>
               )}
             </div>

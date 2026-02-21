@@ -9,8 +9,8 @@
 ## Step 1: Clone and Install
 
 ```bash
-git clone https://github.com/yourusername/postcraft.git
-cd postcraft
+git clone https://github.com/yourusername/draftrapid.git
+cd draftrapid
 npm install
 ```
 

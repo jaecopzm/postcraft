@@ -6,7 +6,8 @@ export async function generateContent(
   topic: string,
   platform: string,
   tone: string,
-  variationCount: number = 3
+  variationCount: number = 3,
+  brandGuide?: string
 ): Promise<string[]> {
   const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
@@ -27,7 +28,7 @@ Topic: ${topic}
 Tone: ${tone}
 Character limit: ${platformInfo.limit}
 Style: ${platformInfo.style}
-
+${brandGuide ? `\nCRITICAL BRAND GUIDELINES (You must adhere to these rules):\n${brandGuide}\n` : ''}
 Requirements:
 - Each variation should be distinct and creative
 - Stay within character limit
@@ -35,6 +36,7 @@ Requirements:
 - Follow ${platform} best practices
 - Include relevant hashtags where appropriate
 - Use emojis if suitable for the platform
+- If Brand Guidelines are provided above, STRICTLY follow them in every variation.
 
 Return ONLY the ${variationCount} variations, separated by "---" (three dashes on a new line).
 Do not include numbering, labels, or any other text.`;
@@ -150,5 +152,78 @@ export async function analyzeAura(sampleContent: string): Promise<{
   } catch (error) {
     console.error('Gemini Aura Analysis error:', error);
     throw new Error('Failed to analyze Aura');
+  }
+}
+
+export async function analyzeVirality(content: string, platform: string): Promise<{
+  score: number;
+  hookQuality: number;
+  tips: string[];
+}> {
+  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+
+  const prompt = `You are an expert social media strategist. Analyze the following content intended for ${platform}.
+  
+  Content:
+  "${content}"
+  
+  Evaluate its potential for high engagement (virality) based on the algorithm of ${platform}.
+  Provide:
+  1. A "score" from 0 to 100 representing overall virality potential.
+  2. A "hookQuality" score from 0 to 100 representing how strong the opening line is.
+  3. Two actionable "tips" to improve the post's reach.
+  
+  Return ONLY the result in strict JSON format:
+  {
+    "score": 85,
+    "hookQuality": 90,
+    "tips": ["Tip 1", "Tip 2"]
+  }`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    const cleanJson = text.replace(/```json|```/g, '').trim();
+    return JSON.parse(cleanJson);
+  } catch (error) {
+    console.error('Gemini Virality Analysis error:', error);
+    throw new Error('Failed to analyze virality');
+  }
+}
+
+export async function generateReply(comment: string, tone: string): Promise<string[]> {
+  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+
+  const prompt = `You are an expert social media community manager. Generate 3 distinct, engaging replies to the following user comment.
+
+  User Comment: "${comment}"
+  Desired Tone: ${tone}
+
+  Requirements:
+  - Keep replies concise (under 280 characters)
+  - Match the specified tone
+  - Encourage further engagement if appropriate
+  - Use emojis naturally
+  
+  Return ONLY the 3 replies, separated by "---" (three dashes on a new line).
+  Do not include numbering, labels, or any other text.`;
+
+  try {
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    const replies = text
+      .split('---')
+      .map(v => v.trim())
+      .filter(v => v.length > 0)
+      .slice(0, 3);
+
+    return replies;
+  } catch (error) {
+    console.error('Gemini Auto-Reply error:', error);
+    throw new Error('Failed to generate replies');
   }
 }

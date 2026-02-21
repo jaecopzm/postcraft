@@ -104,7 +104,7 @@ export default function SignUp() {
             >
               <Sparkles className="h-8 w-8 sm:h-10 sm:w-10 text-white" />
             </motion.div>
-            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-widest uppercase mb-2 sm:mb-3">PostCraft</h1>
+            <h1 className="text-3xl sm:text-4xl font-black text-white tracking-widest uppercase mb-2 sm:mb-3">DraftRapid</h1>
             <p className="text-white/30 text-[10px] sm:text-xs font-bold tracking-[0.3em] uppercase">Initiating creative hub</p>
           </div>
 

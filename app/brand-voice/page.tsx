@@ -17,6 +17,7 @@ interface BrandVoice {
   tone: string;
   keywords: string[];
   style: string;
+  brandGuide?: string;
   isDefault: boolean;
 }
 
@@ -77,7 +78,7 @@ export default function BrandVoicePage() {
   ]);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({ name: '', tone: 'professional', keywords: '', style: '' });
+  const [formData, setFormData] = useState({ name: '', tone: 'professional', keywords: '', style: '', brandGuide: '' });
   const [toneOpen, setToneOpen] = useState(false);
   const [creationMode, setCreationMode] = useState<'manual' | 'harvest'>('manual');
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -88,7 +89,7 @@ export default function BrandVoicePage() {
     if (editingId) {
       setVoices(voices.map(v =>
         v.id === editingId
-          ? { ...v, name: formData.name, tone: formData.tone, keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean), style: formData.style }
+          ? { ...v, name: formData.name, tone: formData.tone, keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean), style: formData.style, brandGuide: formData.brandGuide }
           : v
       ));
       setEditingId(null);
@@ -99,24 +100,25 @@ export default function BrandVoicePage() {
         tone: formData.tone,
         keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean),
         style: formData.style,
-        isDefault: false,
+        brandGuide: formData.brandGuide,
+        isDefault: voices.length === 0,
       }]);
       setIsCreating(false);
     }
-    setFormData({ name: '', tone: 'professional', keywords: '', style: '' });
+    setFormData({ name: '', tone: 'professional', keywords: '', style: '', brandGuide: '' });
     setToneOpen(false);
   };
 
   const handleEdit = (voice: BrandVoice) => {
     setEditingId(voice.id);
     setIsCreating(false);
-    setFormData({ name: voice.name, tone: voice.tone, keywords: voice.keywords.join(', '), style: voice.style });
+    setFormData({ name: voice.name, tone: voice.tone, keywords: voice.keywords.join(', '), style: voice.style, brandGuide: voice.brandGuide || '' });
   };
 
   const handleCancel = () => {
     setIsCreating(false);
     setEditingId(null);
-    setFormData({ name: '', tone: 'professional', keywords: '', style: '' });
+    setFormData({ name: '', tone: 'professional', keywords: '', style: '', brandGuide: '' });
     setToneOpen(false);
   };
 
@@ -223,7 +225,8 @@ export default function BrandVoicePage() {
                       ...formData,
                       tone: aura.tone,
                       keywords: aura.keywords.join(', '),
-                      style: aura.style
+                      style: aura.style,
+                      brandGuide: '' // Could hypothetically pull full text
                     });
                     setCreationMode('manual');
                   }} />
@@ -234,7 +237,9 @@ export default function BrandVoicePage() {
             <div className="p-5 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
               <div className="space-y-8">
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">Designation</label>
+                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                    Designation <span className="normal-case tracking-normal text-white/10 font-bold">(Name)</span>
+                  </label>
                   <input
                     type="text"
                     value={formData.name}
@@ -245,7 +250,9 @@ export default function BrandVoicePage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">Neural Tone</label>
+                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                    Neural Tone <span className="normal-case tracking-normal text-white/10 font-bold">(Tone)</span>
+                  </label>
                   <div className="relative">
                     <button
                       onClick={() => setToneOpen(!toneOpen)}
@@ -287,7 +294,9 @@ export default function BrandVoicePage() {
 
               <div className="space-y-8">
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">Semantic Nodes</label>
+                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                    Semantic Nodes <span className="normal-case tracking-normal text-white/10 font-bold">(Keywords, comma-separated)</span>
+                  </label>
                   <input
                     type="text"
                     value={formData.keywords}
@@ -298,12 +307,28 @@ export default function BrandVoicePage() {
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">Aura Blueprint</label>
+                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                    Aura Blueprint <span className="normal-case tracking-normal text-white/10 font-bold">(Writing style)</span>
+                  </label>
                   <textarea
                     value={formData.style}
                     onChange={e => setFormData({ ...formData, style: e.target.value })}
                     placeholder="DESCRIBE THE CORE ESSENCE OF THIS VOICE..."
                     rows={1}
+                    className="w-full px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/10 text-sm font-bold tracking-tight focus:outline-none focus:border-primary/50 transition-all resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                    Brand Guidelines Context (RAG)
+                    <span className="text-[8px] tracking-normal text-primary">OPTIONAL</span>
+                  </label>
+                  <textarea
+                    value={formData.brandGuide || ''}
+                    onChange={e => setFormData({ ...formData, brandGuide: e.target.value })}
+                    placeholder="PASTE YOUR BRAND GUIDELINES, DO'S AND DON'TS, OR MANIFESTO HERE FOR THE AI TO REFERENCE..."
+                    rows={4}
                     className="w-full px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/10 text-sm font-bold tracking-tight focus:outline-none focus:border-primary/50 transition-all resize-none"
                   />
                 </div>

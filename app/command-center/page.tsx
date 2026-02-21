@@ -8,6 +8,7 @@ import StagingQueue from '../../components/StagingQueue';
 import PresenceHeatmap from '../../components/PresenceHeatmap';
 
 import { useRouter } from 'next/navigation';
+import confetti from 'canvas-confetti';
 
 export default function CommandCenterPage() {
     const { user, loading } = useAuth();
@@ -84,7 +85,21 @@ export default function CommandCenterPage() {
                 break;
             }
         }
+
         setStreak(currentStreak);
+
+        // Gamification: Trigger confetti for milestones (e.g., 5, 10, 15... day streaks)
+        if (currentStreak > 0 && currentStreak % 5 === 0) {
+            // Delay slightly so the UI renders the streak number first
+            setTimeout(() => {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#EC5800', '#FFE135', '#ffffff'] // Brand colors
+                });
+            }, 500);
+        }
     };
 
     return (

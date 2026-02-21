@@ -58,7 +58,7 @@ export default function ContactPage() {
 
                         <motion.div variants={itemVariants} className="space-y-6">
                             {[
-                                { icon: Mail, label: 'Neural Recipient', value: 'hello@postcraft.ai' },
+                                { icon: Mail, label: 'Neural Recipient', value: 'hello@draftrapid.ai' },
                                 { icon: MessageSquare, label: 'Direct Signal', value: 'Schedule a Consultation' },
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-6 items-center group cursor-pointer">

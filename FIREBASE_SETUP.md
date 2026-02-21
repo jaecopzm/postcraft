@@ -1,4 +1,4 @@
-# PostCraft - Firebase Setup Complete! 🎉
+# DraftRapid - Firebase Setup Complete! 🎉
 
 ## ✅ What's Been Configured
 
@@ -9,8 +9,8 @@
 
 ### Firebase Config
 ```javascript
-Project ID: postcraft-a8547
-Auth Domain: postcraft-a8547.firebaseapp.com
+Project ID: draftrapid-a8547
+Auth Domain: draftrapid-a8547.firebaseapp.com
 ```
 
 ## 🚀 Quick Start
@@ -21,7 +21,7 @@ npm install firebase
 ```
 
 ### 2. Enable Google Sign-In in Firebase Console
-1. Go to: https://console.firebase.google.com/project/postcraft-a8547
+1. Go to: https://console.firebase.google.com/project/draftrapid-a8547
 2. Navigate to **Authentication** → **Sign-in method**
 3. Enable **Google** provider
 4. Save changes

@@ -2,14 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Twitter, Linkedin, Instagram, Facebook, Music, Youtube } from 'lucide-react';
+import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Palette, ChevronDown, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import PlatformPreviewWithVariations from '../../components/PlatformPreviewWithVariations';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { useToast } from '../../components/Toast';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
   const [isPro] = useState(false); // TODO: Connect to actual subscription
   const [topic, setTopic] = useState('');
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['twitter', 'linkedin']);
@@ -17,8 +20,12 @@ export default function Dashboard() {
   const [variationCount, setVariationCount] = useState(3);
   const [results, setResults] = useState<any[]>([]);
   const [historyId, setHistoryId] = useState<string | null>(null);
+  const [voices, setVoices] = useState<any[]>([]);
+  const [selectedVoiceId, setSelectedVoiceId] = useState<string>('');
   const [generating, setGenerating] = useState(false);
   const [staging, setStaging] = useState<string | null>(null);
+  const [voiceDropdownOpen, setVoiceDropdownOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
   const [stats, setStats] = useState([
     { label: 'Generated', value: '...', icon: Sparkles, color: 'text-primary' },
     { label: 'This Month', value: '...', icon: TrendingUp, color: 'text-accent' },
@@ -28,27 +35,47 @@ export default function Dashboard() {
   useEffect(() => {
     if (user) {
       fetchAnalytics();
+      // Check if user has dismissed onboarding before
+      const dismissed = localStorage.getItem('dr_onboarding_dismissed');
+      if (dismissed) setShowOnboarding(false);
     }
   }, [user]);
+
+  const dismissOnboarding = () => {
+    setShowOnboarding(false);
+    localStorage.setItem('dr_onboarding_dismissed', '1');
+  };
 
   const fetchAnalytics = async () => {
     try {
       const idToken = await user!.getIdToken();
-      const response = await fetch('/api/analytics', {
-        headers: {
-          'Authorization': `Bearer ${idToken}`
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
+
+      // Fetch stats
+      const respStats = await fetch('/api/analytics', { headers: { 'Authorization': `Bearer ${idToken}` } });
+      if (respStats.ok) {
+        const data = await respStats.json();
         setStats([
           { label: 'Generated', value: data.totalGenerations?.toString() || '0', icon: Sparkles, color: 'text-primary' },
           { label: 'This Month', value: data.monthTotal?.toString() || '0', icon: TrendingUp, color: 'text-accent' },
           { label: 'Avg. Time', value: `${data.avgTime || 8}s`, icon: Clock, color: 'text-white' }
         ]);
       }
+
+      // Fetch voices
+      const respVoices = await fetch('/api/brand-voices', { headers: { 'Authorization': `Bearer ${idToken}` } });
+      if (respVoices.ok) {
+        const data = await respVoices.json();
+        if (data.voices && data.voices.length > 0) {
+          setVoices(data.voices);
+          const def = data.voices.find((v: any) => v.isDefault);
+          if (def) {
+            setSelectedVoiceId(def.id);
+            setTone(def.tone || 'professional');
+          }
+        }
+      }
     } catch (error) {
-      console.error('Failed to fetch dashboard stats:', error);
+      console.error('Failed to fetch dashboard data:', error);
     }
   };
 
@@ -95,6 +122,10 @@ export default function Dashboard() {
       // Get the ID token from the user
       const idToken = await user.getIdToken();
 
+      const selectedVoice = voices.find(v => v.id === selectedVoiceId);
+      const activeTone = selectedVoice ? selectedVoice.tone : tone;
+      const brandGuide = selectedVoice ? selectedVoice.brandGuide : undefined;
+
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: {
@@ -104,7 +135,8 @@ export default function Dashboard() {
         body: JSON.stringify({
           topic,
           platforms: selectedPlatforms,
-          tone,
+          tone: activeTone,
+          brandGuide: brandGuide,
           variationCount: isPro ? variationCount : 3
         })
       });
@@ -224,6 +256,41 @@ export default function Dashboard() {
         </div>
       </motion.div>
 
+      {/* ── Onboarding nudge ── */}
+      <AnimatePresence>
+        {showOnboarding && voices.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.98 }}
+            className="glass-card rounded-2xl border border-primary/20 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-transparent pointer-events-none" />
+            <div className="h-10 w-10 shrink-0 premium-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 relative">
+              <Palette className="h-5 w-5 text-white" />
+            </div>
+            <div className="flex-1 relative">
+              <p className="text-sm font-black text-white mb-1">Set up your Brand Voice</p>
+              <p className="text-xs text-white/40 font-medium">Configure your tone, keywords and style so every post feels on-brand.</p>
+            </div>
+            <div className="flex items-center gap-3 relative shrink-0">
+              <Link
+                href="/brand-voice"
+                className="px-5 py-2.5 premium-gradient rounded-xl text-white text-[10px] font-black tracking-widest uppercase shadow-lg shadow-primary/20 hover:scale-105 transition-all"
+              >
+                Configure
+              </Link>
+              <button
+                onClick={dismissOnboarding}
+                className="p-2 text-white/20 hover:text-white/60 transition-colors rounded-xl hover:bg-white/5"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Generation Form */}
       <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 relative overflow-hidden">
         {/* Subtle inner glow */}
@@ -287,31 +354,77 @@ export default function Dashboard() {
               </div>
             </div>
 
-            {/* Tone */}
+            {/* Tone / Voice Selection */}
             <div className="space-y-4">
-              <label className="text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">Campaign Vibe</label>
-              <div className="grid grid-cols-2 gap-2 sm:gap-3">
-                {tones.map((t) => {
-                  const IconComponent = t.icon;
-                  return (
-                    <motion.button
-                      key={t.value}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      onClick={() => setTone(t.value)}
-                      className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 ${tone === t.value
-                        ? 'border-primary bg-primary/10'
-                        : 'border-white/5 bg-white/5 hover:border-white/20'
-                        }`}
+              <label className="text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">Brand Voice (Aura)</label>
+
+              {voices.length > 0 ? (
+                <div className="flex flex-col gap-2">
+                  {/* Custom dropdown */}
+                  <div className="relative">
+                    <button
+                      onClick={() => setVoiceDropdownOpen(!voiceDropdownOpen)}
+                      className="w-full flex items-center justify-between px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-bold hover:border-white/20 focus:outline-none transition-all"
                     >
-                      <IconComponent className={`h-5 w-5 shrink-0 ${tone === t.value ? 'text-primary' : 'text-white/40'}`} />
-                      <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-white' : 'text-white/40'}`}>
-                        {t.label}
+                      <span className="text-sm uppercase tracking-wide">
+                        {voices.find(v => v.id === selectedVoiceId)?.name || 'Select Voice'}
                       </span>
-                    </motion.button>
-                  );
-                })}
-              </div>
+                      <ChevronDown className={`h-4 w-4 text-white/30 transition-transform ${voiceDropdownOpen ? 'rotate-180' : ''}`} />
+                    </button>
+                    <AnimatePresence>
+                      {voiceDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 8 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: 8 }}
+                          className="absolute z-50 mt-2 w-full glass-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-3xl"
+                        >
+                          {voices.map(v => (
+                            <button
+                              key={v.id}
+                              onClick={() => { setSelectedVoiceId(v.id); setTone(v.tone || 'professional'); setVoiceDropdownOpen(false); }}
+                              className={`w-full flex items-center justify-between px-5 py-4 text-sm font-bold uppercase tracking-wide hover:bg-white/5 transition-colors text-left ${v.id === selectedVoiceId ? 'text-primary' : 'text-white/60 hover:text-white'
+                                }`}
+                            >
+                              <span>{v.name}</span>
+                              {v.id === selectedVoiceId && <CheckCircle2 className="h-4 w-4 text-primary" />}
+                            </button>
+                          ))}
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                  {voices.find(v => v.id === selectedVoiceId)?.brandGuide && (
+                    <div className="flex items-center gap-2 mt-1 px-2">
+                      <Sparkles className="h-3 w-3 text-primary" />
+                      <span className="text-[10px] text-primary/80 font-bold uppercase tracking-widest">Brand Guide Active</span>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                  {tones.map((t) => {
+                    const IconComponent = t.icon;
+                    return (
+                      <motion.button
+                        key={t.value}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => setTone(t.value)}
+                        className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 ${tone === t.value
+                          ? 'border-primary bg-primary/10'
+                          : 'border-white/5 bg-white/5 hover:border-white/20'
+                          }`}
+                      >
+                        <IconComponent className={`h-5 w-5 shrink-0 ${tone === t.value ? 'text-primary' : 'text-white/40'}`} />
+                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-white' : 'text-white/40'}`}>
+                          {t.label}
+                        </span>
+                      </motion.button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
 
@@ -340,31 +453,50 @@ export default function Dashboard() {
           )}
 
           {/* Generate Button */}
-          <motion.button
-            whileHover={{ scale: 1.01, boxShadow: "0 20px 40px rgba(236, 88, 0, 0.3)" }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleGenerate}
-            disabled={generating || !topic.trim() || selectedPlatforms.length === 0}
-            className="w-full relative group premium-button premium-gradient rounded-xl sm:rounded-[1.5rem] py-3 sm:py-6 px-4 sm:px-8 text-white font-black text-sm sm:text-xl tracking-wider sm:tracking-widest shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-4">
-              {generating ? (
-                <>
-                  <motion.div
-                    animate={{ rotate: 360 }}
-                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                    className="h-4 w-4 sm:h-6 sm:w-6 border-2 border-white/30 border-t-white rounded-full"
-                  />
-                  CRAFTING...
-                </>
-              ) : (
-                <>
-                  <Sparkles className="h-4 w-4 sm:h-7 sm:w-7" />
-                  GENERATE UNIVERSE
-                </>
+          <div className="space-y-3">
+            <motion.button
+              whileHover={(!generating && !!topic.trim() && selectedPlatforms.length > 0) ? { scale: 1.01, boxShadow: "0 20px 40px rgba(236, 88, 0, 0.3)" } : {}}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleGenerate}
+              disabled={generating || !topic.trim() || selectedPlatforms.length === 0}
+              className="w-full relative group premium-button premium-gradient rounded-xl sm:rounded-[1.5rem] py-3 sm:py-6 px-4 sm:px-8 text-white font-black text-sm sm:text-xl tracking-wider sm:tracking-widest shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-4">
+                {generating ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="h-4 w-4 sm:h-6 sm:w-6 border-2 border-white/30 border-t-white rounded-full"
+                    />
+                    CRAFTING...
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="h-4 w-4 sm:h-7 sm:w-7" />
+                    GENERATE UNIVERSE
+                  </>
+                )}
+              </span>
+            </motion.button>
+            {/* Inline hint when button is disabled */}
+            <AnimatePresence>
+              {!generating && (!topic.trim() || selectedPlatforms.length === 0) && (
+                <motion.p
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -4 }}
+                  className="text-center text-[11px] text-white/25 font-bold tracking-widest uppercase"
+                >
+                  {!topic.trim() && selectedPlatforms.length === 0
+                    ? 'Add a topic and select at least one platform'
+                    : !topic.trim()
+                      ? '← Add a topic to activate'
+                      : 'Select at least one platform →'}
+                </motion.p>
               )}
-            </span>
-          </motion.button>
+            </AnimatePresence>
+          </div>
         </div>
       </motion.div>
 

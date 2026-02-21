@@ -1,4 +1,4 @@
-# PostCraft - Implementation Progress
+# DraftRapid - Implementation Progress
 
 ## ✅ Completed Enhancements
 

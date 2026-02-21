@@ -37,8 +37,13 @@ export default function PrivacyPage() {
         {
             icon: Lock,
             title: "User Sovereignty",
-            desc: "You retain full control over your data. You may initiate a total purge of your operational history at any time through the Command Center."
-        }
+            desc: "You retain full ownership and control over your neural blueprints. We act solely as a processing agent, never claiming rights to your intellectual property."
+        },
+        {
+            icon: ChevronRight, // Using ChevronRight as an available icon, could be changed if a more fitting one is desired.
+            title: "Reseller Disclosure",
+            desc: "We do not resell or share your data with third-party entities for marketing or any other purposes. Your trust is our most valuable asset."
+        },
     ];
 
     return (

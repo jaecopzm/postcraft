@@ -31,8 +31,8 @@ vercel --prod
 
 ### Option 2: Docker
 ```bash
-docker build -t postcraft .
-docker run -p 3000:3000 postcraft
+docker build -t draftrapid .
+docker run -p 3000:3000 draftrapid
 ```
 
 ### Option 3: Traditional Hosting

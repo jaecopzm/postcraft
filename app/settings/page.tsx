@@ -194,7 +194,7 @@ export default function SettingsPage() {
                     <div className="relative z-10 text-center">
                       <Zap className="h-10 w-10 text-primary mx-auto mb-4" />
                       <h3 className="text-2xl font-black text-white tracking-tighter uppercase mb-2">TRANSCEND TO PRO</h3>
-                      <p className="text-sm text-white/30 mb-8">Unlock the full neural potential of PostCraft.</p>
+                      <p className="text-sm text-white/30 mb-8">Unlock the full neural potential of DraftRapid.</p>
                       <button
                         onClick={handleUpgrade}
                         disabled={upgrading}
@@ -310,7 +310,7 @@ export default function SettingsPage() {
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8">
               <div className="max-w-md">
                 <p className="text-sm font-medium text-white/40 leading-relaxed">
-                  Initiating a total account termination will permanently erase all neural patterns, brand voices, and operational history from the PostCraft matrix.
+                  Initiating a total account termination will permanently erase all neural patterns, brand voices, and operational history from the DraftRapid matrix.
                 </p>
               </div>
 

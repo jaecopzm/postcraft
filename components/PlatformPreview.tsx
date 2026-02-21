@@ -1,6 +1,9 @@
-import { Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Copy, Check } from 'lucide-react';
+'use client';
+
+import { Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Copy, Check, Zap, X } from 'lucide-react';
 import { useState } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useToast } from './Toast';
 
 interface PlatformPreviewProps {
   platform: string;
@@ -10,6 +13,9 @@ interface PlatformPreviewProps {
 
 export default function PlatformPreview({ platform, content, characterCount }: PlatformPreviewProps) {
   const [copied, setCopied] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [viralityData, setViralityData] = useState<{ score: number; hookQuality: number; tips: string[] } | null>(null);
+  const { toast } = useToast();
 
   const getPlatformIcon = () => {
     switch (platform) {
@@ -26,7 +32,28 @@ export default function PlatformPreview({ platform, content, characterCount }: P
   const copyToClipboard = () => {
     navigator.clipboard.writeText(content);
     setCopied(true);
+    toast('Copied to clipboard!');
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const analyzeVirality = async () => {
+    try {
+      setAnalyzing(true);
+      const res = await fetch('/api/analyze-virality', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content, platform })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setViralityData(data.result);
+      }
+    } catch (e) {
+      console.error(e);
+      toast('Analysis failed. Try again.', 'error');
+    } finally {
+      setAnalyzing(false);
+    }
   };
 
   const getPlatformPreview = () => {
@@ -103,8 +130,18 @@ export default function PlatformPreview({ platform, content, characterCount }: P
     }
   };
 
+  // Virality score color
+  const scoreColor = viralityData
+    ? viralityData.score >= 70
+      ? 'text-green-400'
+      : viralityData.score >= 40
+        ? 'text-yellow-400'
+        : 'text-red-400'
+    : 'text-white';
+
   return (
     <div className="space-y-4">
+      {/* ── Header row: platform + char count + score icon ── */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="p-1.5 premium-gradient rounded-lg shadow-lg shadow-primary/20">
@@ -112,13 +149,37 @@ export default function PlatformPreview({ platform, content, characterCount }: P
           </div>
           <h3 className="text-xs font-black uppercase tracking-widest text-white/60">{platform}</h3>
         </div>
-        <span className="text-[10px] font-bold text-white/30 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
-          {characterCount} CHARS
-        </span>
+
+        <div className="flex items-center gap-2">
+          <span className="text-[10px] font-bold text-white/30 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
+            {characterCount} CHARS
+          </span>
+          {/* Virality score trigger — compact icon button */}
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={analyzeVirality}
+            disabled={analyzing}
+            title="Score this post"
+            className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg font-black text-[10px] tracking-widest uppercase transition-all bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 disabled:opacity-50"
+          >
+            {analyzing ? (
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
+                className="h-3 w-3 border border-primary/30 border-t-primary rounded-full"
+              />
+            ) : (
+              <Zap className="h-3 w-3" />
+            )}
+            <span className="hidden sm:inline">SCORE</span>
+          </motion.button>
+        </div>
       </div>
 
       {getPlatformPreview()}
 
+      {/* ── Copy button (full width) ── */}
       <motion.button
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -130,17 +191,59 @@ export default function PlatformPreview({ platform, content, characterCount }: P
           }`}
       >
         {copied ? (
-          <>
-            <Check className="h-3 w-3" />
-            COPIED
-          </>
+          <><Check className="h-3 w-3" />COPIED</>
         ) : (
-          <>
-            <Copy className="h-3 w-3" />
-            COPY
-          </>
+          <><Copy className="h-3 w-3" />COPY TO CLIPBOARD</>
         )}
       </motion.button>
+
+      {/* ── Virality score card (dismissible) ── */}
+      <AnimatePresence>
+        {viralityData && (
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6, scale: 0.97 }}
+            className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-3"
+          >
+            <div className="flex items-start justify-between">
+              <div className="flex gap-6">
+                <div>
+                  <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Virality</p>
+                  <div className="flex items-end gap-1">
+                    <span className={`text-2xl font-black ${scoreColor}`}>{viralityData.score}</span>
+                    <span className="text-xs text-white/40 mb-0.5">/100</span>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Hook Quality</p>
+                  <div className="flex items-end gap-1">
+                    <span className="text-xl font-black text-white">{viralityData.hookQuality}</span>
+                    <span className="text-xs text-white/40 mb-0.5">/100</span>
+                  </div>
+                </div>
+              </div>
+              {/* Dismiss button */}
+              <button
+                onClick={() => setViralityData(null)}
+                className="p-1 text-white/20 hover:text-white/60 transition-colors rounded-lg hover:bg-white/5"
+                title="Dismiss"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t border-white/10">
+              <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">AI Suggestions</p>
+              {viralityData.tips.map((tip, i) => (
+                <p key={i} className="text-xs text-white/70 flex items-start gap-2">
+                  <span className="text-primary mt-0.5">•</span> {tip}
+                </p>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

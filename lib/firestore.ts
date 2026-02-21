@@ -83,6 +83,7 @@ export interface BrandVoice {
   tone: string;
   keywords: string[];
   style: string;
+  brandGuide?: string; // Markdown or raw text guide for RAG
   isDefault: boolean;
   createdAt: Date;
 }
