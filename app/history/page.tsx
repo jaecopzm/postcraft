@@ -4,34 +4,38 @@ import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import {
   Heart, Clock, History, Search, Sparkles, ArrowRight,
-  Trash2, RefreshCcw, ChevronDown, X, SlidersHorizontal,
+  Trash2, RefreshCcw, ChevronDown, X, SlidersHorizontal, Copy
 } from 'lucide-react';
 import PlatformPreview from '../../components/PlatformPreview';
 import { motion, AnimatePresence, useScroll, useTransform, Variants } from 'framer-motion';
 import { HistorySkeleton } from '../../components/Skeleton';
 import Link from 'next/link';
 import { useToast } from '../../components/Toast';
-import { Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Copy } from 'lucide-react';
+import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from '../../components/SocialIcons';
 import { useRouter } from 'next/navigation';
 
 /* ── helpers ─────────────────────────────────────────────────── */
 const PLATFORMS = [
   { value: 'all', label: 'All', Icon: null },
-  { value: 'twitter', label: 'X', Icon: Twitter },
-  { value: 'linkedin', label: 'LinkedIn', Icon: Linkedin },
-  { value: 'instagram', label: 'Instagram', Icon: Instagram },
-  { value: 'facebook', label: 'Facebook', Icon: Facebook },
-  { value: 'tiktok', label: 'TikTok', Icon: Music },
-  { value: 'youtube', label: 'YouTube', Icon: Youtube },
+  { value: 'twitter', label: 'X', Icon: XIcon },
+  { value: 'linkedin', label: 'LinkedIn', Icon: LinkedInIcon },
+  { value: 'instagram', label: 'Instagram', Icon: InstagramIcon },
+  { value: 'facebook', label: 'Facebook', Icon: FacebookIcon },
+  { value: 'tiktok', label: 'TikTok', Icon: TikTokIcon },
+  { value: 'youtube', label: 'YouTube', Icon: YouTubeIcon },
 ];
 
 function getPlatformIcon(platform: string, cls = 'h-3 w-3') {
   const map: Record<string, any> = {
-    twitter: Twitter, linkedin: Linkedin, instagram: Instagram,
-    facebook: Facebook, tiktok: Music, youtube: Youtube,
+    twitter: XIcon,
+    linkedin: LinkedInIcon,
+    instagram: InstagramIcon,
+    facebook: FacebookIcon,
+    tiktok: TikTokIcon,
+    youtube: YouTubeIcon,
   };
-  const Icon = map[platform];
-  return Icon ? <Icon className={cls} /> : null;
+  const Icon = map[platform.toLowerCase()];
+  return Icon ? <Icon className={cls} /> : <Sparkles className={cls} />;
 }
 
 function relativeTime(date: Date) {
@@ -58,6 +62,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [platformFilter, setPlatformFilter] = useState('all');
+  const [timeFilter, setTimeFilter] = useState('all');
   const [currentPage, setCurrentPage] = useState(1);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [filtersOpen, setFiltersOpen] = useState(false);
@@ -132,14 +137,21 @@ export default function HistoryPage() {
     .filter(i => filter === 'favorites' ? i.favorite : true)
     .filter(i => !search || i.topic?.toLowerCase().includes(search.toLowerCase()))
     .filter(i => platformFilter === 'all' || i.results?.some((r: any) => r.platform === platformFilter))
+    .filter(i => {
+      if (timeFilter === 'all') return true;
+      const date = new Date(i.timestamp).getTime();
+      const now = Date.now();
+      const days = parseInt(timeFilter);
+      return (now - date) <= (days * 24 * 60 * 60 * 1000);
+    })
     .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
 
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
   const paginated = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
   const favCount = history.filter(i => i.favorite).length;
-  const activeFilters = (filter !== 'all' ? 1 : 0) + (platformFilter !== 'all' ? 1 : 0) + (search ? 1 : 0);
+  const activeFilters = (filter !== 'all' ? 1 : 0) + (platformFilter !== 'all' ? 1 : 0) + (timeFilter !== 'all' ? 1 : 0) + (search ? 1 : 0);
 
-  useEffect(() => setCurrentPage(1), [filter, search, platformFilter]);
+  useEffect(() => setCurrentPage(1), [filter, search, platformFilter, timeFilter]);
 
   if (loading || authLoading) return <HistorySkeleton />;
 
@@ -186,8 +198,8 @@ export default function HistoryPage() {
         className="sticky top-0 z-30 bg-[#0A0A0B]/80 backdrop-blur-2xl border-b border-white/5 px-4 sm:px-6 py-4 mb-6 sm:mb-8 sm:rounded-2xl sm:border sm:border-white/5 sm:bg-white/[0.02] sm:backdrop-blur-none sm:static sm:py-5"
       >
         {/* search row */}
-        <div className="flex items-center gap-2">
-          <div className={`relative flex-1 transition-all duration-500 ease-[0.22,1,0.36,1] ${searchFocused ? 'flex-[2]' : ''}`}>
+        <div className="flex items-center gap-2 w-full max-w-full">
+          <div className={`relative flex-1 min-w-0 transition-all duration-500 ease-[0.22,1,0.36,1] ${searchFocused ? 'flex-[2]' : ''}`}>
             <div className="absolute left-3.5 top-1/2 -translate-y-1/2 flex items-center justify-center pointer-events-none">
               <Search className={`h-4 w-4 transition-colors duration-300 ${searchFocused ? 'text-primary' : 'text-white/20'}`} />
             </div>
@@ -244,17 +256,38 @@ export default function HistoryPage() {
               transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
               className="overflow-hidden"
             >
-              <div className="pt-3 flex items-center gap-2 overflow-x-auto no-scrollbar">
-                {PLATFORMS.map(({ value, label, Icon }) => (
-                  <button
-                    key={value}
-                    onClick={() => setPlatformFilter(value)}
-                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all shrink-0 ${platformFilter === value ? 'bg-primary/15 border border-primary/30 text-primary' : 'bg-white/5 border border-white/10 text-white/30 hover:text-white'}`}
-                  >
-                    {Icon && <Icon className="h-3 w-3" />}
-                    {label}
-                  </button>
-                ))}
+              <div className="pt-4 flex flex-col gap-4">
+                {/* Platform Filters */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                  {PLATFORMS.map(({ value, label, Icon }) => (
+                    <button
+                      key={value}
+                      onClick={() => setPlatformFilter(value)}
+                      className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all shrink-0 ${platformFilter === value ? 'bg-primary/15 border border-primary/30 text-primary' : 'bg-white/5 border border-white/10 text-white/30 hover:text-white'}`}
+                    >
+                      {Icon && <Icon className="h-3 w-3" />}
+                      {label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Time Filter */}
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                  {[
+                    { value: 'all', label: 'All Time' },
+                    { value: '1', label: 'Last 24 Hours' },
+                    { value: '7', label: 'Last 7 Days' },
+                    { value: '30', label: 'Last 30 Days' },
+                  ].map(({ value, label }) => (
+                    <button
+                      key={value}
+                      onClick={() => setTimeFilter(value)}
+                      className={`flex items-center px-3.5 py-2 rounded-xl text-[10px] font-black tracking-widest uppercase transition-all shrink-0 ${timeFilter === value ? 'bg-primary/15 border border-primary/30 text-primary' : 'bg-white/5 border border-white/10 text-white/30 hover:text-white'}`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
               </div>
             </motion.div>
           )}
@@ -279,7 +312,6 @@ export default function HistoryPage() {
               return (
                 <motion.article
                   key={entry.id}
-                  layout
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.97 }}
@@ -315,8 +347,8 @@ export default function HistoryPage() {
                             </span>
                             {/* platform pills */}
                             <div className="flex items-center gap-1 ml-auto sm:ml-0">
-                              {entry.results?.slice(0, 5).map((r: any) => (
-                                <span key={r.platform} className="p-1 bg-white/[0.04] rounded-md border border-white/[0.06] text-white/30">
+                              {entry.results?.slice(0, 5).map((r: any, idx: number) => (
+                                <span key={`${r.platform}-${idx}`} className="p-1 bg-white/[0.04] rounded-md border border-white/[0.06] text-white/30">
                                   {getPlatformIcon(r.platform)}
                                 </span>
                               ))}
@@ -337,40 +369,43 @@ export default function HistoryPage() {
                       </div>
 
                       {/* ── Action row ── */}
-                      <div className="flex flex-wrap items-center gap-2 mt-4">
-                        <button
-                          onClick={() => regenerate(entry.topic)}
-                          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-2.5 bg-primary/10 border border-primary/20 rounded-xl text-[10px] font-black tracking-widest text-primary hover:bg-primary/20 active:scale-95 transition-all uppercase"
-                        >
-                          <RefreshCcw className="h-3.5 w-3.5" />
-                          <span className="hidden min-[400px]:inline">Redo</span>
-                        </button>
+                      <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-4">
+                        {/* utility buttons group */}
+                        <div className="flex items-center gap-2 w-full sm:w-auto min-w-0">
+                          <button
+                            onClick={() => regenerate(entry.topic)}
+                            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2.5 bg-primary/10 border border-primary/20 rounded-xl text-[10px] font-black tracking-widest text-primary hover:bg-primary/20 active:scale-95 transition-all uppercase min-w-0"
+                          >
+                            <RefreshCcw className="h-3.5 w-3.5 shrink-0" />
+                            <span className="hidden sm:inline truncate">Redo</span>
+                          </button>
 
-                        <button
-                          onClick={() => copyAll(entry.results)}
-                          className="flex items-center gap-1.5 px-3 sm:px-3.5 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-[10px] font-black tracking-widest text-white/35 hover:text-white hover:bg-white/10 active:scale-95 transition-all uppercase"
-                        >
-                          <Copy className="h-3.5 w-3.5" />
-                          <span className="hidden min-[400px]:inline">Copy all</span>
-                        </button>
+                          <button
+                            onClick={() => copyAll(entry.results)}
+                            className="flex-1 sm:flex-none flex items-center justify-center gap-1.5 px-3 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-[10px] font-black tracking-widest text-white/35 hover:text-white hover:bg-white/10 active:scale-95 transition-all uppercase min-w-0"
+                          >
+                            <Copy className="h-3.5 w-3.5 shrink-0" />
+                            <span className="hidden sm:inline truncate">Copy</span>
+                          </button>
+
+                          {/* delete */}
+                          <button
+                            onClick={() => setDeletingId(entry.id)}
+                            className="p-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-white/20 hover:text-red-400 hover:border-red-500/20 active:scale-95 transition-all shrink-0"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
+                        </div>
 
                         {/* expand / collapse */}
                         <button
                           onClick={() => setExpandedId(isExpanded ? null : entry.id)}
-                          className="flex-1 sm:flex-none sm:ml-auto flex items-center justify-center gap-1.5 px-3 sm:px-3.5 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-[10px] font-black tracking-widest text-white/35 hover:text-white active:scale-95 transition-all uppercase truncate"
+                          className="w-full sm:w-auto sm:ml-auto flex items-center justify-center gap-1.5 px-4 py-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-[10px] font-black tracking-widest text-white/35 hover:text-white active:scale-95 transition-all uppercase truncate"
                         >
                           <span>{isExpanded ? 'Collapse' : `View ${entry.results?.length ?? 0}`}</span>
                           <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.25 }}>
                             <ChevronDown className="h-3.5 w-3.5" />
                           </motion.div>
-                        </button>
-
-                        {/* delete */}
-                        <button
-                          onClick={() => setDeletingId(entry.id)}
-                          className="p-2.5 bg-white/[0.04] border border-white/[0.08] rounded-xl text-white/20 hover:text-red-400 hover:border-red-500/20 active:scale-95 transition-all"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
                         </button>
                       </div>
                     </div>
@@ -397,7 +432,7 @@ export default function HistoryPage() {
                                     platform={res.platform}
                                     content={res.content}
                                     characterCount={res.characterCount}
-                                    initialExpanded={true}
+                                    initialExpanded={false}
                                   />
                                 </div>
                               ))}
@@ -454,23 +489,45 @@ export default function HistoryPage() {
                 className="absolute -inset-3 border border-dashed border-white/[0.07] rounded-full"
               />
             </div>
-            <h3 className="text-2xl sm:text-3xl font-black text-white tracking-widest uppercase mb-3">
-              {filter === 'favorites' ? 'No Favorites' : 'No History Yet'}
-            </h3>
-            <p className="text-white/25 font-bold uppercase tracking-[0.15em] text-xs max-w-xs leading-relaxed mb-8">
-              {filter === 'favorites'
-                ? 'Star entries to save them here.'
-                : "Your generated posts will appear here."}
-            </p>
-            {filter === 'all' && (
-              <Link
-                href="/dashboard"
-                className="inline-flex items-center gap-2.5 px-6 py-3.5 premium-gradient rounded-2xl text-white text-xs font-black tracking-widest uppercase shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all group"
-              >
-                <Sparkles className="h-3.5 w-3.5 group-hover:rotate-12 transition-transform" />
-                Generate Your First Post
-                <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+
+            {search && filtered.length === 0 ? (
+              <>
+                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-widest uppercase mb-3 text-balance">
+                  No matches found
+                </h3>
+                <p className="text-white/25 font-bold uppercase tracking-[0.15em] text-xs max-w-sm leading-relaxed mb-8">
+                  We couldn't find any history entries matching "{search}".
+                </p>
+                <Link
+                  href={`/dashboard?topic=${encodeURIComponent(search)}`}
+                  className="inline-flex items-center gap-2.5 px-6 py-3.5 premium-gradient rounded-2xl text-white text-xs font-black tracking-widest uppercase shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all group"
+                >
+                  <Sparkles className="h-3.5 w-3.5 group-hover:rotate-12 transition-transform" />
+                  Generate posts about "{search}"
+                  <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </>
+            ) : (
+              <>
+                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-widest uppercase mb-3">
+                  {filter === 'favorites' ? 'No Favorites' : 'No History Yet'}
+                </h3>
+                <p className="text-white/25 font-bold uppercase tracking-[0.15em] text-xs max-w-xs leading-relaxed mb-8">
+                  {filter === 'favorites'
+                    ? 'Star entries to save them here.'
+                    : "Your generated posts will appear here."}
+                </p>
+                {filter === 'all' && (
+                  <Link
+                    href="/dashboard"
+                    className="inline-flex items-center gap-2.5 px-6 py-3.5 premium-gradient rounded-2xl text-white text-xs font-black tracking-widest uppercase shadow-xl shadow-primary/25 hover:scale-105 active:scale-95 transition-all group"
+                  >
+                    <Sparkles className="h-3.5 w-3.5 group-hover:rotate-12 transition-transform" />
+                    Generate Your First Post
+                    <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                )}
+              </>
             )}
           </motion.div>
         )}

@@ -52,6 +52,8 @@ export interface SubscriptionStatus {
   status: 'active' | 'cancelled' | 'expired' | 'none';
   lemonSqueezyCustomerId?: string;
   lemonSqueezySubscriptionId?: string;
+  paddleCustomerId?: string;
+  paddleSubscriptionId?: string;
   renewsAt?: Date;
   endsAt?: Date;
 }

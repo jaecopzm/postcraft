@@ -19,15 +19,16 @@ export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    if (user) {
+    if (user && !verificationSent) {
       router.push('/dashboard');
     }
-  }, [user, router]);
+  }, [user, router, verificationSent]);
 
   const handleGoogleSignIn = async () => {
     setIsLoading(true);
     try {
       await signInWithGoogle();
+      router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Google sign-in failed.');
       setIsLoading(false);

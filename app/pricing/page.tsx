@@ -3,6 +3,16 @@
 import { motion, Variants } from 'framer-motion';
 import { Sparkles, Check, ArrowRight, Zap, Target, TrendingUp } from 'lucide-react';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { useRouter } from 'next/navigation';
+
+// Declare Paddle globally
+declare global {
+    interface Window {
+        Paddle?: any;
+    }
+}
 
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
@@ -47,6 +57,49 @@ const FEATURE_COMPARISON = [
 ];
 
 export default function PricingPage() {
+    const { user } = useAuth();
+    const router = useRouter();
+    const [isPaddleLoaded, setIsPaddleLoaded] = useState(false);
+
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.Paddle) {
+            window.Paddle.Environment.set('sandbox');
+            window.Paddle.Initialize({
+                token: process.env.NEXT_PUBLIC_PADDLE_CLIENT_TOKEN || 'test_token', // Placeholder
+                eventCallback: (data: any) => {
+                    if (data.name === 'checkout.completed') {
+                        router.push('/dashboard?success=true');
+                    }
+                }
+            });
+            setIsPaddleLoaded(true);
+        }
+    }, [router]);
+
+    const handleCheckout = () => {
+        if (!user) {
+            router.push('/auth/signup?callbackUrl=/pricing');
+            return;
+        }
+
+        if (window.Paddle) {
+            window.Paddle.Checkout.open({
+                items: [
+                    {
+                        priceId: process.env.NEXT_PUBLIC_PADDLE_PRICE_ID || 'pri_01jkyg...placeholder', // Placeholder
+                        quantity: 1
+                    }
+                ],
+                customer: {
+                    email: user.email || ''
+                },
+                customData: {
+                    userId: user.uid
+                }
+            });
+        }
+    };
+
     return (
         <div className="min-h-screen bg-[#050505] text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-24">
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/10 blur-[160px] pointer-events-none rounded-full opacity-60" />
@@ -132,10 +185,13 @@ export default function PricingPage() {
                                     ))}
                                 </div>
 
-                                <Link href="/auth/signup" className="flex items-center justify-center gap-3 w-full py-5 premium-gradient rounded-2xl text-white font-black tracking-[0.2em] uppercase text-xs shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95">
+                                <button
+                                    onClick={handleCheckout}
+                                    className="flex items-center justify-center gap-3 w-full py-5 premium-gradient rounded-2xl text-white font-black tracking-[0.2em] uppercase text-xs shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 disabled:opacity-50"
+                                >
                                     Claim Beta Price
                                     <ArrowRight className="h-4 w-4" />
-                                </Link>
+                                </button>
                             </motion.div>
                         </div>
                     </motion.div>

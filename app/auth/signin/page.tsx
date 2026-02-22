@@ -25,6 +25,7 @@ export default function SignIn() {
     setIsLoading(true);
     try {
       await signInWithGoogle();
+      router.push('/dashboard');
     } catch (err: any) {
       setError(err.message || 'Google sign-in failed.');
       setIsLoading(false);

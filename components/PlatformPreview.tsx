@@ -1,6 +1,7 @@
 'use client';
 
-import { Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Copy, Check, Zap, X } from 'lucide-react';
+import { Copy, Check, Zap, X } from 'lucide-react';
+import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from './SocialIcons';
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useToast } from './Toast';
@@ -21,12 +22,12 @@ export default function PlatformPreview({ platform, content, characterCount, ini
 
   const getPlatformIcon = () => {
     switch (platform) {
-      case 'twitter': return <Twitter className="h-4 w-4 text-white" />;
-      case 'linkedin': return <Linkedin className="h-4 w-4 text-white" />;
-      case 'instagram': return <Instagram className="h-4 w-4 text-white" />;
-      case 'facebook': return <Facebook className="h-4 w-4 text-white" />;
-      case 'tiktok': return <Music className="h-4 w-4 text-white" />;
-      case 'youtube': return <Youtube className="h-4 w-4 text-white" />;
+      case 'twitter': return <XIcon className="h-4 w-4 text-white" />;
+      case 'linkedin': return <LinkedInIcon className="h-4 w-4 text-white" />;
+      case 'instagram': return <InstagramIcon className="h-4 w-4 text-white" />;
+      case 'facebook': return <FacebookIcon className="h-4 w-4 text-white" />;
+      case 'tiktok': return <TikTokIcon className="h-4 w-4 text-white" />;
+      case 'youtube': return <YouTubeIcon className="h-4 w-4 text-white" />;
       default: return null;
     }
   };
@@ -169,17 +170,17 @@ export default function PlatformPreview({ platform, content, characterCount, ini
   return (
     <div className="space-y-4">
       {/* ── Header row: platform + char count + score icon ── */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 premium-gradient rounded-lg shadow-lg shadow-primary/20">
+      <div className="flex items-center justify-between gap-1 sm:gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <div className="p-1.5 premium-gradient rounded-lg shadow-lg shadow-primary/20 shrink-0">
             {getPlatformIcon()}
           </div>
-          <h3 className="text-xs font-black uppercase tracking-widest text-white/60">{platform}</h3>
+          <h3 className="text-xs font-black uppercase tracking-widest text-white/60 truncate">{platform}</h3>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="text-[10px] font-bold text-white/30 bg-white/5 px-2 py-0.5 rounded-full border border-white/10">
-            {characterCount} CHARS
+        <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <span className="text-[10px] font-bold text-white/30 bg-white/5 px-2 py-0.5 rounded-full border border-white/10 whitespace-nowrap">
+            {characterCount} <span className="hidden sm:inline">CHARS</span>
           </span>
           {/* Virality score trigger — compact icon button */}
           <motion.button

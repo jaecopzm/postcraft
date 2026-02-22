@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Palette, ChevronDown, X } from 'lucide-react';
+import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Palette, ChevronDown, X } from 'lucide-react';
+import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from '../../components/SocialIcons';
 import { useRouter } from 'next/navigation';
 import PlatformPreviewWithVariations from '../../components/PlatformPreviewWithVariations';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -92,12 +93,12 @@ export default function Dashboard() {
   }
 
   const platforms = [
-    { id: 'twitter', name: 'Twitter/X', icon: Twitter },
-    { id: 'linkedin', name: 'LinkedIn', icon: Linkedin },
-    { id: 'instagram', name: 'Instagram', icon: Instagram },
-    { id: 'facebook', name: 'Facebook', icon: Facebook },
-    { id: 'tiktok', name: 'TikTok', icon: Music },
-    { id: 'youtube', name: 'YouTube', icon: Youtube }
+    { id: 'twitter', name: 'Twitter/X', icon: XIcon },
+    { id: 'linkedin', name: 'LinkedIn', icon: LinkedInIcon },
+    { id: 'instagram', name: 'Instagram', icon: InstagramIcon },
+    { id: 'facebook', name: 'Facebook', icon: FacebookIcon },
+    { id: 'tiktok', name: 'TikTok', icon: TikTokIcon },
+    { id: 'youtube', name: 'YouTube', icon: YouTubeIcon }
   ];
 
   const tones = [
