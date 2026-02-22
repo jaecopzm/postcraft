@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
             console.error('Failed to record voice analysis usage:', err);
         }
 
-        return NextResponse.json({ success: true, aura });
+        return NextResponse.json({ success: true, aura, sourceText: contentToAnalyze });
 
     } catch (error) {
         console.error('Aura Analysis error:', error);

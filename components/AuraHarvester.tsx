@@ -4,7 +4,7 @@ import { Link2, FileText, Sparkles, Loader2, AlertCircle } from 'lucide-react';
 import { useAuth } from '../app/contexts/AuthContext';
 
 interface AuraHarvesterProps {
-    onAnalysisComplete: (aura: { tone: string; keywords: string[]; style: string }) => void;
+    onAnalysisComplete: (aura: { tone: string; keywords: string[]; style: string }, sourceText?: string) => void;
 }
 
 export default function AuraHarvester({ onAnalysisComplete }: AuraHarvesterProps) {
@@ -35,7 +35,7 @@ export default function AuraHarvester({ onAnalysisComplete }: AuraHarvesterProps
             const data = await response.json();
             if (!response.ok) throw new Error(data.error || 'Analysis failed');
 
-            onAnalysisComplete(data.aura);
+            onAnalysisComplete(data.aura, data.sourceText);
             setInput('');
         } catch (err: any) {
             setError(err.message);

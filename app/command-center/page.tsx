@@ -9,6 +9,7 @@ import PresenceHeatmap from '../../components/PresenceHeatmap';
 
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
+import { CommandCenterSkeleton } from '../../components/Skeleton';
 
 export default function CommandCenterPage() {
     const { user, loading } = useAuth();
@@ -29,11 +30,7 @@ export default function CommandCenterPage() {
     }, [user]);
 
     if (loading) {
-        return (
-            <div className="min-h-[60vh] flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-            </div>
-        );
+        return <CommandCenterSkeleton />;
     }
 
     const fetchActivity = async () => {
@@ -105,7 +102,7 @@ export default function CommandCenterPage() {
     return (
         <div className="container mx-auto max-w-6xl animate-in fade-in duration-700">
             {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
                 <div>
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}

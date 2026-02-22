@@ -6,6 +6,7 @@ export const generationSchema = z.object({
   tone: z.enum(['professional', 'casual', 'enthusiastic', 'informative']),
   variationCount: z.number().min(1).max(5).default(3),
   brandGuide: z.string().optional(),
+  isCampaignMode: z.boolean().optional().default(false),
 });
 
 export type GenerationRequest = z.infer<typeof generationSchema>;

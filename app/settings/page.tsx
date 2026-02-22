@@ -68,16 +68,19 @@ function Toggle({ on, onChange }: { on: boolean; onChange: () => void }) {
 }
 
 import { useRouter } from 'next/navigation';
+import { SettingsSkeleton } from '../../components/Skeleton';
 
 export default function SettingsPage() {
   const { user, loading } = useAuth();
   const router = useRouter();
 
+  // Authentication check
   useEffect(() => {
     if (!loading && !user) {
       router.push('/auth/signin');
     }
   }, [user, loading, router]);
+
   const [isPro, setIsPro] = useState(false);
   const [upgrading, setUpgrading] = useState(false);
   const [displayName, setDisplayName] = useState(user?.displayName || '');
@@ -88,6 +91,7 @@ export default function SettingsPage() {
     push: false,
     weekly: true,
   });
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -102,6 +106,8 @@ export default function SettingsPage() {
       setIsPro(sub.isPro);
     } catch (error) {
       console.error('Failed to fetch subscription:', error);
+    } finally {
+      setDataLoading(false);
     }
   };
 
@@ -138,6 +144,10 @@ export default function SettingsPage() {
 
   const toggle = (key: keyof typeof notifications) =>
     setNotifications(n => ({ ...n, [key]: !n[key] }));
+
+  if (loading || dataLoading) {
+    return <SettingsSkeleton />;
+  }
 
   return (
     <div className="container mx-auto max-w-4xl animate-in fade-in duration-700">

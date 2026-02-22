@@ -9,11 +9,13 @@ interface PlatformPreviewProps {
   platform: string;
   content: string;
   characterCount: number;
+  initialExpanded?: boolean;
 }
 
-export default function PlatformPreview({ platform, content, characterCount }: PlatformPreviewProps) {
+export default function PlatformPreview({ platform, content, characterCount, initialExpanded = false }: PlatformPreviewProps) {
   const [copied, setCopied] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
+  const [expanded, setExpanded] = useState(initialExpanded);
   const [viralityData, setViralityData] = useState<{ score: number; hookQuality: number; tips: string[] } | null>(null);
   const { toast } = useToast();
 
@@ -68,7 +70,12 @@ export default function PlatformPreview({ platform, content, characterCount }: P
                   <span className="font-bold text-white text-[13px]">User</span>
                   <span className="text-white/30 text-[13px]">@handle</span>
                 </div>
-                <p className="text-white text-[13px] leading-relaxed line-clamp-6">{content}</p>
+                <p className={`text-white text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-6' : ''}`}>{content}</p>
+                {content.length > 200 && (
+                  <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-1">
+                    {expanded ? 'show less' : '... more'}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -84,7 +91,12 @@ export default function PlatformPreview({ platform, content, characterCount }: P
                 <div className="text-white/30 text-[11px] truncate">Expert Specialist</div>
               </div>
             </div>
-            <p className="text-white/90 text-[13px] leading-relaxed line-clamp-6">{content}</p>
+            <p className={`text-white/90 text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
+            {content.length > 300 && (
+              <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-2">
+                {expanded ? 'show less' : '... more'}
+              </button>
+            )}
           </div>
         );
 
@@ -102,7 +114,12 @@ export default function PlatformPreview({ platform, content, characterCount }: P
               <span className="text-white/10 text-[10px] font-black tracking-widest uppercase relative z-10">Image</span>
             </div>
             <div className="p-3">
-              <p className="text-white/80 text-[12px] leading-relaxed line-clamp-3">{content}</p>
+              <p className={`text-white/80 text-[12px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 150 ? 'line-clamp-3' : ''}`}>{content}</p>
+              {content.length > 150 && (
+                <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-1">
+                  {expanded ? 'show less' : '... more'}
+                </button>
+              )}
             </div>
           </div>
         );
@@ -116,7 +133,12 @@ export default function PlatformPreview({ platform, content, characterCount }: P
                 <div className="w-7 h-7 bg-white/10 rounded-full border border-white/20"></div>
                 <span className="font-bold text-white text-[12px]">@user</span>
               </div>
-              <p className="text-white text-[12px] leading-relaxed line-clamp-3">{content}</p>
+              <p className={`text-white text-[12px] leading-relaxed whitespace-pre-wrap ${!expanded && content.length > 150 ? 'line-clamp-3' : ''}`}>{content}</p>
+              {content.length > 150 && (
+                <button onClick={() => setExpanded(!expanded)} className="text-white/40 hover:text-white text-[10px] font-bold mt-1 relative z-30">
+                  {expanded ? 'show less' : '... more'}
+                </button>
+              )}
             </div>
           </div>
         );
@@ -124,7 +146,12 @@ export default function PlatformPreview({ platform, content, characterCount }: P
       default:
         return (
           <div className="bg-white/5 border border-white/5 rounded-xl p-4 backdrop-blur-md">
-            <p className="text-white/70 text-[13px] leading-relaxed line-clamp-6">{content}</p>
+            <p className={`text-white/70 text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
+            {content.length > 300 && (
+              <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-2">
+                {expanded ? 'show less' : '... more'}
+              </button>
+            )}
           </div>
         );
     }

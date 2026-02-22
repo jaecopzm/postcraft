@@ -228,7 +228,7 @@ export default function Sidebar() {
           </nav>
 
           {/* ── User Profile ── */}
-          <div className="mt-auto space-y-4">
+          <div className="mt-auto space-y-2 shrink-0">
             <AnimatePresence mode="wait">
               {!isCollapsed ? (
                 <motion.div
@@ -236,21 +236,21 @@ export default function Sidebar() {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 20 }}
-                  className="glass-card rounded-2xl p-5 relative overflow-hidden group"
+                  className="glass-card rounded-2xl p-4 relative overflow-hidden group"
                 >
-                  <div className="flex items-center gap-4 mb-5">
-                    <div className="relative">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="relative shrink-0">
                       {user?.photoURL ? (
-                        <img src={user.photoURL} alt="Profile" className="h-12 w-12 rounded-full border-2 border-primary/20" />
+                        <img src={user.photoURL} alt="Profile" className="h-10 w-10 rounded-full border-2 border-primary/20" />
                       ) : (
-                        <div className="h-12 w-12 rounded-full premium-gradient flex items-center justify-center shadow-lg shadow-primary/20">
-                          <User className="h-6 w-6 text-white" />
+                        <div className="h-10 w-10 rounded-full premium-gradient flex items-center justify-center shadow-lg shadow-primary/20">
+                          <User className="h-5 w-5 text-white" />
                         </div>
                       )}
-                      <div className="absolute -bottom-1 -right-1 h-4 w-4 bg-green-500 border-2 border-[#1A1A1F] rounded-full" />
+                      <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-green-500 border-2 border-[#1A1A1F] rounded-full" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-white truncate uppercase tracking-wider">
+                      <p className="text-sm font-bold text-white truncate uppercase tracking-wider leading-tight">
                         {user?.displayName || user?.email?.split('@')[0] || 'Member'}
                       </p>
                       <p className="text-[10px] text-white/40 truncate font-mono">
@@ -260,13 +260,13 @@ export default function Sidebar() {
                   </div>
 
                   {!isPro && (
-                    <div className="space-y-4">
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between text-[11px] font-bold">
+                    <div className="space-y-2.5">
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-[10px] font-bold">
                           <span className="text-white/40">USAGE</span>
                           <span className="text-white">{generationsUsed}/{generationsLimit}</span>
                         </div>
-                        <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                           <motion.div
                             initial={{ width: 0 }}
                             animate={{ width: `${usagePct}%` }}
@@ -277,18 +277,18 @@ export default function Sidebar() {
 
                       <Link
                         href="/settings"
-                        className="flex items-center justify-center gap-2 w-full py-3 premium-button premium-gradient rounded-xl text-xs font-bold text-white group"
+                        className="flex items-center justify-center gap-2 w-full py-2.5 premium-button premium-gradient rounded-xl text-[10px] font-black tracking-wider text-white group"
                       >
-                        <Zap className="h-3.5 w-3.5 group-hover:rotate-12 transition-transform" />
+                        <Zap className="h-3 w-3 group-hover:rotate-12 transition-transform" />
                         UPGRADE TO PRO
                       </Link>
                     </div>
                   )}
 
                   {isPro && (
-                    <div className="flex items-center gap-2 p-2 bg-primary/10 rounded-xl">
-                      <Crown className="h-4 w-4 text-primary" />
-                      <span className="text-xs font-bold text-primary tracking-wide">PREMIUM ACTIVE</span>
+                    <div className="flex items-center gap-2 py-1.5 px-2 bg-primary/10 rounded-lg">
+                      <Crown className="h-3.5 w-3.5 text-primary" />
+                      <span className="text-[10px] font-bold text-primary tracking-wide">PREMIUM ACTIVE</span>
                     </div>
                   )}
                 </motion.div>
@@ -298,7 +298,7 @@ export default function Sidebar() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex flex-col items-center gap-4"
+                  className="flex flex-col items-center gap-3"
                 >
                   <div className="relative">
                     {user?.photoURL ? (
@@ -313,31 +313,38 @@ export default function Sidebar() {
               )}
             </AnimatePresence>
 
-            {!isCollapsed && (
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2 px-4 mb-4 opacity-20 hover:opacity-40 transition-opacity">
-                {[
-                  { label: 'About', href: '/about' },
-                  { label: 'Terms', href: '/terms' },
-                  { label: 'Privacy', href: '/privacy' }
-                ].map((link) => (
-                  <Link key={link.href} href={link.href} className="text-[8px] font-black tracking-widest uppercase hover:text-white transition-colors">
-                    {link.label}
-                  </Link>
-                ))}
+            {/* Footer links + Logout row */}
+            {!isCollapsed ? (
+              <div className="flex items-center justify-between px-1">
+                <div className="flex items-center gap-3 opacity-30 hover:opacity-50 transition-opacity">
+                  {[
+                    { label: 'About', href: '/about' },
+                    { label: 'Terms', href: '/terms' },
+                    { label: 'Privacy', href: '/privacy' }
+                  ].map((link) => (
+                    <Link key={link.href} href={link.href} className="text-[7px] font-black tracking-widest uppercase hover:text-white transition-colors">
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
+                <motion.button
+                  whileHover={{ x: -2 }}
+                  onClick={() => signOut()}
+                  className="group flex items-center gap-2 px-3 py-2 rounded-xl font-bold text-white/30 hover:text-red-400 hover:bg-red-500/5 transition-all"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span className="text-[10px] tracking-widest uppercase">Logout</span>
+                </motion.button>
               </div>
+            ) : (
+              <motion.button
+                whileHover={{ x: -2 }}
+                onClick={() => signOut()}
+                className="group flex items-center justify-center py-3 w-full rounded-xl font-bold text-white/30 hover:text-red-400 hover:bg-red-500/5 transition-all"
+              >
+                <LogOut className="h-5 w-5" />
+              </motion.button>
             )}
-
-            <motion.button
-              whileHover={{ x: -2 }}
-              onClick={() => signOut()}
-              className={`
-                group flex items-center gap-4 rounded-xl font-bold text-white/30 hover:text-red-400 hover:bg-red-500/5 transition-all
-                ${isCollapsed ? 'justify-center py-3' : 'px-4 py-3'}
-              `}
-            >
-              <LogOut className="h-5 w-5" />
-              {!isCollapsed && <span className="text-sm tracking-widest uppercase">Logout</span>}
-            </motion.button>
           </div>
         </div>
       </motion.aside>

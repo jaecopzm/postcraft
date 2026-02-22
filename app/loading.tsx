@@ -1,12 +1,24 @@
+import { Skeleton } from '../components/Skeleton';
+
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1F] to-[#22222A] flex items-center justify-center">
-      <div className="text-center">
-        <div className="relative w-16 h-16 mx-auto mb-4">
-          <div className="absolute inset-0 rounded-full border-4 border-[#0EA5E9]/20"></div>
-          <div className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#0EA5E9] animate-spin"></div>
+    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1F] to-[#22222A] p-6 sm:p-10">
+      <div className="max-w-6xl mx-auto space-y-10">
+        {/* Header skeleton */}
+        <div className="space-y-3">
+          <Skeleton className="h-10 w-64 sm:w-80 rounded-2xl" />
+          <Skeleton className="h-4 w-48 rounded-lg" />
         </div>
-        <p className="text-cool-blue/60 text-sm">Loading...</p>
+
+        {/* Content cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3].map(i => (
+            <Skeleton key={i} className="h-48 rounded-2xl" />
+          ))}
+        </div>
+
+        {/* Large content area */}
+        <Skeleton className="h-64 w-full rounded-2xl sm:rounded-[2.5rem]" />
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ import {
   BrainCircuit, LayoutGrid
 } from 'lucide-react';
 import AuraHarvester from '../../components/AuraHarvester';
+import { BrandVoiceSkeleton } from '../../components/Skeleton';
 
 interface BrandVoice {
   id: string;
@@ -58,11 +59,7 @@ export default function BrandVoicePage() {
   }, [user, loading, router]);
 
   if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <BrandVoiceSkeleton />;
   }
 
   const [isPro] = useState(false);
@@ -220,13 +217,13 @@ export default function BrandVoicePage() {
                       <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Awaiting uplink signal...</p>
                     </div>
                   </div>
-                  <AuraHarvester onAnalysisComplete={(aura) => {
+                  <AuraHarvester onAnalysisComplete={(aura, sourceText) => {
                     setFormData({
                       ...formData,
                       tone: aura.tone,
                       keywords: aura.keywords.join(', '),
                       style: aura.style,
-                      brandGuide: '' // Could hypothetically pull full text
+                      brandGuide: sourceText || ''
                     });
                     setCreationMode('manual');
                   }} />

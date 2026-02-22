@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { CalendarSkeleton } from '../../components/Skeleton';
 
 interface ScheduledContent {
   id: string;
@@ -73,7 +74,7 @@ export default function CalendarPage() {
     try {
       const idToken = await user.getIdToken();
       const dateStr = `${selectedDate.getFullYear()}-${String(selectedDate.getMonth() + 1).padStart(2, '0')}-${String(selectedDate.getDate()).padStart(2, '0')}`;
-      
+
       await fetch('/api/calendar', {
         method: 'POST',
         headers: {
@@ -111,11 +112,7 @@ export default function CalendarPage() {
   };
 
   if (loading) {
-    return (
-      <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
-      </div>
-    );
+    return <CalendarSkeleton />;
   }
 
   const today = new Date();
@@ -306,9 +303,19 @@ export default function CalendarPage() {
                 <div className="space-y-4">
                   <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">SEQUENCE ACTIVE</div>
                   {scheduledFor(selectedDate.getDate()).length === 0 ? (
-                    <div className="py-20 text-center flex flex-col items-center justify-center opacity-20">
-                      <Sparkles className="h-8 w-8 mb-4" />
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em]">Void Detected</p>
+                    <div className="py-16 sm:py-20 text-center flex flex-col items-center justify-center">
+                      <div className="w-16 h-16 rounded-full bg-white/[0.03] flex items-center justify-center mb-4">
+                        <CalendarDays className="h-6 w-6 text-white/20" />
+                      </div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-2">Schedule Clear</p>
+                      <p className="text-xs text-white/20 mb-6">No operations scheduled for this sector.</p>
+                      <button
+                        onClick={() => setShowAddModal(true)}
+                        className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-black text-white/60 tracking-widest uppercase transition-all flex items-center gap-2"
+                      >
+                        <Plus className="h-3.5 w-3.5" />
+                        Schedule First Post
+                      </button>
                     </div>
                   ) : (
                     <div className="space-y-4">

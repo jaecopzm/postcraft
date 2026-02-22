@@ -13,14 +13,17 @@ interface PlatformPreviewWithVariationsProps {
     characterCount: number;
     withinLimit: boolean;
   }>;
+  isCampaignMode?: boolean;
   onUpdate?: (index: number, newContent: string) => void;
   onStage?: (content: string) => void;
 }
 
-export default function PlatformPreviewWithVariations({ platform, variations, onUpdate, onStage }: PlatformPreviewWithVariationsProps) {
+export default function PlatformPreviewWithVariations({ platform, variations, isCampaignMode, onUpdate, onStage }: PlatformPreviewWithVariationsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const [isStaged, setIsStaged] = useState(false);
   const current = variations[currentIndex];
 
   const handleUplink = () => {
@@ -54,6 +57,21 @@ export default function PlatformPreviewWithVariations({ platform, variations, on
     navigator.clipboard.writeText(current.content);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  };
+
+  const handleStage = () => {
+    onStage?.(current.content);
+    setIsStaged(true);
+    setTimeout(() => setIsStaged(false), 2000);
+  };
+
+  const handleDragEnd = (e: any, { offset, velocity }: any) => {
+    const swipe = offset.x;
+    if (swipe < -50 && currentIndex < variations.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    } else if (swipe > 50 && currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
   };
 
   const getPlatformPreview = (content: string) => {
@@ -102,7 +120,15 @@ export default function PlatformPreviewWithVariations({ platform, variations, on
               <span className="text-white/20 text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">Visual Preview</span>
             </div>
             <div className="p-3 sm:p-4">
-              <p className="text-white/90 text-xs sm:text-[14px] leading-relaxed line-clamp-4 break-words">{content}</p>
+              <p className={`text-white/90 text-xs sm:text-[14px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-4' : ''}`}>{content}</p>
+              {content.length > 200 && (
+                <button
+                  onClick={() => setExpanded(!expanded)}
+                  className="text-white/40 hover:text-white text-[11px] sm:text-xs font-bold mt-1.5 transition-colors"
+                >
+                  {expanded ? 'show less' : '... more'}
+                </button>
+              )}
             </div>
           </div>
         );
@@ -110,7 +136,15 @@ export default function PlatformPreviewWithVariations({ platform, variations, on
       default:
         return (
           <div className="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-md">
-            <p className="text-white/80 text-xs sm:text-[15px] leading-relaxed whitespace-pre-wrap font-medium break-words">{content}</p>
+            <p className={`text-white/80 text-xs sm:text-[15px] leading-relaxed whitespace-pre-wrap font-medium break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
+            {content.length > 300 && (
+              <button
+                onClick={() => setExpanded(!expanded)}
+                className="text-white/40 hover:text-white text-[11px] sm:text-xs font-bold mt-2 transition-colors"
+              >
+                {expanded ? 'Show less' : '... Show more'}
+              </button>
+            )}
           </div>
         );
     }
@@ -143,6 +177,11 @@ export default function PlatformPreviewWithVariations({ platform, variations, on
           <h3 className="text-sm sm:text-xl font-black uppercase tracking-wider sm:tracking-widest text-white">{platform}</h3>
         </div>
         <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/5 rounded-full border border-white/10">
+          {isCampaignMode && (
+            <span className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-wider sm:tracking-widest pr-2 border-r border-white/10 mr-1">
+              DAY {currentIndex + 1}
+            </span>
+          )}
           <span className="text-[9px] sm:text-[10px] font-black text-white/40 uppercase tracking-wider sm:tracking-widest">
             {current.characterCount} <span className="text-white/20 hidden sm:inline">CHARS</span>
           </span>
@@ -160,10 +199,15 @@ export default function PlatformPreviewWithVariations({ platform, variations, on
         <AnimatePresence mode="wait">
           <motion.div
             key={currentIndex}
-            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 1.05, y: -10 }}
+            initial={{ opacity: 0, scale: 0.95, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 1.05, x: -20 }}
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            drag="x"
+            dragConstraints={{ left: 0, right: 0 }}
+            dragElastic={0.2}
+            onDragEnd={handleDragEnd}
+            className="cursor-grab active:cursor-grabbing w-full h-full"
           >
             {getPlatformPreview(current.content)}
           </motion.div>
@@ -220,11 +264,24 @@ export default function PlatformPreviewWithVariations({ platform, variations, on
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            onClick={() => onStage?.(current.content)}
-            className="flex items-center justify-center gap-2 py-3 sm:py-4 bg-primary/10 text-primary border border-primary/20 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase transition-all hover:bg-primary/20"
+            onClick={handleStage}
+            className={`flex items-center justify-center gap-2 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase transition-all
+              ${isStaged
+                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50'
+                : 'bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20'
+              }`}
           >
-            <Zap className="h-3 w-3 sm:h-4 sm:w-4" />
-            STAGE
+            <AnimatePresence mode="wait">
+              {isStaged ? (
+                <motion.div key="check" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="flex items-center gap-2">
+                  <Check className="h-3 w-3 sm:h-4 sm:w-4" /> STAGED
+                </motion.div>
+              ) : (
+                <motion.div key="stage" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="flex items-center gap-2">
+                  <Zap className="h-3 w-3 sm:h-4 sm:w-4" /> STAGE
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.button>
         </div>
 

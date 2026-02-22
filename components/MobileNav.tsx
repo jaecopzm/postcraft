@@ -30,25 +30,25 @@ export default function MobileNav() {
                         <Link
                             key={item.href}
                             href={item.href}
-                            className="relative flex flex-col items-center justify-center gap-1 px-3 py-2 rounded-xl transition-all duration-200 min-w-[56px]"
+                            className="relative flex flex-col items-center justify-center gap-1.5 px-3 py-2 min-w-[56px] h-[52px]"
                         >
-                            {active && (
-                                <motion.div
-                                    layoutId="mobile-nav-active"
-                                    className="absolute inset-0 bg-primary/10 rounded-xl"
-                                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
-                                />
-                            )}
                             <Icon
-                                className={`h-5 w-5 relative z-10 transition-all duration-200 ${active ? 'text-primary scale-110' : 'text-white/30'
+                                className={`h-[18px] w-[18px] sm:h-5 sm:w-5 relative z-10 transition-all duration-300 ${active ? 'text-primary scale-110 -translate-y-0.5' : 'text-white/40 group-hover:text-white/70'
                                     }`}
                             />
                             <span
-                                className={`text-[9px] font-black tracking-wider uppercase relative z-10 transition-colors duration-200 ${active ? 'text-primary' : 'text-white/20'
+                                className={`text-[9px] sm:text-[10px] font-black tracking-widest uppercase relative z-10 transition-colors duration-300 ${active ? 'text-white' : 'text-white/20'
                                     }`}
                             >
                                 {item.name}
                             </span>
+                            {active && (
+                                <motion.div
+                                    layoutId="mobile-nav-dot"
+                                    className="absolute -bottom-1 h-1 w-1 bg-primary rounded-full shadow-[0_0_8px_rgba(236,88,0,0.8)]"
+                                    transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                                />
+                            )}
                         </Link>
                     );
                 })}

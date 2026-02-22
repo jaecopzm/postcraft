@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { BarChart3, TrendingUp, Target, Zap, ArrowUpRight, Hash, Activity, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { AnalyticsSkeleton } from '../../components/Skeleton';
 
 const PLATFORM_META: Record<string, { label: string; color: string }> = {
   twitter: { label: 'TWITTER / X', color: '#ffffff' },
@@ -97,15 +98,7 @@ export default function AnalyticsPage() {
   const maxPlatformCount = platformEntries[0]?.[1] ?? 1;
 
   if (loading || authLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary"
-        />
-      </div>
-    );
+    return <AnalyticsSkeleton />;
   }
 
   const containerVariants = {

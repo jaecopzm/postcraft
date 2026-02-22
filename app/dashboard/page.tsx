@@ -8,6 +8,7 @@ import PlatformPreviewWithVariations from '../../components/PlatformPreviewWithV
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useToast } from '../../components/Toast';
+import { DashboardSkeleton } from '../../components/Skeleton';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const [historyId, setHistoryId] = useState<string | null>(null);
   const [voices, setVoices] = useState<any[]>([]);
   const [selectedVoiceId, setSelectedVoiceId] = useState<string>('');
+  const [isCampaignMode, setIsCampaignMode] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [staging, setStaging] = useState<string | null>(null);
   const [voiceDropdownOpen, setVoiceDropdownOpen] = useState(false);
@@ -86,15 +88,7 @@ export default function Dashboard() {
   }, [user, loading, router]);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-          className="rounded-full h-16 w-16 border-4 border-primary/20 border-t-primary"
-        />
-      </div>
-    );
+    return <DashboardSkeleton />;
   }
 
   const platforms = [
@@ -137,7 +131,8 @@ export default function Dashboard() {
           platforms: selectedPlatforms,
           tone: activeTone,
           brandGuide: brandGuide,
-          variationCount: isPro ? variationCount : 3
+          variationCount: isPro ? variationCount : 3,
+          isCampaignMode // Pass mode
         })
       });
 
@@ -263,29 +258,29 @@ export default function Dashboard() {
             initial={{ opacity: 0, y: -10, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -10, scale: 0.98 }}
-            className="glass-card rounded-2xl border border-primary/20 p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 relative overflow-hidden"
+            className="glass-card rounded-xl border border-primary/20 p-3 sm:p-4 relative overflow-hidden"
           >
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-transparent pointer-events-none" />
-            <div className="h-10 w-10 shrink-0 premium-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 relative">
-              <Palette className="h-5 w-5 text-white" />
-            </div>
-            <div className="flex-1 relative">
-              <p className="text-sm font-black text-white mb-1">Set up your Brand Voice</p>
-              <p className="text-xs text-white/40 font-medium">Configure your tone, keywords and style so every post feels on-brand.</p>
-            </div>
-            <div className="flex items-center gap-3 relative shrink-0">
-              <Link
-                href="/brand-voice"
-                className="px-5 py-2.5 premium-gradient rounded-xl text-white text-[10px] font-black tracking-widest uppercase shadow-lg shadow-primary/20 hover:scale-105 transition-all"
-              >
-                Configure
-              </Link>
-              <button
-                onClick={dismissOnboarding}
-                className="p-2 text-white/20 hover:text-white/60 transition-colors rounded-xl hover:bg-white/5"
-              >
-                <X className="h-4 w-4" />
-              </button>
+            <button
+              onClick={dismissOnboarding}
+              className="absolute top-2 right-2 p-1.5 text-white/20 hover:text-white/60 transition-colors rounded-lg hover:bg-white/5 z-10"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+            <div className="flex items-start gap-2.5 sm:gap-3 pr-7 relative">
+              <div className="h-8 w-8 shrink-0 premium-gradient rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
+                <Palette className="h-4 w-4 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs sm:text-sm font-black text-white mb-0.5">Set up your Brand Voice</p>
+                <p className="text-[11px] text-white/40 font-medium mb-2 sm:mb-3">Configure your tone and style.</p>
+                <Link
+                  href="/brand-voice"
+                  className="inline-block px-4 py-2 premium-gradient rounded-lg text-white text-[9px] font-black tracking-widest uppercase shadow-lg shadow-primary/20 hover:scale-105 transition-all"
+                >
+                  Configure
+                </Link>
+              </div>
             </div>
           </motion.div>
         )}
@@ -297,10 +292,27 @@ export default function Dashboard() {
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] -mr-32 -mt-32" />
 
         <div className="relative z-10 space-y-8">
+
+          {/* Mode Toggle */}
+          <div className="flex items-center justify-center p-1 bg-white/5 rounded-2xl w-full sm:w-fit mx-auto border border-white/10">
+            <button
+              onClick={() => setIsCampaignMode(false)}
+              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${!isCampaignMode ? 'bg-white text-black shadow-lg' : 'text-white/40 hover:text-white'}`}
+            >
+              Single Post
+            </button>
+            <button
+              onClick={() => setIsCampaignMode(true)}
+              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${isCampaignMode ? 'premium-gradient text-white shadow-lg shadow-primary/20' : 'text-white/40 hover:text-white'}`}
+            >
+              Drip Campaign
+            </button>
+          </div>
+
           {/* Topic Input */}
           <div className="space-y-3">
             <label className="flex items-center gap-2 text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">
-              <Zap className="h-3 w-3 text-primary" /> Content Topic
+              <Zap className="h-3 w-3 text-primary" /> {isCampaignMode ? 'Campaign Objective' : 'Content Topic'}
             </label>
             <input
               type="text"
@@ -527,6 +539,7 @@ export default function Dashboard() {
                   <PlatformPreviewWithVariations
                     platform={result.platform}
                     variations={result.variations}
+                    isCampaignMode={isCampaignMode}
                     onUpdate={(varIdx, newContent) => handleUpdateVariation(index, varIdx, newContent)}
                     onStage={(content) => handleStageVariation(result.platform, content)}
                   />

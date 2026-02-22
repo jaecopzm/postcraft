@@ -7,7 +7,8 @@ export async function generateContent(
   platform: string,
   tone: string,
   variationCount: number = 3,
-  brandGuide?: string
+  brandGuide?: string,
+  isCampaignMode: boolean = false
 ): Promise<string[]> {
   const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
 
@@ -22,7 +23,24 @@ export async function generateContent(
 
   const platformInfo = platformLimits[platform] || platformLimits.twitter;
 
-  const prompt = `Generate ${variationCount} unique variations of social media content for ${platform}.
+  const prompt = isCampaignMode
+    ? `Generate a 5-part, cohesive "Drip Campaign" sequence for ${platform}.
+    
+Topic: ${topic}
+Tone: ${tone}
+Character limit per post: ${platformInfo.limit}
+Style: ${platformInfo.style}
+${brandGuide ? `\nCRITICAL BRAND GUIDELINES (You must adhere to these rules):\n${brandGuide}\n` : ''}
+Requirements:
+- Create exactly 5 posts meant to be published over 5 consecutive days.
+- Ensure a logical narrative arc across the 5 posts (e.g., Hook -> Problem -> Solution -> Case Study -> Hard CTA).
+- Stay within the character limit for each post.
+- Follow ${platform} best practices (hashtags, formatting, emojis).
+
+Return ONLY the 5 posts, separated by "---" (three dashes on a new line).
+Do not include numbering, labels (like "Day 1"), or any other text.`
+
+    : `Generate ${variationCount} unique variations of social media content for ${platform}.
 
 Topic: ${topic}
 Tone: ${tone}
@@ -51,7 +69,7 @@ Do not include numbering, labels, or any other text.`;
       .split('---')
       .map(v => v.trim())
       .filter(v => v.length > 0)
-      .slice(0, variationCount);
+      .slice(0, isCampaignMode ? 5 : variationCount);
 
     return variations;
   } catch (error) {

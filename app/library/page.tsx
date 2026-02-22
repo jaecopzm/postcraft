@@ -9,6 +9,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../../components/Toast';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { LibrarySkeleton } from '../../components/Skeleton';
 import Link from 'next/link';
 
 interface ContentItem {
@@ -112,8 +113,8 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
           <button
             onClick={() => onToggleFavorite(item.id, item.isFavorite)}
             className={`p-2 rounded-xl border transition-all ${item.isFavorite
-                ? 'bg-accent/10 border-accent/30 text-accent shadow-[0_0_15px_rgba(255,200,0,0.1)]'
-                : 'bg-white/5 border-white/10 text-white/20 hover:text-white/60 hover:border-white/20'
+              ? 'bg-accent/10 border-accent/30 text-accent shadow-[0_0_15px_rgba(255,200,0,0.1)]'
+              : 'bg-white/5 border-white/10 text-white/20 hover:text-white/60 hover:border-white/20'
               }`}
             title={item.isFavorite ? 'Unfavorite' : 'Favorite'}
           >
@@ -122,8 +123,8 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
           <button
             onClick={handleCopy}
             className={`p-2 rounded-xl border transition-all ${copied
-                ? 'bg-green-500/15 border-green-500/30 text-green-400'
-                : 'bg-white/5 border-white/10 text-white/20 hover:text-white/60 hover:border-white/20'
+              ? 'bg-green-500/15 border-green-500/30 text-green-400'
+              : 'bg-white/5 border-white/10 text-white/20 hover:text-white/60 hover:border-white/20'
               }`}
             title="Copy content"
           >
@@ -132,8 +133,8 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
           <button
             onClick={() => setConfirmDelete(!confirmDelete)}
             className={`p-2 rounded-xl border transition-all ${confirmDelete
-                ? 'bg-red-500/15 border-red-500/30 text-red-400'
-                : 'bg-white/5 border-white/10 text-white/20 hover:text-red-400 hover:border-red-500/20'
+              ? 'bg-red-500/15 border-red-500/30 text-red-400'
+              : 'bg-white/5 border-white/10 text-white/20 hover:text-red-400 hover:border-red-500/20'
               }`}
             title="Delete"
           >
@@ -269,15 +270,7 @@ export default function LibraryPage() {
   const folderCount = (folder: string) => content.filter(c => c.folder === folder).length;
 
   if (loading || authLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[60vh]">
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-          className="rounded-full h-12 w-12 border-4 border-primary/10 border-t-primary"
-        />
-      </div>
-    );
+    return <LibrarySkeleton />;
   }
 
   const containerVariants = {
@@ -385,8 +378,8 @@ export default function LibraryPage() {
               <button
                 onClick={() => setSelectedFolder('all')}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold transition-all ${selectedFolder === 'all'
-                    ? 'bg-primary/10 text-primary border border-primary/20'
-                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                  ? 'bg-primary/10 text-primary border border-primary/20'
+                  : 'text-white/40 hover:text-white hover:bg-white/5'
                   }`}
               >
                 <span className="flex items-center gap-2.5">
@@ -403,8 +396,8 @@ export default function LibraryPage() {
                   key={folder}
                   onClick={() => setSelectedFolder(folder)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold transition-all ${selectedFolder === folder
-                      ? 'bg-primary/10 text-primary border border-primary/20'
-                      : 'text-white/40 hover:text-white hover:bg-white/5'
+                    ? 'bg-primary/10 text-primary border border-primary/20'
+                    : 'text-white/40 hover:text-white hover:bg-white/5'
                     }`}
                 >
                   <span className="flex items-center gap-2.5 truncate">
@@ -432,8 +425,8 @@ export default function LibraryPage() {
                     key={tag}
                     onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
                     className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${selectedTag === tag
-                        ? 'bg-primary/15 text-primary border-primary/30'
-                        : 'bg-white/[0.03] text-white/30 border-white/10 hover:text-white/60 hover:border-white/20'
+                      ? 'bg-primary/15 text-primary border-primary/30'
+                      : 'bg-white/[0.03] text-white/30 border-white/10 hover:text-white/60 hover:border-white/20'
                       }`}
                   >
                     {tag}

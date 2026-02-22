@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth as adminAuth } from '@/lib/firebase-admin';
-import { getStagedPosts, saveStagedPost, updateStagedPostStatus } from '@/lib/firestore';
+import { getStagedPosts, saveStagedPost, updateStagedPostStatus, updateStagedPostsStatus, deleteStagedPosts } from '@/lib/firestore';
 
 export async function GET(request: NextRequest) {
     try {
@@ -57,16 +57,48 @@ export async function PATCH(request: NextRequest) {
         }
 
         const idToken = authHeader.split('Bearer ')[1];
-        const decodedToken = await adminAuth.verifyIdToken(idToken);
-        const userId = decodedToken.uid;
+        await adminAuth.verifyIdToken(idToken);
 
-        const { id, status } = await request.json();
+        const body = await request.json();
 
-        await updateStagedPostStatus(id, status);
+        // Handle bulk update
+        if (body.ids && Array.isArray(body.ids)) {
+            await updateStagedPostsStatus(body.ids, body.status);
+        } else if (body.id) {
+            // Fallback for single update
+            await updateStagedPostStatus(body.id, body.status);
+        } else {
+            return NextResponse.json({ error: 'Missing id or ids array' }, { status: 400 });
+        }
 
         return NextResponse.json({ success: true });
     } catch (error) {
         console.error('Staging PATCH error:', error);
         return NextResponse.json({ error: 'Failed to update post status' }, { status: 500 });
+    }
+}
+
+export async function DELETE(request: NextRequest) {
+    try {
+        const authHeader = request.headers.get('Authorization');
+        if (!authHeader?.startsWith('Bearer ')) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const idToken = authHeader.split('Bearer ')[1];
+        await adminAuth.verifyIdToken(idToken);
+
+        const body = await request.json();
+
+        if (body.ids && Array.isArray(body.ids)) {
+            await deleteStagedPosts(body.ids);
+            return NextResponse.json({ success: true });
+        }
+
+        return NextResponse.json({ error: 'Missing ids array' }, { status: 400 });
+
+    } catch (error) {
+        console.error('Staging DELETE error:', error);
+        return NextResponse.json({ error: 'Failed to delete staged posts' }, { status: 500 });
     }
 }

@@ -11,7 +11,8 @@ import {
   Timestamp,
   setDoc,
   getDoc,
-  increment
+  increment,
+  writeBatch
 } from 'firebase/firestore';
 import { db } from './firebase';
 
@@ -249,6 +250,27 @@ export async function updateStagedPostStatus(postId: string, status: 'staged' | 
     status,
     publishedAt: status === 'live' ? Timestamp.now() : null
   });
+}
+
+export async function deleteStagedPosts(postIds: string[]) {
+  const batch = writeBatch(db);
+  postIds.forEach(id => {
+    const postRef = doc(db, 'stagedPosts', id);
+    batch.delete(postRef);
+  });
+  await batch.commit();
+}
+
+export async function updateStagedPostsStatus(postIds: string[], status: 'staged' | 'live') {
+  const batch = writeBatch(db);
+  postIds.forEach(id => {
+    const postRef = doc(db, 'stagedPosts', id);
+    batch.update(postRef, {
+      status,
+      publishedAt: status === 'live' ? Timestamp.now() : null
+    });
+  });
+  await batch.commit();
 }
 
 // Subscription Management
