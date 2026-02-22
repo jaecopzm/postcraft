@@ -32,7 +32,7 @@ export default function Dashboard() {
   const [stats, setStats] = useState([
     { label: 'Generated', value: '...', icon: Sparkles, color: 'text-primary' },
     { label: 'This Month', value: '...', icon: TrendingUp, color: 'text-accent' },
-    { label: 'Avg. Time', value: '8s', icon: Clock, color: 'text-white' }
+    { label: 'Avg. Time', value: '8s', icon: Clock, color: 'text-accent/60' }
   ]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export default function Dashboard() {
         setStats([
           { label: 'Generated', value: data.totalGenerations?.toString() || '0', icon: Sparkles, color: 'text-primary' },
           { label: 'This Month', value: data.monthTotal?.toString() || '0', icon: TrendingUp, color: 'text-accent' },
-          { label: 'Avg. Time', value: `${data.avgTime || 8}s`, icon: Clock, color: 'text-white' }
+          { label: 'Avg. Time', value: `${data.avgTime || 8}s`, icon: Clock, color: 'text-accent/60' }
         ]);
       }
 
@@ -233,19 +233,19 @@ export default function Dashboard() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-10"
+      className="space-y-6 sm:space-y-8"
     >
       {/* Header */}
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
-          <h1 className="text-3xl sm:text-5xl font-extrabold text-gradient mb-2 sm:mb-3">Create Magic</h1>
-          <p className="text-white/40 font-medium text-sm sm:text-base">Power up your social presence with AI excellence.</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gradient mb-1 sm:mb-2">Create Magic</h1>
+          <p className="text-accent/60 font-medium text-sm sm:text-base">Power up your social presence with AI excellence.</p>
         </div>
         {/* Stats — scrollable on mobile */}
-        <div className="flex gap-3 overflow-x-auto no-scrollbar pb-1">
+        <div className="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1">
           {stats.map((stat, idx) => (
-            <div key={idx} className="flex flex-col items-center px-4 sm:px-6 py-3 glass-card rounded-2xl border-white/5 shrink-0">
-              <span className="text-[9px] sm:text-[10px] font-bold text-white/30 uppercase tracking-widest mb-1">{stat.label}</span>
+            <div key={idx} className="flex flex-col items-center px-3 sm:px-5 py-2.5 glass-card rounded-xl shrink-0">
+              <span className="text-[9px] sm:text-[10px] font-bold text-accent/40 uppercase tracking-widest mb-1">{stat.label}</span>
               <span className={`text-lg sm:text-xl font-black ${stat.color}`}>{stat.value}</span>
             </div>
           ))}
@@ -264,7 +264,7 @@ export default function Dashboard() {
             <div className="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-transparent pointer-events-none" />
             <button
               onClick={dismissOnboarding}
-              className="absolute top-2 right-2 p-1.5 text-white/20 hover:text-white/60 transition-colors rounded-lg hover:bg-white/5 z-10"
+              className="absolute top-2 right-2 p-1.5 text-accent/40 hover:text-accent transition-colors rounded-lg hover:bg-accent/5 z-10"
             >
               <X className="h-3.5 w-3.5" />
             </button>
@@ -273,8 +273,8 @@ export default function Dashboard() {
                 <Palette className="h-4 w-4 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-xs sm:text-sm font-black text-white mb-0.5">Set up your Brand Voice</p>
-                <p className="text-[11px] text-white/40 font-medium mb-2 sm:mb-3">Configure your tone and style.</p>
+                <p className="text-xs sm:text-sm font-black text-foreground mb-0.5">Set up your Brand Voice</p>
+                <p className="text-[11px] text-accent/60 font-medium mb-2 sm:mb-3">Configure your tone and style.</p>
                 <Link
                   href="/brand-voice"
                   className="inline-block px-4 py-2 premium-gradient rounded-lg text-white text-[9px] font-black tracking-widest uppercase shadow-lg shadow-primary/20 hover:scale-105 transition-all"
@@ -288,31 +288,31 @@ export default function Dashboard() {
       </AnimatePresence>
 
       {/* Generation Form */}
-      <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 relative overflow-hidden">
+      <motion.div variants={itemVariants} className="glass-card rounded-2xl p-4 sm:p-6 relative overflow-hidden">
         {/* Subtle inner glow */}
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] -mr-32 -mt-32" />
+        <div className="absolute top-0 right-0 w-48 h-48 bg-primary/[0.04] blur-[60px] -mr-24 -mt-24" />
 
-        <div className="relative z-10 space-y-8">
+        <div className="relative z-10 space-y-5 sm:space-y-6">
 
           {/* Mode Toggle */}
-          <div className="flex items-center justify-center p-1 bg-white/5 rounded-2xl w-full sm:w-fit mx-auto border border-white/10">
+          <div className="flex items-center justify-center p-1 bg-accent/5 rounded-xl w-full sm:w-fit mx-auto border border-border">
             <button
               onClick={() => setIsCampaignMode(false)}
-              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${!isCampaignMode ? 'bg-white text-black shadow-lg' : 'text-white/40 hover:text-white'}`}
+              className={`flex-1 sm:flex-none px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${!isCampaignMode ? 'bg-white text-foreground shadow-sm' : 'text-accent/40 hover:text-accent'}`}
             >
               Single Post
             </button>
             <button
               onClick={() => setIsCampaignMode(true)}
-              className={`flex-1 sm:flex-none px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${isCampaignMode ? 'premium-gradient text-white shadow-lg shadow-primary/20' : 'text-white/40 hover:text-white'}`}
+              className={`flex-1 sm:flex-none px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${isCampaignMode ? 'premium-gradient text-white shadow-md shadow-primary/20' : 'text-accent/40 hover:text-accent'}`}
             >
               Drip Campaign
             </button>
           </div>
 
           {/* Topic Input */}
-          <div className="space-y-3">
-            <label className="flex items-center gap-2 text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">
+          <div className="space-y-2">
+            <label className="flex items-center gap-2 text-xs font-black text-accent/40 uppercase tracking-[0.2em] ml-1">
               <Zap className="h-3 w-3 text-primary" /> {isCampaignMode ? 'Campaign Objective' : 'Content Topic'}
             </label>
             <input
@@ -320,15 +320,15 @@ export default function Dashboard() {
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="What's on your mind today?"
-              className="w-full px-5 sm:px-8 py-4 sm:py-6 bg-white/5 border border-white/10 rounded-2xl focus:ring-4 focus:ring-primary/20 focus:border-primary/50 text-white text-base sm:text-lg font-medium placeholder-white/20 transition-all outline-none shadow-inner"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-accent/5 border border-border rounded-xl focus:ring-4 focus:ring-accent/10 focus:border-accent/40 text-foreground text-base sm:text-lg font-medium placeholder-accent/20 transition-all outline-none"
             />
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Platforms */}
-            <div className="space-y-4">
-              <label className="text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">Distribution channels</label>
-              <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            <div className="space-y-3">
+              <label className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Distribution channels</label>
+              <div className="grid grid-cols-3 gap-2">
                 {platforms.map((platform) => {
                   const isSelected = selectedPlatforms.includes(platform.id);
                   const IconComponent = platform.icon;
@@ -344,13 +344,13 @@ export default function Dashboard() {
                           setSelectedPlatforms([...selectedPlatforms, platform.id]);
                         }
                       }}
-                      className={`relative flex flex-col items-center justify-center p-4 rounded-2xl border-2 transition-all duration-300 ${isSelected
-                        ? 'border-primary bg-primary/10 shadow-lg shadow-primary/10'
-                        : 'border-white/5 bg-white/5 hover:border-white/20'
+                      className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all duration-300 ${isSelected
+                        ? 'border-accent bg-accent/10 shadow-sm'
+                        : 'border-border bg-accent/5 hover:border-accent/30'
                         }`}
                     >
-                      <IconComponent className={`h-5 w-5 sm:h-6 sm:w-6 mb-1 ${isSelected ? 'text-primary' : 'text-white/40'}`} />
-                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-white' : 'text-white/40'}`}>
+                      <IconComponent className={`h-5 w-5 mb-1 ${isSelected ? 'text-accent' : 'text-accent/30'}`} />
+                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-foreground' : 'text-accent/30'}`}>
                         {platform.name.split('/')[0]}
                       </span>
                       {isSelected && (
@@ -358,7 +358,7 @@ export default function Dashboard() {
                           layoutId="active-platform"
                           className="absolute -top-1 -right-1"
                         >
-                          <CheckCircle2 className="h-5 w-5 text-primary bg-[#0A0A0B] rounded-full" />
+                          <CheckCircle2 className="h-5 w-5 text-accent bg-background rounded-full" />
                         </motion.div>
                       )}
                     </motion.button>
@@ -368,8 +368,8 @@ export default function Dashboard() {
             </div>
 
             {/* Tone / Voice Selection */}
-            <div className="space-y-4">
-              <label className="text-xs font-black text-white/40 uppercase tracking-[0.2em] ml-1">Brand Voice (Aura)</label>
+            <div className="space-y-3">
+              <label className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Brand Voice (Aura)</label>
 
               {voices.length > 0 ? (
                 <div className="flex flex-col gap-2">
@@ -377,12 +377,12 @@ export default function Dashboard() {
                   <div className="relative">
                     <button
                       onClick={() => setVoiceDropdownOpen(!voiceDropdownOpen)}
-                      className="w-full flex items-center justify-between px-5 py-4 bg-white/5 border border-white/10 rounded-2xl text-white font-bold hover:border-white/20 focus:outline-none transition-all"
+                      className="w-full flex items-center justify-between px-4 py-3 bg-accent/5 border border-border rounded-xl text-foreground font-bold hover:border-accent/40 focus:outline-none transition-all"
                     >
                       <span className="text-sm uppercase tracking-wide">
                         {voices.find(v => v.id === selectedVoiceId)?.name || 'Select Voice'}
                       </span>
-                      <ChevronDown className={`h-4 w-4 text-white/30 transition-transform ${voiceDropdownOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-4 w-4 text-accent/40 transition-transform ${voiceDropdownOpen ? 'rotate-180' : ''}`} />
                     </button>
                     <AnimatePresence>
                       {voiceDropdownOpen && (
@@ -390,17 +390,17 @@ export default function Dashboard() {
                           initial={{ opacity: 0, y: 8 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 8 }}
-                          className="absolute z-50 mt-2 w-full glass-card border border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-3xl"
+                          className="absolute z-50 mt-2 w-full bg-white/95 backdrop-blur-xl border border-border rounded-xl shadow-xl overflow-hidden"
                         >
                           {voices.map(v => (
                             <button
                               key={v.id}
                               onClick={() => { setSelectedVoiceId(v.id); setTone(v.tone || 'professional'); setVoiceDropdownOpen(false); }}
-                              className={`w-full flex items-center justify-between px-5 py-4 text-sm font-bold uppercase tracking-wide hover:bg-white/5 transition-colors text-left ${v.id === selectedVoiceId ? 'text-primary' : 'text-white/60 hover:text-white'
+                              className={`w-full flex items-center justify-between px-4 py-3 text-sm font-bold uppercase tracking-wide hover:bg-accent/5 transition-colors text-left ${v.id === selectedVoiceId ? 'text-accent' : 'text-accent/60 hover:text-foreground'
                                 }`}
                             >
                               <span>{v.name}</span>
-                              {v.id === selectedVoiceId && <CheckCircle2 className="h-4 w-4 text-primary" />}
+                              {v.id === selectedVoiceId && <CheckCircle2 className="h-4 w-4 text-accent" />}
                             </button>
                           ))}
                         </motion.div>
@@ -415,7 +415,7 @@ export default function Dashboard() {
                   )}
                 </div>
               ) : (
-                <div className="grid grid-cols-2 gap-2 sm:gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   {tones.map((t) => {
                     const IconComponent = t.icon;
                     return (
@@ -424,13 +424,13 @@ export default function Dashboard() {
                         whileHover={{ scale: 1.02 }}
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setTone(t.value)}
-                        className={`flex items-center gap-3 p-4 rounded-2xl border-2 transition-all duration-300 ${tone === t.value
-                          ? 'border-primary bg-primary/10'
-                          : 'border-white/5 bg-white/5 hover:border-white/20'
+                        className={`flex items-center gap-2.5 p-3 rounded-xl border-2 transition-all duration-300 ${tone === t.value
+                          ? 'border-accent bg-accent/10'
+                          : 'border-border bg-accent/5 hover:border-accent/30'
                           }`}
                       >
-                        <IconComponent className={`h-5 w-5 shrink-0 ${tone === t.value ? 'text-primary' : 'text-white/40'}`} />
-                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-white' : 'text-white/40'}`}>
+                        <IconComponent className={`h-4 w-4 shrink-0 ${tone === t.value ? 'text-accent' : 'text-accent/30'}`} />
+                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-foreground' : 'text-accent/30'}`}>
                           {t.label}
                         </span>
                       </motion.button>
@@ -444,9 +444,9 @@ export default function Dashboard() {
           {/* Variations Count (Pro Feature) */}
           {isPro && (
             <div>
-              <label className="block text-sm font-bold text-cool-blue mb-3">
+              <label className="block text-sm font-bold text-gray-600 mb-3">
                 Number of variations
-                <span className="ml-2 px-2 py-0.5 bg-accent/20 text-accent text-xs rounded-full">PRO</span>
+                <span className="ml-2 px-2 py-0.5 bg-accent/10 text-accent text-xs rounded-full">PRO</span>
               </label>
               <div className="flex gap-2">
                 {[3, 5, 7, 10].map((count) => (
@@ -454,8 +454,8 @@ export default function Dashboard() {
                     key={count}
                     onClick={() => setVariationCount(count)}
                     className={`px-4 py-2 border rounded-xl transition-all ${variationCount === count
-                      ? 'border-primary bg-primary/10 text-white'
-                      : 'border-cool-blue/20 bg-[#1A1A1F] text-cool-blue/70 hover:border-cool-blue/40'
+                      ? 'border-accent bg-accent/5 text-foreground'
+                      : 'border-border bg-white text-accent/30 hover:border-accent/30'
                       }`}
                   >
                     {count}
@@ -466,27 +466,27 @@ export default function Dashboard() {
           )}
 
           {/* Generate Button */}
-          <div className="space-y-3">
+          <div className="space-y-2">
             <motion.button
-              whileHover={(!generating && !!topic.trim() && selectedPlatforms.length > 0) ? { scale: 1.01, boxShadow: "0 20px 40px rgba(236, 88, 0, 0.3)" } : {}}
+              whileHover={(!generating && !!topic.trim() && selectedPlatforms.length > 0) ? { scale: 1.01, boxShadow: "0 20px 40px rgba(232, 89, 12, 0.25)" } : {}}
               whileTap={{ scale: 0.98 }}
               onClick={handleGenerate}
               disabled={generating || !topic.trim() || selectedPlatforms.length === 0}
-              className="w-full relative group premium-button premium-gradient rounded-xl sm:rounded-[1.5rem] py-3 sm:py-6 px-4 sm:px-8 text-white font-black text-sm sm:text-xl tracking-wider sm:tracking-widest shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full relative group premium-button premium-gradient rounded-xl sm:rounded-2xl py-3 sm:py-5 px-4 sm:px-8 text-white font-black text-sm sm:text-lg tracking-wider sm:tracking-widest shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-4">
+              <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
                 {generating ? (
                   <>
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="h-4 w-4 sm:h-6 sm:w-6 border-2 border-white/30 border-t-white rounded-full"
+                      className="h-4 w-4 sm:h-5 sm:w-5 border-2 border-white/30 border-t-white rounded-full"
                     />
                     CRAFTING...
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4 sm:h-7 sm:w-7" />
+                    <Sparkles className="h-4 w-4 sm:h-6 sm:w-6" />
                     GENERATE UNIVERSE
                   </>
                 )}
@@ -499,7 +499,7 @@ export default function Dashboard() {
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
-                  className="text-center text-[11px] text-white/25 font-bold tracking-widest uppercase"
+                  className="text-center text-[11px] text-gray-300 font-bold tracking-widest uppercase"
                 >
                   {!topic.trim() && selectedPlatforms.length === 0
                     ? 'Add a topic and select at least one platform'
@@ -519,23 +519,23 @@ export default function Dashboard() {
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            className="space-y-8"
+            className="space-y-5 sm:space-y-6"
           >
-            <div className="flex items-center gap-4">
-              <div className="h-10 w-10 sm:h-12 sm:w-12 premium-gradient rounded-xl sm:rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
-                <Target className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+            <div className="flex items-center gap-3">
+              <div className="h-10 w-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
+                <Target className="h-5 w-5 text-white" />
               </div>
-              <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight uppercase">Platform Previews</h2>
+              <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight uppercase">Platform Previews</h2>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
               {results.map((result, index) => (
                 <motion.div
                   key={index}
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: index * 0.1 }}
-                  className="glass-card rounded-2xl sm:rounded-[2rem] p-4 sm:p-8 border-white/5 hover:border-white/10 transition-colors"
+                  className="glass-card rounded-2xl p-3 sm:p-5 hover:border-gray-300 transition-colors"
                 >
                   <PlatformPreviewWithVariations
                     platform={result.platform}
@@ -553,7 +553,7 @@ export default function Dashboard() {
                         exit={{ opacity: 0 }}
                         className="absolute inset-x-0 -bottom-4 flex justify-center"
                       >
-                        <div className="bg-green-500 text-white text-[10px] font-black px-4 py-2 rounded-full shadow-lg shadow-green-500/20 uppercase tracking-widest">
+                        <div className="bg-accent text-white text-[10px] font-black px-4 py-2 rounded-full shadow-lg shadow-accent/20 uppercase tracking-widest">
                           Staged to Command Center
                         </div>
                       </motion.div>

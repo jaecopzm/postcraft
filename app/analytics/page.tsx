@@ -27,7 +27,7 @@ function StatCard({
   return (
     <motion.div
       whileHover={{ y: -5, scale: 1.02 }}
-      className="glass-card rounded-3xl p-5 sm:p-8 relative overflow-hidden group border-white/5"
+      className="glass-card rounded-3xl p-5 sm:p-8 relative overflow-hidden group border-border"
     >
       <div
         className="absolute -right-4 -top-4 w-32 h-32 blur-3xl opacity-0 group-hover:opacity-20 transition-opacity"
@@ -38,13 +38,13 @@ function StatCard({
         <div className="p-3 sm:p-4 premium-gradient rounded-2xl shadow-lg shadow-primary/20">
           <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
         </div>
-        <ArrowUpRight className="h-5 w-5 text-white/20 group-hover:text-primary transition-colors" />
+        <ArrowUpRight className="h-5 w-5 text-gray-300 group-hover:text-primary transition-colors" />
       </div>
 
       <div className="space-y-1">
-        <p className="text-[10px] font-black text-white/30 uppercase tracking-[0.2em]">{label}</p>
-        <p className="text-2xl sm:text-4xl font-black text-white tracking-tight">{value}</p>
-        {sub && <p className="text-xs font-bold text-white/20 uppercase tracking-widest pt-2">{sub}</p>}
+        <p className="text-[10px] font-black text-accent/30 uppercase tracking-[0.2em]">{label}</p>
+        <p className="text-2xl sm:text-4xl font-black text-foreground tracking-tight">{value}</p>
+        {sub && <p className="text-xs font-bold text-accent/20 uppercase tracking-widest pt-2">{sub}</p>}
       </div>
     </motion.div>
   );
@@ -129,7 +129,7 @@ export default function AnalyticsPage() {
           </div>
           <div>
             <h1 className="text-3xl sm:text-5xl font-extrabold text-gradient mb-1 sm:mb-2 tracking-tight">Intelligence</h1>
-            <p className="text-white/40 font-medium text-sm sm:text-base">Deep insights into your creative momentum.</p>
+            <p className="text-accent/60 font-medium text-sm sm:text-base">Deep insights into your creative momentum.</p>
           </div>
         </div>
       </motion.div>
@@ -145,15 +145,15 @@ export default function AnalyticsPage() {
       {/* Data Visuals */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
         {/* Platform DNA */}
-        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 border-white/5 relative overflow-hidden">
+        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-2xl p-5 sm:p-10 border-border relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none" />
 
           <div className="flex items-center justify-between mb-6 sm:mb-10">
             <div>
-              <h3 className="text-lg sm:text-2xl font-black text-white tracking-widest uppercase">Platform DNA</h3>
-              <p className="text-white/20 text-xs font-bold tracking-[0.2em] mt-1">DISTRIBUTION BREAKDOWN</p>
+              <h3 className="text-lg sm:text-2xl font-black text-foreground tracking-widest uppercase">Platform DNA</h3>
+              <p className="text-accent/30 text-xs font-bold tracking-[0.2em] mt-1">DISTRIBUTION BREAKDOWN</p>
             </div>
-            <div className="px-3 sm:px-4 py-1.5 bg-white/5 rounded-full border border-white/10">
+            <div className="px-3 sm:px-4 py-1.5 bg-accent/5 rounded-full border border-accent/10">
               <span className="text-[10px] font-black text-primary tracking-widest uppercase">{total} TOTAL</span>
             </div>
           </div>
@@ -168,14 +168,14 @@ export default function AnalyticsPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
                       <div className="w-1.5 h-1.5 rounded-full" style={{ background: meta?.color ?? '#EC5800' }} />
-                      <span className="text-xs font-black tracking-widest text-white/50">{meta?.label ?? platform}</span>
+                      <span className="text-xs font-black tracking-widest text-accent/40">{meta?.label ?? platform}</span>
                     </div>
                     <div className="flex items-center gap-4">
-                      <span className="text-[10px] font-black text-white/20">{pct.toFixed(0)}%</span>
-                      <span className="text-sm font-black text-white">{count}</span>
+                      <span className="text-[10px] font-black text-accent/20">{pct.toFixed(0)}%</span>
+                      <span className="text-sm font-black text-foreground">{count}</span>
                     </div>
                   </div>
-                  <div className="h-2 bg-white/5 rounded-full overflow-hidden border border-white/5">
+                  <div className="h-2 bg-accent/5 rounded-full overflow-hidden border border-accent/10">
                     <motion.div
                       initial={{ width: 0 }}
                       animate={{ width: `${barW}%` }}
@@ -190,7 +190,7 @@ export default function AnalyticsPage() {
                 </div>
               );
             }) : (
-              <div className="flex flex-col items-center justify-center py-10 text-white/20 gap-4">
+              <div className="flex flex-col items-center justify-center py-10 text-gray-300 gap-4">
                 <Activity className="h-10 w-10 opacity-20" />
                 <p className="text-[10px] font-black tracking-widest uppercase">Waiting for data frequency...</p>
               </div>
@@ -199,16 +199,16 @@ export default function AnalyticsPage() {
         </motion.div>
 
         {/* Neural Map / Top Topics */}
-        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 border-white/5 relative overflow-hidden">
+        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-2xl p-5 sm:p-10 border-border relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none" />
 
           <div className="flex items-center justify-between mb-6 sm:mb-10">
             <div>
-              <h3 className="text-lg sm:text-2xl font-black text-white tracking-widest uppercase">Neural Map</h3>
-              <p className="text-white/20 text-xs font-bold tracking-[0.2em] mt-1">TOP RECURRING TOPICS</p>
+              <h3 className="text-lg sm:text-2xl font-black text-foreground tracking-widest uppercase">Neural Map</h3>
+              <p className="text-accent/30 text-xs font-bold tracking-[0.2em] mt-1">TOP RECURRING TOPICS</p>
             </div>
-            <div className="p-3 bg-white/5 rounded-xl border border-white/10">
-              <Hash className="h-4 w-4 text-white/40" />
+            <div className="p-3 bg-accent/5 rounded-xl border border-accent/10">
+              <Hash className="h-4 w-4 text-accent/20" />
             </div>
           </div>
 
@@ -222,24 +222,24 @@ export default function AnalyticsPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="group relative flex items-center gap-5 p-4 bg-white/[0.03] border border-white/5 hover:border-white/10 rounded-2xl transition-all overflow-hidden"
+                  className="group relative flex items-center gap-5 p-4 bg-accent/5 border border-border hover:border-accent/20 rounded-2xl transition-all overflow-hidden"
                 >
                   <div
                     className="absolute inset-y-0 left-0 bg-primary opacity-[0.03] transition-all group-hover:opacity-[0.05]"
                     style={{ width: `${barPct}%` }}
                   />
-                  <div className="shrink-0 w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black text-white/40">
+                  <div className="shrink-0 w-8 h-8 rounded-lg bg-white border border-border flex items-center justify-center text-[10px] font-black text-accent/20">
                     0{i + 1}
                   </div>
-                  <span className="flex-1 text-[13px] font-black text-white/70 tracking-wide uppercase truncate relative z-10">{topic.topic}</span>
-                  <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-lg border border-white/10 relative z-10">
+                  <span className="flex-1 text-[13px] font-black text-foreground tracking-wide uppercase truncate relative z-10">{topic.topic}</span>
+                  <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-lg border border-border relative z-10">
                     <span className="text-[10px] font-black text-primary">{topic.count}</span>
-                    <span className="text-[8px] font-black text-white/20 tracking-tighter uppercase">X</span>
+                    <span className="text-[8px] font-black text-accent/20 tracking-tighter uppercase">X</span>
                   </div>
                 </motion.div>
               );
             }) : (
-              <div className="flex flex-col items-center justify-center py-10 text-white/20 gap-4">
+              <div className="flex flex-col items-center justify-center py-10 text-gray-300 gap-4">
                 <Hash className="h-10 w-10 opacity-20" />
                 <p className="text-[10px] font-black tracking-widest uppercase">Neural network is empty...</p>
               </div>

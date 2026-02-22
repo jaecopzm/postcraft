@@ -1,17 +1,17 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0A0A0B;
-  --foreground: #F8FAFC;
-  --primary: #EC5800;
-  /* Persimmon */
-  --primary-hover: #FF6B1A;
-  --accent: #FFE135;
-  /* Banana Yellow */
-  --charcoal: #101720;
-  --cool-blue: #D1EAF0;
-  --card-bg: rgba(23, 23, 27, 0.8);
-  --border-color: rgba(209, 234, 240, 0.1);
+  --background: #F0FAFA;
+  --foreground: #134E4A;
+  --primary: #F97316;
+  /* Orange-500 */
+  --primary-hover: #EA580C;
+  /* Orange-600 */
+  --accent: #0D9488;
+  /* Teal-600 */
+  --surface: #FFFFFF;
+  --border-color: #CCFBF1;
+  --card-bg: rgba(255, 255, 255, 0.9);
 }
 
 @theme inline {
@@ -20,12 +20,15 @@
   --color-primary: var(--primary);
   --color-primary-hover: var(--primary-hover);
   --color-accent: var(--accent);
-  --color-charcoal: var(--charcoal);
-  --color-cool-blue: var(--cool-blue);
+  --color-surface: var(--surface);
   --color-border: var(--border-color);
   --color-card-bg: var(--card-bg);
   --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular;
+  --shadow-premium: 0 8px 30px rgba(13, 148, 136, 0.04);
+  --shadow-glass: 0 20px 50px rgba(13, 148, 136, 0.08);
+
+  --animate-float: float 20s ease-in-out infinite;
 }
 
 @layer base {
@@ -34,7 +37,7 @@
   }
 
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30 selection:text-white;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
     font-feature-settings: "cv11", "ss01";
     /* Prevent horizontal overflow on mobile */
     overflow-x: hidden;
@@ -50,15 +53,15 @@
 
 @layer components {
   .glass-card {
-    @apply bg-card-bg backdrop-blur-xl border border-border shadow-2xl;
+    @apply bg-gradient-to-br from-white/80 to-accent/[0.03] backdrop-blur-3xl border border-border ring-1 ring-white/40 ring-inset shadow-glass;
   }
 
   .premium-gradient {
-    @apply bg-gradient-to-br from-primary via-primary/90 to-primary/70;
+    @apply bg-gradient-to-br from-primary to-[#FB923C];
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-[#134E4A] via-[#0D9488] to-[#134E4A] bg-clip-text text-transparent;
   }
 
   .premium-button {
@@ -83,11 +86,44 @@
   /* Skeleton loading shimmer */
   .skeleton {
     background: linear-gradient(90deg,
-        rgba(255, 255, 255, 0.03) 0%,
-        rgba(255, 255, 255, 0.08) 50%,
-        rgba(255, 255, 255, 0.03) 100%);
+        rgba(13, 148, 136, 0.03) 0%,
+        rgba(13, 148, 136, 0.08) 50%,
+        rgba(13, 148, 136, 0.03) 100%);
     background-size: 200% 100%;
     animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  }
+
+  .grain-overlay {
+    @apply fixed inset-0 pointer-events-none z-[1] opacity-[0.03];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
+  .ambient-orb {
+    @apply fixed rounded-full blur-[120px] pointer-events-none z-0 mix-blend-multiply animate-float;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+
+  33% {
+    transform: translateY(-30px) translateX(20px) scale(1.1);
+  }
+
+  66% {
+    transform: translateY(20px) translateX(-20px) scale(0.9);
   }
 }
 
@@ -108,11 +144,11 @@
   }
 
   ::-webkit-scrollbar-track {
-    @apply bg-charcoal;
+    @apply bg-gray-100;
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/10 rounded-full border-2 border-charcoal hover:bg-white/20 transition-colors;
+    @apply bg-gray-300 rounded-full border-2 border-gray-100 hover:bg-gray-400 transition-colors;
   }
 }
 
@@ -130,9 +166,9 @@
 
 /* Glow Effects */
 .glow-primary {
-  box-shadow: 0 0 20px rgba(236, 88, 0, 0.2);
+  box-shadow: 0 0 20px rgba(232, 89, 12, 0.15);
 }
 
 .glow-accent {
-  box-shadow: 0 0 20px rgba(255, 225, 53, 0.1);
+  box-shadow: 0 0 20px rgba(22, 163, 74, 0.1);
 }

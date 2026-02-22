@@ -31,7 +31,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       */}
       <main
         className="flex-1 relative z-10 p-4 md:p-6 lg:p-8 transition-[margin] duration-300"
-        style={{ marginLeft: isDesktop ? (isCollapsed ? 72 : 320) : 0 }}
+        style={{ marginLeft: isDesktop ? (isCollapsed ? 72 : 280) : 0 }}
       >
         <div className="max-w-7xl mx-auto h-full pt-16 lg:pt-0 pb-24 lg:pb-0">
           {children}

@@ -73,7 +73,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.97 }}
       whileHover={{ scale: 1.005 }}
-      className="group relative glass-card rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 border-white/5 hover:border-white/15 transition-all overflow-hidden"
+      className="group relative glass-card rounded-2xl sm:rounded-2xl p-5 sm:p-8 border-border hover:border-accent/20 transition-all overflow-hidden"
     >
       {/* Subtle hover glow */}
       <div className="absolute top-0 right-0 w-48 h-48 blur-[80px] opacity-0 group-hover:opacity-10 transition-opacity duration-700 bg-primary pointer-events-none" />
@@ -82,7 +82,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
       <div className="flex items-start gap-3 mb-4">
         <div className="flex-1 min-w-0">
           <div className="flex flex-wrap items-center gap-2 mb-2">
-            <h3 className="text-base sm:text-lg font-black text-white tracking-tight truncate">{item.title}</h3>
+            <h3 className="text-base sm:text-lg font-black text-foreground tracking-tight truncate">{item.title}</h3>
             {item.isEvergreen && (
               <span className="px-2 py-0.5 bg-green-500/15 text-green-400 text-[9px] font-black rounded-full border border-green-500/25 uppercase tracking-widest">
                 Evergreen
@@ -92,7 +92,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
           <div className="flex flex-wrap gap-2 mb-3">
             <PlatformBadge platform={item.platform} />
             {item.folder && item.folder !== 'Uncategorized' && (
-              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-white/10 bg-white/[0.03] text-white/40">
+              <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border border-accent/10 bg-accent/5 text-accent/40">
                 <Folder className="h-2.5 w-2.5" />
                 {item.folder}
               </span>
@@ -114,7 +114,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
             onClick={() => onToggleFavorite(item.id, item.isFavorite)}
             className={`p-2 rounded-xl border transition-all ${item.isFavorite
               ? 'bg-accent/10 border-accent/30 text-accent shadow-[0_0_15px_rgba(255,200,0,0.1)]'
-              : 'bg-white/5 border-white/10 text-white/20 hover:text-white/60 hover:border-white/20'
+              : 'bg-white border-border text-accent/20 hover:text-accent hover:border-accent/30'
               }`}
             title={item.isFavorite ? 'Unfavorite' : 'Favorite'}
           >
@@ -124,7 +124,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
             onClick={handleCopy}
             className={`p-2 rounded-xl border transition-all ${copied
               ? 'bg-green-500/15 border-green-500/30 text-green-400'
-              : 'bg-white/5 border-white/10 text-white/20 hover:text-white/60 hover:border-white/20'
+              : 'bg-white border-border text-accent/20 hover:text-accent hover:border-accent/30'
               }`}
             title="Copy content"
           >
@@ -134,7 +134,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
             onClick={() => setConfirmDelete(!confirmDelete)}
             className={`p-2 rounded-xl border transition-all ${confirmDelete
               ? 'bg-red-500/15 border-red-500/30 text-red-400'
-              : 'bg-white/5 border-white/10 text-white/20 hover:text-red-400 hover:border-red-500/20'
+              : 'bg-white border-border text-accent/20 hover:text-red-400 hover:border-red-500/20'
               }`}
             title="Delete"
           >
@@ -144,7 +144,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
       </div>
 
       {/* Content preview */}
-      <p className="text-sm text-white/50 leading-relaxed font-medium mb-2">{displayText}</p>
+      <p className="text-sm text-accent/60 leading-relaxed font-medium mb-2">{displayText}</p>
       {isLong && (
         <button
           onClick={() => setExpanded(!expanded)}
@@ -155,8 +155,8 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
       )}
 
       {/* Footer: date + inline delete confirm */}
-      <div className="flex items-center justify-between pt-3 border-t border-white/5">
-        <span className="text-[10px] font-bold text-white/20 uppercase tracking-widest">
+      <div className="flex items-center justify-between pt-3 border-t border-border">
+        <span className="text-[10px] font-bold text-accent/20 uppercase tracking-widest">
           {new Date(item.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
         </span>
         <AnimatePresence>
@@ -176,7 +176,7 @@ function ContentCard({ item, onToggleFavorite, onDelete }: {
               </button>
               <button
                 onClick={() => setConfirmDelete(false)}
-                className="px-3 py-1.5 bg-white/5 text-white/40 text-[10px] font-black tracking-widest uppercase rounded-xl hover:bg-white/10 transition-colors"
+                className="px-3 py-1.5 bg-accent/5 text-accent/40 text-[10px] font-black tracking-widest uppercase rounded-xl hover:bg-accent/10 transition-colors"
               >
                 Cancel
               </button>
@@ -292,7 +292,7 @@ export default function LibraryPage() {
         className="flex flex-col md:flex-row md:items-end justify-between gap-6"
       >
         <div className="flex items-center gap-4 sm:gap-6">
-          <div className="h-14 w-14 sm:h-20 sm:w-20 premium-gradient rounded-2xl sm:rounded-[2rem] flex items-center justify-center shadow-2xl shadow-primary/20 shrink-0 relative overflow-hidden group">
+          <div className="h-14 w-14 sm:h-20 sm:w-20 premium-gradient rounded-2xl sm:rounded-2xl flex items-center justify-center shadow-2xl shadow-primary/20 shrink-0 relative overflow-hidden group">
             <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
             <Library className="h-7 w-7 sm:h-10 sm:w-10 text-white relative z-10" />
           </div>
@@ -301,16 +301,16 @@ export default function LibraryPage() {
               <Sparkles className="h-3 w-3 text-primary" />
               <span className="text-[10px] font-black tracking-[0.2em] uppercase text-primary">Content Vault</span>
             </div>
-            <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tighter uppercase">
+            <h1 className="text-3xl sm:text-5xl font-black text-foreground tracking-tighter uppercase">
               Your <span className="text-gradient">Library</span>
             </h1>
           </div>
         </div>
-        <div className="flex items-center gap-3 text-[11px] font-black tracking-widest text-white/20 uppercase">
+        <div className="flex items-center gap-3 text-[11px] font-black tracking-widest text-accent/30 uppercase">
           <span>{content.length} items saved</span>
           {content.filter(c => c.isFavorite).length > 0 && (
             <>
-              <div className="h-4 w-px bg-white/10" />
+              <div className="h-4 w-px bg-accent/10" />
               <span className="text-accent">{content.filter(c => c.isFavorite).length} favorites</span>
             </>
           )}
@@ -327,12 +327,12 @@ export default function LibraryPage() {
           className="col-span-12 lg:col-span-3 flex flex-row lg:flex-col gap-4 overflow-x-auto no-scrollbar lg:overflow-visible pb-1 lg:pb-0"
         >
           {/* Folders panel */}
-          <div className="glass-card rounded-2xl p-5 border-white/5 shrink-0 lg:shrink w-64 sm:w-72 lg:w-full">
+          <div className="glass-card rounded-2xl p-5 border-border shrink-0 lg:shrink w-64 sm:w-72 lg:w-full">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em]">Folders</h3>
+              <h3 className="text-[10px] font-black text-accent/20 uppercase tracking-[0.3em]">Folders</h3>
               <button
                 onClick={() => setShowNewFolder(!showNewFolder)}
-                className="p-1.5 hover:bg-white/5 rounded-lg text-white/20 hover:text-primary transition-all"
+                className="p-1.5 hover:bg-accent/5 rounded-lg text-accent/20 hover:text-accent transition-all"
                 title="New folder"
               >
                 <FolderPlus className="h-4 w-4" />
@@ -353,7 +353,7 @@ export default function LibraryPage() {
                     onChange={e => setNewFolderName(e.target.value)}
                     placeholder="Folder name..."
                     autoFocus
-                    className="w-full px-3 py-2.5 bg-white/[0.03] border border-white/10 rounded-xl text-sm text-white placeholder-white/20 mb-2 focus:outline-none focus:border-primary/50 transition-all"
+                    className="w-full px-3 py-2.5 bg-accent/5 border border-border rounded-xl text-sm text-foreground placeholder-accent/20 mb-2 focus:outline-none focus:border-accent/40 transition-all"
                   />
                   <div className="flex gap-2">
                     <button
@@ -364,7 +364,7 @@ export default function LibraryPage() {
                     </button>
                     <button
                       onClick={() => { setShowNewFolder(false); setNewFolderName(''); }}
-                      className="flex-1 py-2 bg-white/5 text-white/40 text-[10px] font-black tracking-widest uppercase rounded-xl hover:bg-white/10 transition-colors"
+                      className="flex-1 py-2 bg-accent/5 text-accent/40 text-[10px] font-black tracking-widest uppercase rounded-xl hover:bg-accent/10 transition-colors"
                     >
                       Cancel
                     </button>
@@ -378,15 +378,15 @@ export default function LibraryPage() {
               <button
                 onClick={() => setSelectedFolder('all')}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold transition-all ${selectedFolder === 'all'
-                  ? 'bg-primary/10 text-primary border border-primary/20'
-                  : 'text-white/40 hover:text-white hover:bg-white/5'
+                  ? 'bg-accent/10 text-accent border border-accent/20'
+                  : 'text-accent/30 hover:text-accent hover:bg-accent/5'
                   }`}
               >
                 <span className="flex items-center gap-2.5">
                   <Folder className="h-4 w-4" />
                   All Content
                 </span>
-                <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${selectedFolder === 'all' ? 'bg-primary/20 text-primary' : 'bg-white/5 text-white/20'}`}>
+                <span className={`text-[10px] font-black px-2 py-0.5 rounded-md ${selectedFolder === 'all' ? 'bg-accent/20 text-accent' : 'bg-accent/5 text-accent/20'}`}>
                   {content.length}
                 </span>
               </button>
@@ -396,15 +396,15 @@ export default function LibraryPage() {
                   key={folder}
                   onClick={() => setSelectedFolder(folder)}
                   className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-bold transition-all ${selectedFolder === folder
-                    ? 'bg-primary/10 text-primary border border-primary/20'
-                    : 'text-white/40 hover:text-white hover:bg-white/5'
+                    ? 'bg-accent/10 text-accent border border-accent/20'
+                    : 'text-accent/30 hover:text-accent hover:bg-accent/5'
                     }`}
                 >
                   <span className="flex items-center gap-2.5 truncate">
                     <Folder className="h-4 w-4 shrink-0" />
                     <span className="truncate">{folder}</span>
                   </span>
-                  <span className={`shrink-0 text-[10px] font-black px-2 py-0.5 rounded-md ${selectedFolder === folder ? 'bg-primary/20 text-primary' : 'bg-white/5 text-white/20'}`}>
+                  <span className={`shrink-0 text-[10px] font-black px-2 py-0.5 rounded-md ${selectedFolder === folder ? 'bg-accent/20 text-accent' : 'bg-accent/5 text-accent/20'}`}>
                     {folderCount(folder)}
                   </span>
                 </button>
@@ -414,8 +414,8 @@ export default function LibraryPage() {
 
           {/* Tags panel */}
           {tags.length > 0 && (
-            <div className="glass-card rounded-2xl p-5 border-white/5 shrink-0 lg:shrink w-64 sm:w-72 lg:w-full">
-              <h3 className="text-[10px] font-black text-white/30 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
+            <div className="glass-card rounded-2xl p-5 border-border shrink-0 lg:shrink w-64 sm:w-72 lg:w-full">
+              <h3 className="text-[10px] font-black text-accent/20 uppercase tracking-[0.3em] mb-4 flex items-center gap-2">
                 <Tag className="h-3 w-3" />
                 Tags
               </h3>
@@ -425,8 +425,8 @@ export default function LibraryPage() {
                     key={tag}
                     onClick={() => setSelectedTag(selectedTag === tag ? '' : tag)}
                     className={`px-3 py-1.5 rounded-xl text-[10px] font-black uppercase tracking-widest border transition-all ${selectedTag === tag
-                      ? 'bg-primary/15 text-primary border-primary/30'
-                      : 'bg-white/[0.03] text-white/30 border-white/10 hover:text-white/60 hover:border-white/20'
+                      ? 'bg-accent/15 text-accent border-accent/30'
+                      : 'bg-accent/5 text-accent/30 border-border hover:text-accent hover:border-accent/30'
                       }`}
                   >
                     {tag}
@@ -447,16 +447,16 @@ export default function LibraryPage() {
             transition={{ delay: 0.15 }}
             className="relative group"
           >
-            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-white/20 group-focus-within:text-primary transition-colors" />
+            <Search className="absolute left-5 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-300 group-focus-within:text-primary transition-colors" />
             <input
               type="text"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}
               placeholder="Search by title or content..."
-              className="w-full pl-12 pr-5 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/20 text-sm font-medium focus:outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all"
+              className="w-full pl-12 pr-5 py-4 bg-accent/5 border border-border rounded-2xl text-foreground placeholder-accent/20 text-sm font-medium focus:outline-none focus:border-accent/40 focus:ring-4 focus:ring-accent/5 transition-all"
             />
             {searchQuery && (
-              <span className="absolute right-5 top-1/2 -translate-y-1/2 text-[10px] font-black text-white/20 uppercase tracking-widest">
+              <span className="absolute right-5 top-1/2 -translate-y-1/2 text-[10px] font-black text-accent/20 uppercase tracking-widest">
                 {filteredContent.length} results
               </span>
             )}
@@ -479,22 +479,22 @@ export default function LibraryPage() {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="flex flex-col items-center justify-center py-20 sm:py-32 glass-card rounded-[2.5rem] border-dashed border-white/10 text-center px-8"
+                className="flex flex-col items-center justify-center py-20 sm:py-32 glass-card rounded-2xl border-dashed border-border text-center px-8"
               >
-                <div className="h-20 w-20 sm:h-28 sm:w-28 bg-white/[0.03] rounded-[2rem] flex items-center justify-center mb-8 relative border border-white/5">
-                  <BookOpen className="h-10 w-10 sm:h-14 sm:w-14 text-white/10" />
+                <div className="h-20 w-20 sm:h-28 sm:w-28 bg-accent/5 rounded-2xl flex items-center justify-center mb-8 relative border border-accent/10">
+                  <BookOpen className="h-10 w-10 sm:h-14 sm:w-14 text-accent/10" />
                   <motion.div
                     animate={{ rotate: 360 }}
                     transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-                    className="absolute inset-[-10px] border border-dashed border-white/5 rounded-full"
+                    className="absolute inset-[-10px] border border-dashed border-border rounded-full"
                   />
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-3">
+                <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight mb-3">
                   {searchQuery || selectedTag || selectedFolder !== 'all'
                     ? 'No matches found'
                     : 'Library is empty'}
                 </h3>
-                <p className="text-white/30 font-medium text-sm max-w-xs leading-relaxed mb-8">
+                <p className="text-accent/40 font-medium text-sm max-w-xs leading-relaxed mb-8">
                   {searchQuery || selectedTag || selectedFolder !== 'all'
                     ? 'Try adjusting your filters or search query.'
                     : 'Save standout posts here from your generated content or history.'}

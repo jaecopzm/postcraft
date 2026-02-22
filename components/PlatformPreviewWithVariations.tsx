@@ -78,13 +78,13 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
     switch (platform) {
       case 'twitter':
         return (
-          <div className="bg-[#000] border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-2xl">
+          <div className="bg-[#000] border border-gray-200 rounded-xl sm:rounded-2xl p-3 sm:p-5 shadow-2xl">
             <div className="flex items-start gap-2 sm:gap-4">
-              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-white/5 rounded-full flex-shrink-0 border border-white/10"></div>
+              <div className="w-8 h-8 sm:w-12 sm:h-12 bg-gray-50 rounded-full flex-shrink-0 border border-gray-200"></div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1 sm:gap-2 mb-1">
                   <span className="font-bold text-white text-xs sm:text-[15px] truncate">Premium User</span>
-                  <span className="text-white/40 text-[11px] sm:text-[14px] truncate">@handle · now</span>
+                  <span className="text-gray-400 text-[11px] sm:text-[14px] truncate">@handle · now</span>
                 </div>
                 <p className="text-white text-xs sm:text-[15px] leading-relaxed whitespace-pre-wrap break-words">{content}</p>
               </div>
@@ -94,37 +94,37 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
 
       case 'linkedin':
         return (
-          <div className="bg-[#1B1B1F] border border-white/5 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-2xl">
+          <div className="bg-[#1B1B1F] border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-2xl">
             <div className="flex items-start gap-2 sm:gap-4 mb-3 sm:mb-5">
-              <div className="w-10 h-10 sm:w-14 sm:h-14 bg-white/5 rounded-lg flex-shrink-0 border border-white/10"></div>
+              <div className="w-10 h-10 sm:w-14 sm:h-14 bg-gray-50 rounded-lg flex-shrink-0 border border-gray-200"></div>
               <div className="py-1 min-w-0 flex-1">
                 <div className="font-bold text-white text-sm sm:text-[16px] truncate">Professional Profile</div>
-                <div className="text-white/40 text-[11px] sm:text-[13px] font-medium truncate">Visionary Founder | Tech Specialist</div>
+                <div className="text-gray-400 text-[11px] sm:text-[13px] font-medium truncate">Visionary Founder | Tech Specialist</div>
               </div>
             </div>
-            <p className="text-white/90 text-xs sm:text-[15px] leading-[1.6] whitespace-pre-wrap break-words">{content}</p>
+            <p className="text-gray-800 text-xs sm:text-[15px] leading-[1.6] whitespace-pre-wrap break-words">{content}</p>
           </div>
         );
 
       case 'instagram':
         return (
-          <div className="bg-[#000] border border-white/10 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl">
-            <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border-b border-white/5">
+          <div className="bg-[#000] border border-gray-200 rounded-xl sm:rounded-2xl overflow-hidden shadow-2xl">
+            <div className="flex items-center gap-2 sm:gap-3 p-3 sm:p-4 border-b border-gray-200">
               <div className="w-7 h-7 sm:w-9 sm:h-9 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-full p-[2px]">
                 <div className="w-full h-full rounded-full bg-black border-2 border-black"></div>
               </div>
               <span className="font-bold text-white text-xs sm:text-[14px]">creative_mind</span>
             </div>
-            <div className="aspect-square bg-white/5 flex items-center justify-center relative overflow-hidden group">
+            <div className="aspect-square bg-accent/5 flex items-center justify-center relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-accent/10 opacity-50" />
-              <span className="text-white/20 text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">Visual Preview</span>
+              <span className="text-gray-300 text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">Visual Preview</span>
             </div>
             <div className="p-3 sm:p-4">
-              <p className={`text-white/90 text-xs sm:text-[14px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-4' : ''}`}>{content}</p>
+              <p className={`text-gray-800 text-xs sm:text-[14px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-4' : ''}`}>{content}</p>
               {content.length > 200 && (
                 <button
                   onClick={() => setExpanded(!expanded)}
-                  className="text-white/40 hover:text-white text-[11px] sm:text-xs font-bold mt-1.5 transition-colors"
+                  className="text-gray-400 hover:text-gray-900 text-[11px] sm:text-xs font-bold mt-1.5 transition-colors"
                 >
                   {expanded ? 'show less' : '... more'}
                 </button>
@@ -135,12 +135,12 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
 
       default:
         return (
-          <div className="bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-md">
-            <p className={`text-white/80 text-xs sm:text-[15px] leading-relaxed whitespace-pre-wrap font-medium break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
+          <div className="bg-accent/5 border border-border rounded-xl sm:rounded-2xl p-4 sm:p-6 backdrop-blur-xl">
+            <p className={`text-gray-700 text-xs sm:text-[15px] leading-relaxed whitespace-pre-wrap font-medium break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
             {content.length > 300 && (
               <button
                 onClick={() => setExpanded(!expanded)}
-                className="text-white/40 hover:text-white text-[11px] sm:text-xs font-bold mt-2 transition-colors"
+                className="text-gray-400 hover:text-gray-900 text-[11px] sm:text-xs font-bold mt-2 transition-colors"
               >
                 {expanded ? 'Show less' : '... Show more'}
               </button>
@@ -170,24 +170,24 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
         <div className="flex items-center gap-2 sm:gap-4">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 5 }}
-            className="p-2 sm:p-3 premium-gradient rounded-lg sm:rounded-xl shadow-lg shadow-primary/20 shrink-0"
+            className="p-2 sm:p-3 bg-primary rounded-lg sm:rounded-xl shadow-lg shadow-primary/20 shrink-0"
           >
             {getPlatformIcon()}
           </motion.div>
-          <h3 className="text-sm sm:text-xl font-black uppercase tracking-wider sm:tracking-widest text-white">{platform}</h3>
+          <h3 className="text-sm sm:text-xl font-black uppercase tracking-wider sm:tracking-widest text-foreground">{platform}</h3>
         </div>
-        <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-white/5 rounded-full border border-white/10">
+        <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-accent/5 rounded-full border border-border">
           {isCampaignMode && (
-            <span className="text-[9px] sm:text-[10px] font-black text-primary uppercase tracking-wider sm:tracking-widest pr-2 border-r border-white/10 mr-1">
+            <span className="text-[9px] sm:text-[10px] font-black text-accent uppercase tracking-wider sm:tracking-widest pr-2 border-r border-border mr-1">
               DAY {currentIndex + 1}
             </span>
           )}
-          <span className="text-[9px] sm:text-[10px] font-black text-white/40 uppercase tracking-wider sm:tracking-widest">
-            {current.characterCount} <span className="text-white/20 hidden sm:inline">CHARS</span>
+          <span className="text-[9px] sm:text-[10px] font-black text-accent/40 uppercase tracking-wider sm:tracking-widest">
+            {current.characterCount} <span className="text-accent/20 hidden sm:inline">CHARS</span>
           </span>
           <button
             onClick={() => setIsEditing(true)}
-            className="ml-1 sm:ml-2 p-1 hover:bg-white/10 rounded-lg text-white/30 hover:text-white transition-all group/edit"
+            className="ml-1 sm:ml-2 p-1 hover:bg-accent/10 rounded-lg text-accent/40 hover:text-accent transition-all group/edit"
             title="Edit variation"
           >
             <Edit2 className="h-3 w-3 group-hover/edit:scale-110 transition-transform" />
@@ -217,19 +217,19 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
       <div className="flex flex-col gap-3 sm:gap-4">
         {/* Variation Navigation */}
         {variations.length > 1 && (
-          <div className="flex items-center justify-between bg-white/5 rounded-xl sm:rounded-2xl p-1.5 sm:p-2 border border-white/5">
+          <div className="flex items-center justify-between bg-accent/5 rounded-xl sm:rounded-2xl p-1.5 sm:p-2 border border-border">
             <button
               onClick={() => setCurrentIndex(Math.max(0, currentIndex - 1))}
               disabled={currentIndex === 0}
-              className="p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-white/5 disabled:opacity-20 transition-colors"
+              className="p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-accent/10 disabled:opacity-20 transition-colors"
             >
-              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
             </button>
             <div className="flex gap-1.5 sm:gap-2">
               {variations.map((_, idx) => (
                 <div
                   key={idx}
-                  className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 sm:w-8 bg-primary shadow-[0_0_10px_rgba(236,88,0,0.5)]' : 'w-1 sm:w-1.5 bg-white/10'
+                  className={`h-1 sm:h-1.5 rounded-full transition-all duration-300 ${idx === currentIndex ? 'w-6 sm:w-8 bg-accent shadow-[0_0_10px_rgba(13,148,136,0.3)]' : 'w-1 sm:w-1.5 bg-accent/10'
                     }`}
                 />
               ))}
@@ -237,9 +237,9 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
             <button
               onClick={() => setCurrentIndex(Math.min(variations.length - 1, currentIndex + 1))}
               disabled={currentIndex === variations.length - 1}
-              className="p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-white/5 disabled:opacity-20 transition-colors"
+              className="p-2 sm:p-3 rounded-lg sm:rounded-xl hover:bg-accent/10 disabled:opacity-20 transition-colors"
             >
-              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
+              <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5 text-accent" />
             </button>
           </div>
         )}
@@ -252,8 +252,8 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
             className={`
               flex items-center justify-center gap-2 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase transition-all
               ${copied
-                ? 'bg-green-500/20 text-green-400 border border-green-500/50'
-                : 'bg-white/5 text-white/40 border border-white/10 hover:border-white/20 hover:text-white'
+                ? 'bg-accent/10 text-accent border border-accent/20'
+                : 'bg-white/60 backdrop-blur-lg text-accent/40 border border-border hover:border-accent/30 hover:text-foreground'
               }
             `}
           >
@@ -267,8 +267,8 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
             onClick={handleStage}
             className={`flex items-center justify-center gap-2 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase transition-all
               ${isStaged
-                ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/50'
-                : 'bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20'
+                ? 'bg-accent/10 text-accent border border-accent/20'
+                : 'bg-white/60 backdrop-blur-lg text-primary border border-primary/20 hover:bg-primary/5'
               }`}
           >
             <AnimatePresence mode="wait">

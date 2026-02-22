@@ -83,7 +83,7 @@ export default function SignUp() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center px-4 py-8 relative overflow-hidden font-sans">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-8 relative overflow-hidden font-sans">
       {/* Background glows */}
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-primary/10 blur-[120px] pointer-events-none rounded-full translate-x-1/2 -translate-y-1/3" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-accent/5 blur-[120px] pointer-events-none rounded-full -translate-x-1/2 translate-y-1/3" />
@@ -94,7 +94,7 @@ export default function SignUp() {
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className="w-full max-w-sm relative z-10"
       >
-        <div className="glass-card rounded-2xl p-6 border-white/5 shadow-2xl relative overflow-hidden">
+        <div className="glass-card rounded-2xl p-6 border-gray-200 shadow-2xl relative overflow-hidden">
           {/* Top accent line */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
@@ -104,8 +104,8 @@ export default function SignUp() {
               <Sparkles className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-black text-white tracking-widest uppercase leading-none">DraftRapid</h1>
-              <p className="text-white/30 text-[10px] font-bold tracking-[0.2em] uppercase mt-0.5">Intelligence for creators</p>
+              <h1 className="text-lg font-black text-gray-900 tracking-widest uppercase leading-none">DraftRapid</h1>
+              <p className="text-gray-400 text-[10px] font-bold tracking-[0.2em] uppercase mt-0.5">Intelligence for creators</p>
             </div>
           </div>
 
@@ -122,7 +122,7 @@ export default function SignUp() {
                   <CheckCircle2 className="h-8 w-8 text-green-400" />
                 </div>
                 <h3 className="text-base font-black text-white tracking-wide uppercase mb-2">Check your inbox</h3>
-                <p className="text-white/40 text-sm leading-relaxed mb-5">
+                <p className="text-gray-400 text-sm leading-relaxed mb-5">
                   We sent a verification link to{' '}
                   <span className="text-white font-medium">{email}</span>.
                 </p>
@@ -141,8 +141,8 @@ export default function SignUp() {
             ) : (
               /* Sign-up form state */
               <motion.div key="form">
-                <h2 className="text-xl font-black text-white mb-1">Create account</h2>
-                <p className="text-white/40 text-sm mb-5">Start creating better content today</p>
+                <h2 className="text-xl font-black text-gray-900 mb-1">Create account</h2>
+                <p className="text-gray-400 text-sm mb-5">Start creating better content today</p>
 
                 {/* Error */}
                 <AnimatePresence mode="wait">
@@ -186,14 +186,14 @@ export default function SignUp() {
                     <div className="w-full border-t border-white/8" />
                   </div>
                   <div className="relative flex justify-center">
-                    <span className="px-3 bg-[#17171B] text-white/25 text-[11px] font-semibold tracking-widest uppercase">or</span>
+                    <span className="px-3 bg-[#17171B] text-gray-300 text-[11px] font-semibold tracking-widest uppercase">or</span>
                   </div>
                 </div>
 
                 {/* Email form */}
                 <form onSubmit={handleEmailSignUp} className="space-y-3">
                   <div>
-                    <label className="flex items-center gap-1.5 text-[10px] font-black text-white/35 tracking-[0.15em] uppercase mb-1.5 ml-0.5">
+                    <label className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 tracking-[0.15em] uppercase mb-1.5 ml-0.5">
                       <Mail className="h-2.5 w-2.5" /> Email
                     </label>
                     <input
@@ -201,13 +201,13 @@ export default function SignUp() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       required
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/40 text-white text-sm font-medium transition-all outline-none placeholder-white/15"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/10 focus:border-primary/40 text-gray-900 text-sm font-medium transition-all outline-none placeholder-gray-300"
                       placeholder="you@example.com"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-1.5 text-[10px] font-black text-white/35 tracking-[0.15em] uppercase mb-1.5 ml-0.5">
+                    <label className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 tracking-[0.15em] uppercase mb-1.5 ml-0.5">
                       <Lock className="h-2.5 w-2.5" /> Password
                     </label>
                     <input
@@ -215,13 +215,13 @@ export default function SignUp() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       required
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/40 text-white text-sm font-medium transition-all outline-none placeholder-white/15"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/10 focus:border-primary/40 text-gray-900 text-sm font-medium transition-all outline-none placeholder-gray-300"
                       placeholder="Min. 6 characters"
                     />
                   </div>
 
                   <div>
-                    <label className="flex items-center gap-1.5 text-[10px] font-black text-white/35 tracking-[0.15em] uppercase mb-1.5 ml-0.5">
+                    <label className="flex items-center gap-1.5 text-[10px] font-black text-gray-400 tracking-[0.15em] uppercase mb-1.5 ml-0.5">
                       <Lock className="h-2.5 w-2.5" /> Confirm Password
                     </label>
                     <input
@@ -229,7 +229,7 @@ export default function SignUp() {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       required
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/40 text-white text-sm font-medium transition-all outline-none placeholder-white/15"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary/10 focus:border-primary/40 text-gray-900 text-sm font-medium transition-all outline-none placeholder-gray-300"
                       placeholder="Repeat password"
                     />
                   </div>
@@ -240,7 +240,7 @@ export default function SignUp() {
                     whileTap={{ scale: 0.98 }}
                     className="w-full premium-gradient text-white font-bold py-3 px-5 rounded-xl transition-all shadow-lg shadow-primary/20 flex items-center justify-center gap-2 text-sm group relative overflow-hidden mt-1"
                   >
-                    <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
+                    <div className="absolute inset-0 bg-gray-100 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
                     {isLoading ? (
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-white/30 border-t-white" />
                     ) : (
@@ -252,7 +252,7 @@ export default function SignUp() {
                   </motion.button>
                 </form>
 
-                <p className="text-[11px] text-white/30 font-medium text-center mt-5">
+                <p className="text-[11px] text-gray-400 font-medium text-center mt-5">
                   Already have an account?{' '}
                   <Link href="/auth/signin" className="text-primary hover:text-primary/80 font-bold transition-colors">
                     Sign in
@@ -263,7 +263,7 @@ export default function SignUp() {
           </AnimatePresence>
         </div>
 
-        <p className="text-center text-[9px] text-white/10 font-bold tracking-[0.3em] uppercase mt-5">
+        <p className="text-center text-[9px] text-gray-200 font-bold tracking-[0.3em] uppercase mt-5">
           Secure · Encrypted · Private
         </p>
       </motion.div>

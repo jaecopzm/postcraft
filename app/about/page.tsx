@@ -19,7 +19,7 @@ const itemVariants: Variants = {
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen bg-[#050505] text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
+        <div className="min-h-screen bg-background text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
             {/* Cinematic Background Artifacts */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/10 blur-[150px] pointer-events-none rounded-full opacity-50" />
             <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-accent/5 blur-[120px] pointer-events-none rounded-full" />
@@ -40,18 +40,18 @@ export default function AboutPage() {
                         <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
                             NARRATING THE <span className="text-gradient">FUTURE</span>
                         </motion.h1>
-                        <motion.p variants={itemVariants} className="text-xl md:text-2xl text-white/40 font-medium max-w-2xl mx-auto leading-relaxed">
+                        <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
                             DraftRapid isn't just a tool; it's a Neural Forge designed to bridge the gap between human creativity and machine intelligence.
                         </motion.p>
                     </section>
 
                     {/* Mission Section */}
                     <section className="grid md:grid-cols-2 gap-12 items-center">
-                        <motion.div variants={itemVariants} className="glass-card p-10 rounded-[3rem] border-white/5 relative overflow-hidden group">
+                        <motion.div variants={itemVariants} className="glass-card p-10 rounded-2xl border-gray-200 relative overflow-hidden group">
                             <div className="absolute top-0 left-0 w-full h-1 premium-gradient opacity-10" />
                             <div className="absolute top-0 right-0 w-32 h-32 premium-gradient blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity" />
                             <h2 className="text-3xl font-black tracking-tighter uppercase mb-6">Our Mission</h2>
-                            <p className="text-white/50 text-lg leading-relaxed mb-8">
+                            <p className="text-gray-500 text-lg leading-relaxed mb-8">
                                 We empower creators, entrepreneurs, and visionaries to command the digital landscape with precision. Our mission is to automate the mundane and elevate the exceptional, allowing you to focus on the impact of your message, not the friction of its creation.
                             </p>
                             <div className="flex items-center gap-4 text-primary">
@@ -67,12 +67,12 @@ export default function AboutPage() {
                                 { icon: ShieldCheck, label: 'Pure Integrity', desc: 'Maintaining the authentic essence of your brand voice.' }
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-6 items-start">
-                                    <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center shrink-0">
+                                    <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center shrink-0">
                                         <item.icon className="h-6 w-6 text-primary" />
                                     </div>
                                     <div>
                                         <h3 className="text-lg font-black tracking-widest uppercase mb-1">{item.label}</h3>
-                                        <p className="text-white/30 text-sm leading-relaxed">{item.desc}</p>
+                                        <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                                     </div>
                                 </div>
                             ))}
@@ -81,12 +81,12 @@ export default function AboutPage() {
 
                     {/* The Neural Forge */}
                     <section className="text-center space-y-12">
-                        <motion.div variants={itemVariants} className="glass-card p-16 rounded-[4rem] border-primary/20 relative overflow-hidden">
+                        <motion.div variants={itemVariants} className="glass-card p-16 rounded-3xl border-primary/20 relative overflow-hidden">
                             <div className="absolute inset-0 premium-gradient opacity-5" />
                             <div className="relative z-10">
                                 <Activity className="h-16 w-16 text-primary mx-auto mb-8 animate-pulse" />
                                 <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-6">The Neural Forge</h2>
-                                <p className="text-lg text-white/40 max-w-xl mx-auto leading-relaxed mb-10">
+                                <p className="text-lg text-gray-400 max-w-xl mx-auto leading-relaxed mb-10">
                                     Built on top of cutting-edge LLM architectures, DraftRapid is continuously evolving. We're not just creating content; we're refining the way humanity interacts with information.
                                 </p>
                                 <Link href="/auth/signup" className="inline-flex items-center gap-3 px-10 py-5 premium-gradient rounded-full text-white text-[10px] font-black tracking-[0.3em] uppercase shadow-2xl shadow-primary/20 hover:scale-105 transition-all">
@@ -98,7 +98,7 @@ export default function AboutPage() {
 
                     {/* Footer Navigation Link */}
                     <motion.div variants={itemVariants} className="text-center pt-10">
-                        <Link href="/" className="text-white/20 hover:text-white transition-colors text-xs font-black tracking-[0.3em] uppercase">
+                        <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black tracking-[0.3em] uppercase">
                             ← Return to Matrix
                         </Link>
                     </motion.div>

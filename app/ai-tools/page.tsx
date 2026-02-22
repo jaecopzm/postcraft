@@ -91,8 +91,8 @@ export default function AIEnhancementsPage() {
           <Zap className="h-5 w-5 sm:h-7 sm:w-7 text-white" />
         </div>
         <div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-gradient tracking-tight">AI Enhancements</h1>
-          <p className="text-white/40 font-medium text-xs sm:text-base hidden sm:block">Smart suggestions to boost your content</p>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-gradient tracking-tight uppercase">AI <span className="text-foreground">Enhancements</span></h1>
+          <p className="text-accent/40 font-medium text-xs sm:text-base hidden sm:block">Smart suggestions to boost your content</p>
         </div>
       </div>
 
@@ -107,7 +107,7 @@ export default function AIEnhancementsPage() {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`relative flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-black tracking-wider transition-all ${activeTab === tab.id ? 'text-white' : 'text-white/30 hover:text-white/60'
+            className={`relative flex-1 flex items-center justify-center gap-1.5 sm:gap-2 px-2 sm:px-4 py-2 sm:py-3 rounded-lg sm:rounded-xl text-xs sm:text-sm font-black tracking-wider transition-all ${activeTab === tab.id ? 'text-white' : 'text-accent/30 hover:text-accent hover:bg-accent/5'
               }`}
           >
             {activeTab === tab.id && (
@@ -126,9 +126,9 @@ export default function AIEnhancementsPage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-white/5"
+        className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-border"
       >
-        <label className="block text-[10px] sm:text-xs font-black text-white/40 uppercase tracking-widest mb-2 sm:mb-3">
+        <label className="block text-[10px] sm:text-xs font-black text-accent/30 uppercase tracking-widest mb-2 sm:mb-3">
           {activeTab === 'hashtags' && 'Enter your topic or keywords'}
           {activeTab === 'emojis' && 'Describe your content mood'}
           {activeTab === 'cta' && 'What action do you want?'}
@@ -145,7 +145,7 @@ export default function AIEnhancementsPage() {
                 activeTab === 'cta' ? 'e.g., get more engagement' :
                   'e.g., "Love this post! How do I start?"'
           }
-          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-white/5 border border-white/10 rounded-xl focus:ring-2 focus:ring-primary/20 focus:border-primary/50 text-white text-sm sm:text-base placeholder-white/20 mb-3 sm:mb-4 outline-none transition-all"
+          className="w-full px-3 sm:px-4 py-2.5 sm:py-3 bg-accent/5 border border-border rounded-xl focus:ring-4 focus:ring-accent/5 focus:border-accent/40 text-foreground text-sm sm:text-base placeholder-accent/20 mb-3 sm:mb-4 outline-none transition-all"
         />
         <button
           onClick={handleGenerate}
@@ -177,9 +177,9 @@ export default function AIEnhancementsPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-white/5"
+            className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-border"
           >
-            <h3 className="text-base sm:text-xl font-black text-white mb-3 sm:mb-4 uppercase tracking-wider">Suggestions</h3>
+            <h3 className="text-base sm:text-xl font-black text-foreground mb-3 sm:mb-4 uppercase tracking-wider">Suggestions</h3>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
               {results.map((item, i) => (
                 <motion.button
@@ -188,15 +188,15 @@ export default function AIEnhancementsPage() {
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: i * 0.05 }}
                   onClick={() => copyToClipboard(item)}
-                  className="flex items-center justify-between gap-2 p-2.5 sm:p-3 bg-white/[0.03] border border-white/10 hover:border-primary/50 hover:bg-white/[0.06] rounded-lg sm:rounded-xl transition-all group"
+                  className="flex items-center justify-between gap-2 p-2.5 sm:p-3 bg-accent/5 border border-border hover:border-accent/30 hover:bg-white rounded-lg sm:rounded-xl transition-all group"
                 >
-                  <span className="text-white/70 group-hover:text-white text-xs sm:text-sm font-medium truncate">
+                  <span className="text-accent/60 group-hover:text-foreground text-xs sm:text-sm font-medium truncate">
                     {item}
                   </span>
                   {copied === item ? (
-                    <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-400 flex-shrink-0" />
+                    <Check className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-green-500 flex-shrink-0" />
                   ) : (
-                    <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-white/20 group-hover:text-primary flex-shrink-0" />
+                    <Copy className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-accent/20 group-hover:text-accent flex-shrink-0" />
                   )}
                 </motion.button>
               ))}

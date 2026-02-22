@@ -182,8 +182,8 @@ export default function ExportPage() {
           <Package className="h-5 w-5 sm:h-7 sm:w-7 text-white" />
         </div>
         <div>
-          <h1 className="text-2xl sm:text-4xl font-extrabold text-gradient tracking-tight">Export & Integration</h1>
-          <p className="text-white/40 font-medium text-xs sm:text-base hidden sm:block">Export your generated content in multiple formats</p>
+          <h1 className="text-2xl sm:text-4xl font-extrabold text-gradient tracking-tight uppercase">Export <span className="text-foreground">& Integration</span></h1>
+          <p className="text-accent/60 font-medium text-sm sm:text-base hidden sm:block">Export your generated content in multiple formats</p>
         </div>
       </div>
 
@@ -192,18 +192,18 @@ export default function ExportPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="flex flex-col items-center justify-center py-20 sm:py-32 glass-card rounded-[2.5rem] border-dashed border-white/10 text-center px-8"
+          className="flex flex-col items-center justify-center py-20 sm:py-32 glass-card rounded-2xl border-dashed border-border text-center px-8"
         >
-          <div className="h-20 w-20 sm:h-28 sm:w-28 bg-white/[0.03] rounded-[2rem] flex items-center justify-center mb-8 relative border border-white/5">
-            <Package className="h-10 w-10 sm:h-14 sm:w-14 text-white/10" />
+          <div className="h-20 w-20 sm:h-28 sm:w-28 bg-accent/5 rounded-2xl flex items-center justify-center mb-8 relative border border-accent/10">
+            <Package className="h-10 w-10 sm:h-14 sm:w-14 text-accent/10" />
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 15, repeat: Infinity, ease: 'linear' }}
-              className="absolute inset-[-10px] border border-dashed border-white/5 rounded-full"
+              className="absolute inset-[-10px] border border-dashed border-border rounded-full"
             />
           </div>
-          <h3 className="text-2xl sm:text-3xl font-black text-white tracking-tight mb-3">Nothing to Export</h3>
-          <p className="text-white/30 font-medium text-sm max-w-xs leading-relaxed mb-8">
+          <h3 className="text-2xl sm:text-3xl font-black text-foreground tracking-tight mb-3 uppercase">Nothing to Export</h3>
+          <p className="text-accent/40 font-medium text-sm max-w-xs leading-relaxed mb-8">
             Generate some content first and it'll be ready to export here.
           </p>
           <Link
@@ -219,15 +219,15 @@ export default function ExportPage() {
         <>
           {/* Stats bar & Filter */}
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-black tracking-widest text-white/20 uppercase">
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-[10px] sm:text-[11px] font-black tracking-widest text-accent/30 uppercase">
               <span>{filteredContent.length} posts ready</span>
-              <div className="h-4 w-px bg-white/10 hidden sm:block" />
+              <div className="h-4 w-px bg-accent/10 hidden sm:block" />
               <span>{new Set(filteredContent.map(e => e.platform)).size} platforms</span>
-              <div className="h-4 w-px bg-white/10 hidden sm:block" />
+              <div className="h-4 w-px bg-accent/10 hidden sm:block" />
               <span>{new Set(filteredContent.map(e => e.topic)).size} topics</span>
             </div>
 
-            <div className="flex bg-white/5 border border-white/10 rounded-xl p-1 shrink-0 overflow-x-auto no-scrollbar">
+            <div className="flex bg-accent/5 border border-border rounded-xl p-1 shrink-0 overflow-x-auto no-scrollbar">
               {[
                 { id: '7d', label: '7D' },
                 { id: '30d', label: '30D' },
@@ -239,7 +239,7 @@ export default function ExportPage() {
                   onClick={() => setDateRange(range.id as any)}
                   className={`px-3 py-1.5 text-[10px] font-black tracking-widest uppercase rounded-lg transition-all ${dateRange === range.id
                     ? 'bg-primary text-white shadow-lg shadow-primary/20'
-                    : 'text-white/40 hover:text-white/70 hover:bg-white/5'
+                    : 'text-accent/30 hover:text-accent hover:bg-accent/5'
                     }`}
                 >
                   {range.label}
@@ -257,21 +257,21 @@ export default function ExportPage() {
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setSelectedFormat(format.id as any)}
                 className={`relative p-4 sm:p-6 rounded-xl sm:rounded-2xl border transition-all ${selectedFormat === format.id
-                  ? 'border-primary/50 bg-primary/10'
-                  : 'glass-card border-white/5 hover:border-white/10'
+                  ? 'border-accent/40 bg-accent/5'
+                  : 'glass-card border-border hover:border-accent/20'
                   }`}
               >
                 {selectedFormat === format.id && (
                   <motion.div
                     layoutId="selected-format"
-                    className="absolute inset-0 bg-primary/5 rounded-xl sm:rounded-2xl border-2 border-primary/30"
+                    className="absolute inset-0 bg-accent/5 rounded-xl sm:rounded-2xl border-2 border-accent/20"
                   />
                 )}
                 <div className="relative z-10">
-                  <format.icon className={`h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-3 ${selectedFormat === format.id ? 'text-primary' : 'text-white/40'
+                  <format.icon className={`h-6 w-6 sm:h-8 sm:w-8 mb-2 sm:mb-3 ${selectedFormat === format.id ? 'text-accent' : 'text-accent/20'
                     }`} />
-                  <h3 className="text-sm sm:text-lg font-black text-white mb-0.5 sm:mb-1 uppercase tracking-wider">{format.label}</h3>
-                  <p className="text-xs sm:text-sm text-white/40 font-medium">{format.desc}</p>
+                  <h3 className="text-sm sm:text-lg font-black text-foreground mb-0.5 sm:mb-1 uppercase tracking-wider">{format.label}</h3>
+                  <p className="text-xs sm:text-sm text-accent/40 font-medium">{format.desc}</p>
                 </div>
               </motion.button>
             ))}
@@ -281,11 +281,11 @@ export default function ExportPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-white/5"
+            className="glass-card rounded-xl sm:rounded-2xl p-4 sm:p-6 border-border"
           >
             <div className="flex items-center justify-between mb-3 sm:mb-4">
-              <h3 className="text-base sm:text-xl font-black text-white uppercase tracking-wider">Preview</h3>
-              <span className="text-[10px] font-black text-white/20 uppercase tracking-widest">
+              <h3 className="text-base sm:text-xl font-black text-foreground uppercase tracking-wider">Preview</h3>
+              <span className="text-[10px] font-black text-accent/20 uppercase tracking-widest">
                 Showing {Math.min(filteredContent.length, 10)} of {filteredContent.length}
               </span>
             </div>
@@ -296,18 +296,18 @@ export default function ExportPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.05 }}
-                  className="bg-white/[0.03] border border-white/10 rounded-lg sm:rounded-xl p-3 sm:p-4 hover:bg-white/[0.06] transition-all"
+                  className="bg-accent/5 border border-border rounded-lg sm:rounded-xl p-3 sm:p-4 hover:bg-white transition-all"
                 >
                   <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                     <div className="flex items-center gap-3">
                       <span className="text-xs sm:text-sm font-black text-primary uppercase tracking-wider">{item.platform}</span>
                       {item.topic && (
-                        <span className="text-[10px] font-bold text-white/25 uppercase tracking-widest truncate max-w-[150px]">{item.topic}</span>
+                        <span className="text-[10px] font-bold text-accent/30 uppercase tracking-widest truncate max-w-[150px]">{item.topic}</span>
                       )}
                     </div>
-                    <span className="text-[10px] sm:text-xs text-white/40 font-medium shrink-0">{item.date}</span>
+                    <span className="text-[10px] sm:text-xs text-accent/20 font-medium shrink-0">{item.date}</span>
                   </div>
-                  <p className="text-xs sm:text-sm text-white/70 font-medium line-clamp-2">{item.content}</p>
+                  <p className="text-xs sm:text-sm text-accent/60 font-medium line-clamp-2">{item.content}</p>
                 </motion.div>
               ))}
             </div>

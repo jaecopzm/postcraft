@@ -63,17 +63,17 @@ export default function PlatformPreview({ platform, content, characterCount, ini
     switch (platform) {
       case 'twitter':
         return (
-          <div className="bg-[#000] border border-white/5 rounded-xl p-4 shadow-xl">
+          <div className="bg-[#000] border border-gray-200 rounded-xl p-4 shadow-xl">
             <div className="flex items-start gap-3">
-              <div className="w-10 h-10 bg-white/5 rounded-full flex-shrink-0 border border-white/10"></div>
+              <div className="w-10 h-10 bg-gray-50 rounded-full flex-shrink-0 border border-gray-200"></div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 mb-1 truncate">
                   <span className="font-bold text-white text-[13px]">User</span>
-                  <span className="text-white/30 text-[13px]">@handle</span>
+                  <span className="text-gray-400 text-[13px]">@handle</span>
                 </div>
                 <p className={`text-white text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-6' : ''}`}>{content}</p>
                 {content.length > 200 && (
-                  <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-1">
+                  <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-900 text-[10px] font-bold mt-1">
                     {expanded ? 'show less' : '... more'}
                   </button>
                 )}
@@ -84,17 +84,17 @@ export default function PlatformPreview({ platform, content, characterCount, ini
 
       case 'linkedin':
         return (
-          <div className="bg-[#1B1B1F] border border-white/5 rounded-xl p-4 shadow-xl">
+          <div className="bg-[#1B1B1F] border border-gray-200 rounded-xl p-4 shadow-xl">
             <div className="flex items-start gap-3 mb-4">
-              <div className="w-10 h-10 bg-white/5 rounded flex-shrink-0 border border-white/10"></div>
+              <div className="w-10 h-10 bg-gray-50 rounded flex-shrink-0 border border-gray-200"></div>
               <div className="min-w-0">
                 <div className="font-bold text-white text-[13px] truncate">Professional Profile</div>
-                <div className="text-white/30 text-[11px] truncate">Expert Specialist</div>
+                <div className="text-gray-400 text-[11px] truncate">Expert Specialist</div>
               </div>
             </div>
-            <p className={`text-white/90 text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
+            <p className={`text-gray-800 text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
             {content.length > 300 && (
-              <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-2">
+              <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-900 text-[10px] font-bold mt-2">
                 {expanded ? 'show less' : '... more'}
               </button>
             )}
@@ -103,21 +103,21 @@ export default function PlatformPreview({ platform, content, characterCount, ini
 
       case 'instagram':
         return (
-          <div className="bg-[#000] border border-white/5 rounded-xl overflow-hidden shadow-xl">
-            <div className="flex items-center gap-2 p-3 border-b border-white/5">
+          <div className="bg-[#000] border border-gray-200 rounded-xl overflow-hidden shadow-xl">
+            <div className="flex items-center gap-2 p-3 border-b border-gray-200">
               <div className="w-6 h-6 bg-gradient-to-tr from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] rounded-full p-[1px]">
                 <div className="w-full h-full rounded-full bg-black border-2 border-black"></div>
               </div>
               <span className="font-bold text-white text-[12px]">username</span>
             </div>
-            <div className="aspect-square bg-white/5 flex items-center justify-center relative">
+            <div className="aspect-square bg-gray-50 flex items-center justify-center relative">
               <div className="absolute inset-0 bg-primary/5 blur-sm opacity-50" />
-              <span className="text-white/10 text-[10px] font-black tracking-widest uppercase relative z-10">Image</span>
+              <span className="text-gray-200 text-[10px] font-black tracking-widest uppercase relative z-10">Image</span>
             </div>
             <div className="p-3">
-              <p className={`text-white/80 text-[12px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 150 ? 'line-clamp-3' : ''}`}>{content}</p>
+              <p className={`text-gray-700 text-[12px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 150 ? 'line-clamp-3' : ''}`}>{content}</p>
               {content.length > 150 && (
-                <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-1">
+                <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-900 text-[10px] font-bold mt-1">
                   {expanded ? 'show less' : '... more'}
                 </button>
               )}
@@ -127,16 +127,16 @@ export default function PlatformPreview({ platform, content, characterCount, ini
 
       case 'tiktok':
         return (
-          <div className="bg-[#000] rounded-xl p-4 border border-white/10 relative overflow-hidden aspect-[9/16] min-h-[240px]">
+          <div className="bg-[#000] rounded-xl p-4 border border-gray-200 relative overflow-hidden aspect-[9/16] min-h-[240px]">
             <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent z-10" />
             <div className="absolute bottom-4 left-4 right-4 z-20">
               <div className="flex items-center gap-2 mb-2">
-                <div className="w-7 h-7 bg-white/10 rounded-full border border-white/20"></div>
+                <div className="w-7 h-7 bg-gray-100 rounded-full border border-gray-300"></div>
                 <span className="font-bold text-white text-[12px]">@user</span>
               </div>
               <p className={`text-white text-[12px] leading-relaxed whitespace-pre-wrap ${!expanded && content.length > 150 ? 'line-clamp-3' : ''}`}>{content}</p>
               {content.length > 150 && (
-                <button onClick={() => setExpanded(!expanded)} className="text-white/40 hover:text-white text-[10px] font-bold mt-1 relative z-30">
+                <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-900 text-[10px] font-bold mt-1 relative z-30">
                   {expanded ? 'show less' : '... more'}
                 </button>
               )}
@@ -146,10 +146,10 @@ export default function PlatformPreview({ platform, content, characterCount, ini
 
       default:
         return (
-          <div className="bg-white/5 border border-white/5 rounded-xl p-4 backdrop-blur-md">
-            <p className={`text-white/70 text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
+          <div className="bg-gray-50 border border-gray-200 rounded-xl p-4 backdrop-blur-md">
+            <p className={`text-gray-600 text-[13px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 300 ? 'line-clamp-6' : ''}`}>{content}</p>
             {content.length > 300 && (
-              <button onClick={() => setExpanded(!expanded)} className="text-white/30 hover:text-white text-[10px] font-bold mt-2">
+              <button onClick={() => setExpanded(!expanded)} className="text-gray-400 hover:text-gray-900 text-[10px] font-bold mt-2">
                 {expanded ? 'show less' : '... more'}
               </button>
             )}
@@ -175,11 +175,11 @@ export default function PlatformPreview({ platform, content, characterCount, ini
           <div className="p-1.5 premium-gradient rounded-lg shadow-lg shadow-primary/20 shrink-0">
             {getPlatformIcon()}
           </div>
-          <h3 className="text-xs font-black uppercase tracking-widest text-white/60 truncate">{platform}</h3>
+          <h3 className="text-xs font-black uppercase tracking-widest text-gray-500 truncate">{platform}</h3>
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
-          <span className="text-[10px] font-bold text-white/30 bg-white/5 px-2 py-0.5 rounded-full border border-white/10 whitespace-nowrap">
+          <span className="text-[10px] font-bold text-gray-400 bg-gray-50 px-2 py-0.5 rounded-full border border-gray-200 whitespace-nowrap">
             {characterCount} <span className="hidden sm:inline">CHARS</span>
           </span>
           {/* Virality score trigger — compact icon button */}
@@ -215,7 +215,7 @@ export default function PlatformPreview({ platform, content, characterCount, ini
         className={`w-full flex items-center justify-center gap-2 py-2.5 rounded-xl font-black text-[10px] tracking-widest uppercase transition-all
           ${copied
             ? 'bg-green-500/20 text-green-400 border border-green-500/30'
-            : 'bg-white/5 text-white/50 border border-white/10 hover:bg-white/10 hover:text-white'
+            : 'bg-gray-50 text-gray-500 border border-gray-200 hover:bg-gray-100 hover:text-gray-900'
           }`}
       >
         {copied ? (
@@ -232,39 +232,39 @@ export default function PlatformPreview({ platform, content, characterCount, ini
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6, scale: 0.97 }}
-            className="p-4 bg-white/5 border border-white/10 rounded-xl space-y-3"
+            className="p-4 bg-gray-50 border border-gray-200 rounded-xl space-y-3"
           >
             <div className="flex items-start justify-between">
               <div className="flex gap-6">
                 <div>
-                  <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Virality</p>
+                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Virality</p>
                   <div className="flex items-end gap-1">
                     <span className={`text-2xl font-black ${scoreColor}`}>{viralityData.score}</span>
-                    <span className="text-xs text-white/40 mb-0.5">/100</span>
+                    <span className="text-xs text-gray-400 mb-0.5">/100</span>
                   </div>
                 </div>
                 <div>
-                  <p className="text-[9px] font-black text-white/40 uppercase tracking-[0.2em] mb-1">Hook Quality</p>
+                  <p className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">Hook Quality</p>
                   <div className="flex items-end gap-1">
                     <span className="text-xl font-black text-white">{viralityData.hookQuality}</span>
-                    <span className="text-xs text-white/40 mb-0.5">/100</span>
+                    <span className="text-xs text-gray-400 mb-0.5">/100</span>
                   </div>
                 </div>
               </div>
               {/* Dismiss button */}
               <button
                 onClick={() => setViralityData(null)}
-                className="p-1 text-white/20 hover:text-white/60 transition-colors rounded-lg hover:bg-white/5"
+                className="p-1 text-gray-300 hover:text-gray-500 transition-colors rounded-lg hover:bg-gray-50"
                 title="Dismiss"
               >
                 <X className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="space-y-2 pt-2 border-t border-white/10">
+            <div className="space-y-2 pt-2 border-t border-gray-200">
               <p className="text-[9px] font-black text-primary uppercase tracking-[0.2em]">AI Suggestions</p>
               {viralityData.tips.map((tip, i) => (
-                <p key={i} className="text-xs text-white/70 flex items-start gap-2">
+                <p key={i} className="text-xs text-gray-600 flex items-start gap-2">
                   <span className="text-primary mt-0.5">•</span> {tip}
                 </p>
               ))}

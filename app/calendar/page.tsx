@@ -150,30 +150,30 @@ export default function CalendarPage() {
             <CalendarDays className="h-4 w-4 text-primary" />
             <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Content Timeline</span>
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-white">CHRONOS <span className="text-gradient">CALENDAR</span></h1>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-foreground">CHRONOS <span className="text-gradient">CALENDAR</span></h1>
         </div>
 
         <div className="flex items-center gap-3">
           <motion.div
-            className="flex items-center gap-1 p-1.5 glass-card border-white/5 rounded-2xl"
+            className="flex items-center gap-1 p-1.5 glass-card border-gray-200 rounded-2xl"
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
           >
-            <button onClick={prevMonth} className="p-2 sm:p-2.5 hover:bg-white/5 rounded-xl transition-colors text-white/50 hover:text-white">
+            <button onClick={prevMonth} className="p-2 sm:p-2.5 hover:bg-accent/5 rounded-xl transition-colors text-accent/40 hover:text-accent">
               <ChevronLeft className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             <div className="px-2 sm:px-4 text-center min-w-[110px] sm:min-w-[140px]">
-              <div className="text-xs sm:text-sm font-black text-white uppercase tracking-widest">{MONTH_NAMES[month]}</div>
-              <div className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">{year}</div>
+              <div className="text-xs sm:text-sm font-black text-foreground uppercase tracking-widest">{MONTH_NAMES[month]}</div>
+              <div className="text-[10px] font-bold text-accent/30 uppercase tracking-[0.2em]">{year}</div>
             </div>
-            <button onClick={nextMonth} className="p-2 sm:p-2.5 hover:bg-white/5 rounded-xl transition-colors text-white/50 hover:text-white">
+            <button onClick={nextMonth} className="p-2 sm:p-2.5 hover:bg-accent/5 rounded-xl transition-colors text-accent/40 hover:text-accent">
               <ChevronRight className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
           </motion.div>
 
           <button
             onClick={() => setCurrentDate(new Date())}
-            className="px-4 sm:px-6 py-3 sm:py-3.5 glass-card border-white/10 text-[10px] font-black tracking-[0.2em] uppercase text-white hover:border-white/30 transition-all rounded-2xl"
+            className="px-4 sm:px-6 py-3 sm:py-3.5 glass-card border-border text-[10px] font-black tracking-[0.2em] uppercase text-foreground hover:border-accent/40 transition-all rounded-2xl"
           >
             Today
           </button>
@@ -186,13 +186,13 @@ export default function CalendarPage() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="glass-card rounded-2xl sm:rounded-[2.5rem] border-white/5 p-4 sm:p-8 relative overflow-hidden"
+            className="glass-card rounded-2xl sm:rounded-2xl border-border p-4 sm:p-8 relative overflow-hidden"
           >
             <div className="absolute top-0 left-0 w-full h-1 premium-gradient opacity-30" />
 
             <div className="grid grid-cols-7 mb-6">
               {DAY_NAMES.map(d => (
-                <div key={d} className="text-center text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">
+                <div key={d} className="text-center text-[10px] font-black text-gray-300 uppercase tracking-[0.3em]">
                   {d}
                 </div>
               ))}
@@ -200,7 +200,7 @@ export default function CalendarPage() {
 
             <div className="grid grid-cols-7 gap-1 sm:gap-3">
               {Array.from({ length: firstDayOfWeek }).map((_, i) => (
-                <div key={`e-${i}`} className="aspect-square rounded-3xl bg-white/[0.02] border border-transparent opacity-30" />
+                <div key={`e-${i}`} className="aspect-square rounded-3xl bg-accent/5 border border-transparent opacity-30" />
               ))}
 
               {Array.from({ length: daysInMonth }).map((_, i) => {
@@ -216,14 +216,14 @@ export default function CalendarPage() {
                     whileTap={{ scale: 0.98 }}
                     onClick={() => setSelectedDate(new Date(year, month, day))}
                     className={`
-                      group relative aspect-square rounded-xl sm:rounded-3xl p-1 sm:p-4 flex flex-col items-center justify-center transition-all border
-                      ${today_
+                        group relative aspect-square rounded-xl sm:rounded-3xl p-1 sm:p-4 flex flex-col items-center justify-center transition-all border
+                        ${today_
                         ? 'premium-gradient text-white border-transparent shadow-xl shadow-primary/20'
                         : sel
-                          ? 'bg-white/10 border-white/20 text-white'
-                          : 'bg-white/[0.03] border-white/5 text-white/30 hover:bg-white/[0.06] hover:border-white/10 hover:text-white'
+                          ? 'bg-accent/10 border-accent/30 text-accent shadow-lg shadow-accent/10'
+                          : 'bg-accent/5 border-border text-accent/30 hover:bg-white hover:border-accent/20 hover:text-foreground'
                       }
-                    `}
+                      `}
                   >
                     <span className="text-sm sm:text-xl font-black tracking-tighter leading-none mb-1 sm:mb-2">{day}</span>
 
@@ -250,16 +250,16 @@ export default function CalendarPage() {
               <motion.div
                 key={i}
                 whileHover={{ y: -5 }}
-                className="glass-card rounded-[2rem] p-6 border-white/5 group overflow-hidden relative"
+                className="glass-card rounded-2xl p-6 border-border group overflow-hidden relative"
               >
                 <div className="absolute top-0 right-0 w-24 h-24 blur-3xl opacity-0 group-hover:opacity-10 transition-opacity" style={{ background: stat.color }} />
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/[0.03] border border-white/5 group-hover:border-white/10 transition-all">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-accent/5 border border-border group-hover:border-accent/20 transition-all">
                     <stat.icon className="h-5 w-5" style={{ color: stat.color }} />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black text-white/20 uppercase tracking-widest mb-1">{stat.platform}</div>
-                    <div className="text-sm font-bold text-white tracking-tight">{stat.time}</div>
+                    <div className="text-[10px] font-black text-accent/30 uppercase tracking-widest mb-1">{stat.platform}</div>
+                    <div className="text-sm font-bold text-foreground tracking-tight">{stat.time}</div>
                   </div>
                 </div>
               </motion.div>
@@ -277,15 +277,15 @@ export default function CalendarPage() {
             className="space-y-6"
           >
             {selectedDate ? (
-              <div className="glass-card rounded-2xl sm:rounded-[2.5rem] border-white/5 p-5 sm:p-8 relative overflow-hidden">
+              <div className="glass-card rounded-2xl sm:rounded-2xl border-border p-5 sm:p-8 relative overflow-hidden">
                 <div className="flex items-center justify-between mb-8">
                   <div>
-                    <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-2">{selectedDate.toLocaleDateString('en-US', { weekday: 'long' })}</div>
-                    <h3 className="text-2xl font-black text-white tracking-tighter">
+                    <div className="text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-2">{selectedDate.toLocaleDateString('en-US', { weekday: 'long' })}</div>
+                    <h3 className="text-2xl font-black text-foreground tracking-tighter">
                       {selectedDate.toLocaleDateString('en-US', { day: 'numeric', month: 'short' })}
                     </h3>
                   </div>
-                  <button onClick={() => setSelectedDate(null)} className="p-3 hover:bg-white/5 rounded-2xl text-white/20 hover:text-white transition-all">
+                  <button onClick={() => setSelectedDate(null)} className="p-3 hover:bg-accent/5 rounded-2xl text-accent/20 hover:text-accent transition-all">
                     <X className="h-5 w-5" />
                   </button>
                 </div>
@@ -301,17 +301,17 @@ export default function CalendarPage() {
                 </motion.button>
 
                 <div className="space-y-4">
-                  <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">SEQUENCE ACTIVE</div>
+                  <div className="text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-4">SEQUENCE ACTIVE</div>
                   {scheduledFor(selectedDate.getDate()).length === 0 ? (
                     <div className="py-16 sm:py-20 text-center flex flex-col items-center justify-center">
-                      <div className="w-16 h-16 rounded-full bg-white/[0.03] flex items-center justify-center mb-4">
-                        <CalendarDays className="h-6 w-6 text-white/20" />
+                      <div className="w-16 h-16 rounded-full bg-accent/5 flex items-center justify-center mb-4">
+                        <CalendarDays className="h-6 w-6 text-accent/20" />
                       </div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-2">Schedule Clear</p>
-                      <p className="text-xs text-white/20 mb-6">No operations scheduled for this sector.</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.2em] text-accent/30 mb-2">Schedule Clear</p>
+                      <p className="text-xs text-accent/40 mb-6">No operations scheduled for this sector.</p>
                       <button
                         onClick={() => setShowAddModal(true)}
-                        className="px-6 py-3 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl text-xs font-black text-white/60 tracking-widest uppercase transition-all flex items-center gap-2"
+                        className="px-6 py-3 bg-accent/5 hover:bg-accent/10 border border-border rounded-xl text-xs font-black text-accent/40 tracking-widest uppercase transition-all flex items-center gap-2"
                       >
                         <Plus className="h-3.5 w-3.5" />
                         Schedule First Post
@@ -320,21 +320,21 @@ export default function CalendarPage() {
                   ) : (
                     <div className="space-y-4">
                       {scheduledFor(selectedDate.getDate()).map(item => (
-                        <div key={item.id} className="p-5 glass-card border-white/10 rounded-3xl relative overflow-hidden group">
+                        <div key={item.id} className="p-5 glass-card border-border rounded-3xl relative overflow-hidden group">
                           <div className="absolute top-0 left-0 bottom-0 w-1 premium-gradient" />
                           <div className="flex items-start justify-between mb-2">
                             <div className="flex items-center gap-3">
                               <span className="text-[10px] font-black uppercase tracking-widest text-primary">{item.platform}</span>
-                              <span className="text-[10px] font-bold text-white/20">{item.time}</span>
+                              <span className="text-[10px] font-bold text-accent/30">{item.time}</span>
                             </div>
                             <button
                               onClick={() => deletePost(item.id)}
-                              className="p-2 hover:bg-red-500/10 rounded-lg text-white/20 hover:text-red-500 transition-all"
+                              className="p-2 hover:bg-red-500/10 rounded-lg text-accent/20 hover:text-red-500 transition-all"
                             >
                               <Trash2 className="h-4 w-4" />
                             </button>
                           </div>
-                          <p className="text-sm font-medium text-white/60 line-clamp-2">{item.content}</p>
+                          <p className="text-sm font-medium text-accent/60 line-clamp-2">{item.content}</p>
                         </div>
                       ))}
                     </div>
@@ -342,23 +342,23 @@ export default function CalendarPage() {
                 </div>
               </div>
             ) : (
-              <div className="glass-card rounded-2xl sm:rounded-[2.5rem] border-white/5 border-dashed p-8 sm:p-12 flex flex-col items-center justify-center text-center">
-                <div className="w-16 h-16 rounded-3xl bg-white/[0.03] flex items-center justify-center mb-6">
-                  <Activity className="h-8 w-8 text-white/20" />
+              <div className="glass-card rounded-2xl sm:rounded-2xl border-border border-dashed p-8 sm:p-12 flex flex-col items-center justify-center text-center">
+                <div className="w-16 h-16 rounded-3xl bg-accent/5 flex items-center justify-center mb-6">
+                  <Activity className="h-8 w-8 text-accent/20" />
                 </div>
-                <h4 className="text-sm font-black text-white/30 uppercase tracking-[0.3em]">SELECT NODE</h4>
-                <p className="text-xs font-medium text-white/10 mt-2">Activate a date cluster to manage operations.</p>
+                <h4 className="text-sm font-black text-accent/30 uppercase tracking-[0.3em]">SELECT NODE</h4>
+                <p className="text-xs font-medium text-accent/20 mt-2">Activate a date cluster to manage operations.</p>
               </div>
             )}
 
             {/* Metadata / Legend */}
-            <div className="glass-card rounded-2xl sm:rounded-[2rem] border-white/5 p-4 sm:p-6">
-              <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-6">SIGNAL SOURCES</div>
+            <div className="glass-card rounded-2xl sm:rounded-2xl border-border p-4 sm:p-6">
+              <div className="text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-6">SIGNAL SOURCES</div>
               <div className="grid grid-cols-2 gap-4">
                 {Object.entries(PLATFORM_META).map(([name, { color }]) => (
                   <div key={name} className="flex items-center gap-3">
                     <div className="h-2 w-2 rounded-full" style={{ background: color }} />
-                    <span className="text-[10px] font-black text-white/40 uppercase tracking-widest">{name}</span>
+                    <span className="text-[10px] font-black text-accent/30 uppercase tracking-widest">{name}</span>
                   </div>
                 ))}
               </div>
@@ -382,22 +382,22 @@ export default function CalendarPage() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="glass-card rounded-3xl p-8 max-w-lg w-full border-white/10"
+              className="glass-card rounded-3xl p-8 max-w-lg w-full border-border"
             >
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-2xl font-black text-white">Schedule Post</h3>
-                <button onClick={() => setShowAddModal(false)} className="p-2 hover:bg-white/5 rounded-xl text-white/40 hover:text-white transition-all">
+                <h3 className="text-2xl font-black text-foreground">Schedule Post</h3>
+                <button onClick={() => setShowAddModal(false)} className="p-2 hover:bg-accent/5 rounded-xl text-accent/20 hover:text-accent transition-all">
                   <X className="h-5 w-5" />
                 </button>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <label className="text-xs font-black text-white/40 uppercase tracking-widest mb-2 block">Platform</label>
+                  <label className="text-xs font-black text-accent/30 uppercase tracking-widest mb-2 block">Platform</label>
                   <select
                     value={newPost.platform}
                     onChange={(e) => setNewPost({ ...newPost, platform: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-medium outline-none focus:border-primary/50 transition-all"
+                    className="w-full px-4 py-3 bg-accent/5 border border-border rounded-xl text-foreground font-medium outline-none focus:border-accent/40 transition-all"
                   >
                     <option value="twitter">Twitter / X</option>
                     <option value="linkedin">LinkedIn</option>
@@ -409,23 +409,23 @@ export default function CalendarPage() {
                 </div>
 
                 <div>
-                  <label className="text-xs font-black text-white/40 uppercase tracking-widest mb-2 block">Time</label>
+                  <label className="text-xs font-black text-accent/30 uppercase tracking-widest mb-2 block">Time</label>
                   <input
                     type="time"
                     value={newPost.time}
                     onChange={(e) => setNewPost({ ...newPost, time: e.target.value })}
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-medium outline-none focus:border-primary/50 transition-all"
+                    className="w-full px-4 py-3 bg-accent/5 border border-border rounded-xl text-foreground font-medium outline-none focus:border-accent/40 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-black text-white/40 uppercase tracking-widest mb-2 block">Content</label>
+                  <label className="text-xs font-black text-accent/30 uppercase tracking-widest mb-2 block">Content</label>
                   <textarea
                     value={newPost.content}
                     onChange={(e) => setNewPost({ ...newPost, content: e.target.value })}
                     rows={4}
                     placeholder="What's on your mind?"
-                    className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white font-medium outline-none focus:border-primary/50 transition-all resize-none placeholder-white/20"
+                    className="w-full px-4 py-3 bg-accent/5 border border-border rounded-xl text-foreground font-medium outline-none focus:border-accent/40 transition-all resize-none placeholder-accent/20"
                   />
                 </div>
 

@@ -207,23 +207,23 @@ export default function StagingQueue() {
                         <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                     </div>
                     <div className="min-w-0">
-                        <h3 className="text-base sm:text-xl font-black text-white tracking-wider sm:tracking-widest uppercase">Staging Queue</h3>
-                        <p className="text-[9px] sm:text-[10px] font-bold text-white/20 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{stagedCount} POSTS AWAITING DEPLOYMENT</p>
+                        <h3 className="text-base sm:text-xl font-black text-foreground tracking-wider sm:tracking-widest uppercase">Staging Queue</h3>
+                        <p className="text-[9px] sm:text-[10px] font-bold text-accent/30 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{stagedCount} POSTS AWAITING DEPLOYMENT</p>
                     </div>
                 </div>
 
                 {stagedCount > 0 && (
                     <button
                         onClick={toggleAll}
-                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 hover:bg-white/10 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-accent/5 border border-border hover:bg-accent/10 transition-colors"
                     >
                         <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${selectedPosts.length === stagedCount && stagedCount > 0
                             ? 'bg-primary border-primary'
-                            : 'border-white/20'
+                            : 'border-gray-300'
                             }`}>
                             {selectedPosts.length === stagedCount && stagedCount > 0 && <Check className="w-3 h-3 text-white" />}
                         </div>
-                        <span className="text-[10px] font-black tracking-widest uppercase text-white/50">
+                        <span className="text-[10px] font-black tracking-widest uppercase text-accent/30">
                             {selectedPosts.length === stagedCount ? 'Deselect All' : 'Select All'}
                         </span>
                     </button>
@@ -236,11 +236,11 @@ export default function StagingQueue() {
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            className="glass-card rounded-3xl p-20 border-white/5 border-dashed flex flex-col items-center justify-center text-center"
+                            className="flex flex-col items-center justify-center py-20 glass-card rounded-2xl border-dashed border-border text-center"
                         >
-                            <Calendar className="h-12 w-12 text-white/10 mb-6" />
-                            <h4 className="text-sm font-black text-white/20 uppercase tracking-[0.3em]">No posts staged</h4>
-                            <p className="text-xs text-white/10 mt-2">Go to the Dashboard to craft and stage content.</p>
+                            <Calendar className="h-10 w-10 text-accent/10 mb-6" />
+                            <h4 className="text-sm font-black text-accent/30 uppercase tracking-[0.3em]">No posts staged</h4>
+                            <p className="text-xs text-accent/20 mt-2">Go to the Dashboard to craft and stage content.</p>
                         </motion.div>
                     ) : (
                         posts.map((post) => (
@@ -251,10 +251,10 @@ export default function StagingQueue() {
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
                                 className={`group glass-card rounded-3xl overflow-hidden transition-all ${post.status === 'live'
-                                    ? 'opacity-50 border-white/5'
+                                    ? 'opacity-50 border-border'
                                     : selectedPosts.includes(post.id)
-                                        ? 'border-primary/50 shadow-[0_0_20px_rgba(236,88,0,0.15)] bg-white/5'
-                                        : 'border-white/5 hover:border-primary/30'
+                                        ? 'border-accent/40 bg-accent/5'
+                                        : 'border-border hover:border-accent/20'
                                     }`}
                                 onClick={() => post.status === 'staged' && toggleSelection(post.id)}
                             >
@@ -264,19 +264,19 @@ export default function StagingQueue() {
                                             {post.status === 'staged' && (
                                                 <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors shrink-0 ${selectedPosts.includes(post.id)
                                                     ? 'bg-primary border-primary'
-                                                    : 'border-white/20 group-hover:border-primary/50'
+                                                    : 'border-gray-300 group-hover:border-primary/50'
                                                     }`}>
                                                     {selectedPosts.includes(post.id) && <Check className="w-3 h-3 text-white" />}
                                                 </div>
                                             )}
-                                            <div className="p-3 bg-white/5 rounded-xl text-white/40 shrink-0">
+                                            <div className="p-3 bg-accent/5 rounded-xl text-accent/30 shrink-0">
                                                 {getPlatformIcon(post.platform)}
                                             </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-xs sm:text-sm font-bold text-white/80 line-clamp-2 sm:line-clamp-3 leading-relaxed">{post.content}</p>
+                                            <p className="text-xs sm:text-sm font-bold text-foreground line-clamp-2 sm:line-clamp-3 leading-relaxed">{post.content}</p>
                                             <div className="flex items-center gap-3 mt-2 sm:mt-3">
-                                                <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.2em]">
+                                                <span className="text-[9px] font-black text-accent/20 uppercase tracking-[0.2em]">
                                                     {new Date(post.stagedAt).toLocaleDateString()}
                                                 </span>
                                                 {post.status === 'live' && (
@@ -291,20 +291,20 @@ export default function StagingQueue() {
                                                 <motion.div
                                                     initial={{ opacity: 0, height: 0 }}
                                                     animate={{ opacity: 1, height: 'auto' }}
-                                                    className="mt-4 p-4 rounded-xl bg-orange-500/10 border border-orange-500/20"
+                                                    className="mt-4 p-4 rounded-xl bg-primary/5 border border-primary/20"
                                                 >
                                                     <div className="flex items-center gap-3 mb-3">
-                                                        <div className="h-10 w-10 shrink-0 rounded-full bg-orange-500/20 flex flex-col items-center justify-center">
-                                                            <span className="text-[10px] font-black tracking-widest text-orange-400 -mb-1">SCORE</span>
-                                                            <span className="text-sm font-black text-white">{analysisResults[post.id].score}</span>
+                                                        <div className="h-10 w-10 shrink-0 rounded-full bg-primary/20 flex flex-col items-center justify-center">
+                                                            <span className="text-[10px] font-black tracking-widest text-primary/80 -mb-1">SCORE</span>
+                                                            <span className="text-sm font-black text-foreground">{analysisResults[post.id].score}</span>
                                                         </div>
-                                                        <p className="text-xs font-bold text-orange-200 uppercase tracking-widest">Virality Potential</p>
+                                                        <p className="text-xs font-bold text-primary/60 uppercase tracking-widest">Virality Potential</p>
                                                     </div>
                                                     <div className="space-y-2">
                                                         {analysisResults[post.id].tips.map((tip, i) => (
                                                             <div key={i} className="flex gap-2">
-                                                                <Zap className="h-3.5 w-3.5 text-orange-400 shrink-0 mt-0.5" />
-                                                                <p className="text-xs text-white/80 leading-relaxed">{tip}</p>
+                                                                <Zap className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
+                                                                <p className="text-xs text-foreground/80 leading-relaxed">{tip}</p>
                                                             </div>
                                                         ))}
                                                     </div>
@@ -313,7 +313,7 @@ export default function StagingQueue() {
                                         </div>
                                     </div>
 
-                                    <div className="w-full border-t border-white/5 pt-5 sm:pt-6">
+                                    <div className="w-full border-t border-border pt-5 sm:pt-6">
                                         {post.status === 'staged' ? (
                                             <div className="flex flex-wrap items-center gap-2 sm:gap-3 w-full">
                                                 <motion.button
@@ -321,15 +321,15 @@ export default function StagingQueue() {
                                                     whileTap={{ scale: 0.98 }}
                                                     onClick={() => handleAnalyze(post.id, post.content, post.platform)}
                                                     disabled={analyzingPostId === post.id}
-                                                    className={`px-4 py-3 sm:px-5 sm:py-4 border text-white rounded-xl font-black text-[9px] sm:text-[10px] tracking-[0.2em] uppercase transition-all shrink-0 flex items-center gap-2 ${analyzingPostId === post.id
-                                                        ? 'bg-transparent border-white/5 opacity-50'
+                                                    className={`px-4 py-3 sm:px-5 sm:py-4 border text-foreground rounded-xl font-black text-[9px] sm:text-[10px] tracking-[0.2em] uppercase transition-all shrink-0 flex items-center gap-2 ${analyzingPostId === post.id
+                                                        ? 'bg-transparent border-border opacity-50'
                                                         : analysisResults[post.id]
-                                                            ? 'bg-orange-500/10 border-orange-500/30 text-orange-400'
-                                                            : 'bg-transparent border-white/10 hover:bg-white/5'
+                                                            ? 'bg-primary/5 border-primary/20 text-primary'
+                                                            : 'bg-transparent border-border hover:bg-accent/5 hover:border-accent/20'
                                                         }`}
                                                 >
                                                     {analyzingPostId === post.id ? (
-                                                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-white/40" />
+                                                        <Loader2 className="h-3.5 w-3.5 sm:h-4 sm:w-4 animate-spin text-accent/20" />
                                                     ) : (
                                                         <Activity className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                                                     )}
@@ -344,7 +344,7 @@ export default function StagingQueue() {
                                                     onClick={() => {
                                                         router.push('/calendar');
                                                     }}
-                                                    className="px-4 py-3 sm:px-5 sm:py-4 bg-white/5 hover:bg-white/10 text-white rounded-xl font-black text-[9px] sm:text-[10px] tracking-[0.2em] uppercase transition-all shrink-0"
+                                                    className="px-4 py-3 sm:px-5 sm:py-4 bg-accent/5 hover:bg-accent/10 border border-border text-accent/40 rounded-xl font-black text-[9px] sm:text-[10px] tracking-[0.2em] uppercase transition-all shrink-0"
                                                 >
                                                     <Calendar className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                                                 </motion.button>
@@ -358,7 +358,7 @@ export default function StagingQueue() {
                                                 </motion.button>
                                             </div>
                                         ) : (
-                                            <div className="w-full text-center px-6 py-3 sm:py-4 bg-white/5 text-white/20 rounded-xl font-black text-[9px] sm:text-[10px] tracking-[0.2em] uppercase border border-white/5">
+                                            <div className="w-full text-center px-6 py-3 sm:py-4 bg-accent/5 text-accent/20 rounded-xl font-black text-[9px] sm:text-[10px] tracking-[0.2em] uppercase border border-border">
                                                 PUBLISHED
                                             </div>
                                         )}
@@ -377,13 +377,13 @@ export default function StagingQueue() {
                         initial={{ opacity: 0, y: 50, scale: 0.95 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 50, scale: 0.95 }}
-                        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-6 py-4 glass-card border border-white/10 rounded-full shadow-2xl shadow-primary/20 backdrop-blur-xl"
+                        className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 px-6 py-4 glass-card border border-border rounded-full shadow-2xl shadow-primary/20 backdrop-blur-xl"
                     >
-                        <div className="flex items-center gap-3 pr-4 border-r border-white/10">
+                        <div className="flex items-center gap-3 pr-4 border-r border-border">
                             <div className="h-6 w-6 rounded bg-primary/20 text-primary flex items-center justify-center font-black text-xs">
                                 {selectedPosts.length}
                             </div>
-                            <span className="text-xs font-black text-white uppercase tracking-widest hidden sm:block">Selected</span>
+                            <span className="text-xs font-black text-foreground uppercase tracking-widest hidden sm:block">Selected</span>
                         </div>
 
                         <div className="flex items-center gap-2">

@@ -138,12 +138,12 @@ export default function BrandVoicePage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4"
+            className="inline-flex items-center gap-3 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-4"
           >
-            <Palette className="h-4 w-4 text-primary" />
-            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Aura Configurator</span>
+            <Palette className="h-4 w-4 text-accent" />
+            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-accent">Aura Configurator</span>
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-white">GENETIC <span className="text-gradient">AURA</span></h1>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-foreground">GENETIC <span className="text-gradient">AURA</span></h1>
         </div>
 
         {!isFormOpen && (
@@ -155,7 +155,7 @@ export default function BrandVoicePage() {
             className={`flex items-center gap-3 px-8 py-4 rounded-2xl font-black text-[10px] tracking-[0.3em] uppercase transition-all
                         ${canCreate
                 ? 'premium-gradient text-white shadow-xl shadow-primary/20'
-                : 'bg-white/5 border border-white/10 text-white/20 cursor-not-allowed'}`}
+                : 'bg-white border border-border text-accent/20 cursor-not-allowed'}`}
           >
             <Plus className="h-4 w-4" />
             SYNTHESIZE NEW CORE
@@ -169,52 +169,52 @@ export default function BrandVoicePage() {
             initial={{ opacity: 0, scale: 0.98, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.98, y: 20 }}
-            className="mb-8 sm:mb-12 glass-card rounded-2xl sm:rounded-[2.5rem] border-white/5 overflow-hidden shadow-2xl relative"
+            className="mb-8 sm:mb-12 glass-card rounded-2xl sm:rounded-2xl border-border overflow-hidden shadow-2xl relative"
           >
             <div className="absolute top-0 left-0 w-full h-1 premium-gradient opacity-30" />
 
-            <div className="flex items-center justify-between p-5 sm:p-8 border-b border-white/5">
+            <div className="flex items-center justify-between p-5 sm:p-8 border-b border-border">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 premium-gradient rounded-xl flex items-center justify-center">
                   <Sparkles className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-black text-white tracking-widest uppercase">
+                  <h3 className="text-lg font-black text-foreground tracking-widest uppercase">
                     {editingId ? 'Edit Profile' : 'Configure Aura'}
                   </h3>
-                  <p className="text-[10px] font-bold text-white/20 uppercase tracking-[0.2em]">Neural Calibration Active</p>
+                  <p className="text-[10px] font-bold text-accent/40 uppercase tracking-[0.2em]">Neural Calibration Active</p>
                 </div>
               </div>
-              <button onClick={handleCancel} className="p-3 hover:bg-white/5 rounded-2xl text-white/20 hover:text-white transition-all">
+              <button onClick={handleCancel} className="p-3 hover:bg-accent/5 rounded-2xl text-accent/40 hover:text-foreground transition-all">
                 <X className="h-5 w-5" />
               </button>
             </div>
 
-            <div className="flex items-center gap-2 p-2 bg-white/5 border-b border-white/5">
+            <div className="flex items-center gap-2 p-2 bg-accent/5 border-b border-border">
               <button
                 onClick={() => setCreationMode('manual')}
-                className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${creationMode === 'manual' ? 'bg-white/10 text-white shadow-xl' : 'text-white/20 hover:text-white/40'}`}
+                className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${creationMode === 'manual' ? 'bg-white text-foreground shadow-sm' : 'text-accent/20 hover:text-accent/40'}`}
               >
                 <LayoutGrid className="h-3.5 w-3.5" /> MANUAL FORGE
               </button>
               <button
                 onClick={() => setCreationMode('harvest')}
-                className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${creationMode === 'harvest' ? 'bg-primary/20 text-primary shadow-xl shadow-primary/10' : 'text-white/20 hover:text-white/40'}`}
+                className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${creationMode === 'harvest' ? 'bg-primary/10 text-primary shadow-sm' : 'text-accent/20 hover:text-accent/40'}`}
               >
                 <BrainCircuit className="h-3.5 w-3.5" /> NEURAL HARVEST
               </button>
             </div>
 
             {creationMode === 'harvest' && (
-              <div className="p-5 sm:p-10 border-b border-white/5 bg-primary/[0.02]">
+              <div className="p-5 sm:p-10 border-b border-border bg-primary/[0.02]">
                 <div className="max-w-2xl mx-auto">
                   <div className="flex items-center gap-4 mb-8">
                     <div className="h-12 w-12 rounded-2xl bg-primary/10 flex items-center justify-center">
                       <BrainCircuit className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-black text-white tracking-widest uppercase">Neural Synchronization</h4>
-                      <p className="text-[10px] font-bold text-white/20 uppercase tracking-widest">Awaiting uplink signal...</p>
+                      <h4 className="text-sm font-black text-foreground tracking-widest uppercase">Neural Synchronization</h4>
+                      <p className="text-[10px] font-bold text-accent/40 uppercase tracking-widest">Awaiting uplink signal...</p>
                     </div>
                   </div>
                   <AuraHarvester onAnalysisComplete={(aura, sourceText) => {
@@ -234,32 +234,32 @@ export default function BrandVoicePage() {
             <div className="p-5 sm:p-10 grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-10">
               <div className="space-y-8">
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
-                    Designation <span className="normal-case tracking-normal text-white/10 font-bold">(Name)</span>
+                  <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
+                    Designation <span className="normal-case tracking-normal text-accent/20 font-bold">(Name)</span>
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
                     placeholder="E.G. SILICON VALLEY NEXUS"
-                    className="w-full px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/10 text-sm font-bold tracking-tight focus:outline-none focus:border-primary/50 focus:ring-4 focus:ring-primary/10 transition-all"
+                    className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
-                    Neural Tone <span className="normal-case tracking-normal text-white/10 font-bold">(Tone)</span>
+                  <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
+                    Neural Tone <span className="normal-case tracking-normal text-accent/20 font-bold">(Tone)</span>
                   </label>
                   <div className="relative">
                     <button
                       onClick={() => setToneOpen(!toneOpen)}
-                      className="w-full flex items-center justify-between px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-sm font-bold text-white transition-all hover:border-white/20 focus:outline-none"
+                      className="w-full flex items-center justify-between px-6 py-4 bg-white border border-border rounded-2xl text-sm font-bold text-foreground transition-all hover:border-accent/20 focus:outline-none"
                     >
                       <div className="flex items-center gap-3">
                         <div className="h-2 w-2 rounded-full" style={{ background: selectedTone?.color }} />
                         <span className="uppercase tracking-widest">{selectedTone?.label}</span>
                       </div>
-                      <ChevronDown className={`h-4 w-4 text-white/20 transition-transform ${toneOpen ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={`h-4 w-4 text-accent/40 transition-transform ${toneOpen ? 'rotate-180' : ''}`} />
                     </button>
                     <AnimatePresence>
                       {toneOpen && (
@@ -267,13 +267,13 @@ export default function BrandVoicePage() {
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: 10 }}
-                          className="absolute z-50 mt-3 w-full glass-card border-white/10 rounded-2xl shadow-2xl overflow-hidden backdrop-blur-3xl"
+                          className="absolute z-50 mt-3 w-full glass-card border-border rounded-2xl shadow-2xl overflow-hidden backdrop-blur-3xl"
                         >
                           {TONE_OPTIONS.map(t => (
                             <button
                               key={t.value}
                               onClick={() => { setFormData({ ...formData, tone: t.value }); setToneOpen(false); }}
-                              className="w-full flex items-center justify-between px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-white/5 transition-colors text-left text-white/50 hover:text-white"
+                              className="w-full flex items-center justify-between px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-accent/5 transition-colors text-left text-accent/40 hover:text-foreground"
                             >
                               <div className="flex items-center gap-3">
                                 <div className="h-2 w-2 rounded-full" style={{ background: t.color }} />
@@ -291,33 +291,33 @@ export default function BrandVoicePage() {
 
               <div className="space-y-8">
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
-                    Semantic Nodes <span className="normal-case tracking-normal text-white/10 font-bold">(Keywords, comma-separated)</span>
+                  <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
+                    Semantic Nodes <span className="normal-case tracking-normal text-accent/20 font-bold">(Keywords, comma-separated)</span>
                   </label>
                   <input
                     type="text"
                     value={formData.keywords}
                     onChange={e => setFormData({ ...formData, keywords: e.target.value })}
                     placeholder="INNOVATIVE, ARCHITECTURAL, BOLD"
-                    className="w-full px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/10 text-sm font-bold tracking-tight focus:outline-none focus:border-primary/50 transition-all"
+                    className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 transition-all"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
-                    Aura Blueprint <span className="normal-case tracking-normal text-white/10 font-bold">(Writing style)</span>
+                  <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
+                    Aura Blueprint <span className="normal-case tracking-normal text-accent/20 font-bold">(Writing style)</span>
                   </label>
                   <textarea
                     value={formData.style}
                     onChange={e => setFormData({ ...formData, style: e.target.value })}
                     placeholder="DESCRIBE THE CORE ESSENCE OF THIS VOICE..."
                     rows={1}
-                    className="w-full px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/10 text-sm font-bold tracking-tight focus:outline-none focus:border-primary/50 transition-all resize-none"
+                    className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 transition-all resize-none"
                   />
                 </div>
 
                 <div>
-                  <label className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                  <label className="flex items-center gap-2 text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
                     Brand Guidelines Context (RAG)
                     <span className="text-[8px] tracking-normal text-primary">OPTIONAL</span>
                   </label>
@@ -326,7 +326,7 @@ export default function BrandVoicePage() {
                     onChange={e => setFormData({ ...formData, brandGuide: e.target.value })}
                     placeholder="PASTE YOUR BRAND GUIDELINES, DO'S AND DON'TS, OR MANIFESTO HERE FOR THE AI TO REFERENCE..."
                     rows={4}
-                    className="w-full px-6 py-4 bg-white/[0.03] border border-white/10 rounded-2xl text-white placeholder-white/10 text-sm font-bold tracking-tight focus:outline-none focus:border-primary/50 transition-all resize-none"
+                    className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 transition-all resize-none"
                   />
                 </div>
               </div>
@@ -343,7 +343,7 @@ export default function BrandVoicePage() {
                 </motion.button>
                 <button
                   onClick={handleCancel}
-                  className="flex-1 sm:flex-none px-6 sm:px-10 py-4 sm:py-5 bg-white/5 border border-white/10 text-white/40 text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl hover:text-white hover:border-white/20 transition-all text-center"
+                  className="flex-1 sm:flex-none px-6 sm:px-10 py-4 sm:py-5 bg-white border border-border text-accent/40 text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl hover:text-foreground hover:border-accent/30 transition-all text-center"
                 >
                   Abort
                 </button>
@@ -361,8 +361,8 @@ export default function BrandVoicePage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.01 }}
-            className={`group relative glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 border-white/5 transition-all overflow-hidden
-                        ${voice.isDefault ? 'border-primary/40 ring-2 ring-primary/10 shadow-[0_0_50px_-12px_rgba(236,88,0,0.2)]' : 'hover:border-white/20'}`}
+            className={`group relative glass-card rounded-2xl sm:rounded-2xl p-5 sm:p-10 border-border transition-all overflow-hidden
+                        ${voice.isDefault ? 'border-primary/40 ring-2 ring-primary/10 shadow-[0_0_50px_-12px_rgba(236,88,0,0.1)]' : 'hover:border-accent/20'}`}
           >
             {voice.isDefault && (
               <motion.div
@@ -375,11 +375,11 @@ export default function BrandVoicePage() {
 
             <div className="flex items-start justify-between mb-5 sm:mb-8">
               <div className="flex items-center gap-3 sm:gap-5 min-w-0">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[1.25rem] flex items-center justify-center bg-white/[0.03] border border-white/10 group-hover:scale-110 transition-transform shrink-0">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[1.25rem] flex items-center justify-center bg-white border border-border group-hover:scale-110 transition-transform shrink-0">
                   <Palette className="h-5 w-5 sm:h-7 sm:w-7" style={{ color: TONE_COLOR[voice.tone] }} />
                 </div>
                 <div className="min-w-0">
-                  <h3 className="text-lg sm:text-2xl font-black text-white tracking-tighter uppercase truncate">{voice.name}</h3>
+                  <h3 className="text-lg sm:text-2xl font-black text-foreground tracking-tighter uppercase truncate">{voice.name}</h3>
                   <div className="mt-2">
                     <TonePill tone={voice.tone} />
                   </div>
@@ -392,15 +392,15 @@ export default function BrandVoicePage() {
                     <Star className="h-5 w-5 text-primary fill-current" />
                   </div>
                 ) : (
-                  <button onClick={() => setDefault(voice.id)} className="p-3 bg-white/5 rounded-2xl text-white/20 hover:text-white transition-all">
+                  <button onClick={() => setDefault(voice.id)} className="p-3 bg-white border border-border rounded-2xl text-accent/20 hover:text-accent transition-all">
                     <Star className="h-5 w-5" />
                   </button>
                 )}
-                <button onClick={() => handleEdit(voice)} className="p-3 bg-white/5 rounded-2xl text-white/20 hover:text-primary transition-all">
+                <button onClick={() => handleEdit(voice)} className="p-3 bg-white border border-border rounded-2xl text-accent/20 hover:text-primary transition-all">
                   <Edit2 className="h-5 w-5" />
                 </button>
                 {!voice.isDefault && (
-                  <button onClick={() => setDeletingId(voice.id)} className="p-3 bg-white/5 rounded-2xl text-white/20 hover:text-red-400 transition-all">
+                  <button onClick={() => setDeletingId(voice.id)} className="p-3 bg-white border border-border rounded-2xl text-accent/20 hover:text-red-400 transition-all">
                     <Trash2 className="h-5 w-5" />
                   </button>
                 )}
@@ -409,21 +409,21 @@ export default function BrandVoicePage() {
 
             <div className="space-y-8">
               <div>
-                <div className="flex items-center gap-3 text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                <div className="flex items-center gap-3 text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
                   <Layers className="h-3.5 w-3.5" /> Semantic Framework
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {voice.keywords.map((kw, i) => (
-                    <span key={i} className="px-4 py-2 bg-white/[0.03] border border-white/5 rounded-xl text-[10px] font-bold text-white/40 uppercase tracking-widest">{kw}</span>
+                    <span key={i} className="px-4 py-2 bg-white border border-border rounded-xl text-[10px] font-bold text-accent/40 uppercase tracking-widest">{kw}</span>
                   ))}
                 </div>
               </div>
 
               <div>
-                <div className="flex items-center gap-3 text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-4">
+                <div className="flex items-center gap-3 text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
                   <Activity className="h-3.5 w-3.5" /> Style Dynamics
                 </div>
-                <p className="text-sm font-medium text-white/60 leading-relaxed">{voice.style}</p>
+                <p className="text-sm font-medium text-accent/60 leading-relaxed">{voice.style}</p>
               </div>
             </div>
 
@@ -432,13 +432,13 @@ export default function BrandVoicePage() {
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="absolute inset-0 bg-[#050505]/90 backdrop-blur-xl flex flex-col items-center justify-center p-10 text-center z-50"
+                  className="absolute inset-0 bg-background/90 backdrop-blur-xl flex flex-col items-center justify-center p-10 text-center z-50"
                 >
-                  <h4 className="text-xl font-black text-white tracking-widest uppercase mb-4">Terminate Profile?</h4>
-                  <p className="text-sm text-white/40 mb-8 max-w-xs">This operation is irreversible. Neural patterns will be lost.</p>
+                  <h4 className="text-xl font-black text-foreground tracking-widest uppercase mb-4">Terminate Profile?</h4>
+                  <p className="text-sm text-accent/40 mb-8 max-w-xs">This operation is irreversible. Neural patterns will be lost.</p>
                   <div className="flex items-center gap-4">
                     <button onClick={() => handleDelete(voice.id)} className="px-8 py-4 bg-red-500 text-white text-[10px] font-black tracking-[0.2em] uppercase rounded-2xl">Confirm</button>
-                    <button onClick={() => setDeletingId(null)} className="px-8 py-4 bg-white/5 text-white/50 text-[10px] font-black tracking-[0.2em] uppercase rounded-2xl">Abort</button>
+                    <button onClick={() => setDeletingId(null)} className="px-8 py-4 bg-white border border-border text-accent/40 text-[10px] font-black tracking-[0.2em] uppercase rounded-2xl">Abort</button>
                   </div>
                 </motion.div>
               )}
@@ -447,18 +447,18 @@ export default function BrandVoicePage() {
         ))}
 
         {!isPro && voices.length === 1 && (
-          <div className="glass-card rounded-2xl sm:rounded-[2.5rem] p-8 sm:p-12 border-white/5 border-dashed flex flex-col items-center justify-center text-center relative overflow-hidden group">
+          <div className="glass-card rounded-2xl sm:rounded-2xl p-8 sm:p-12 border-border border-dashed flex flex-col items-center justify-center text-center relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[1.5rem] bg-white/[0.03] border border-white/5 flex items-center justify-center mb-6 relative">
-              <Zap className="h-8 w-8 text-white/10" />
+            <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl bg-white border border-border flex items-center justify-center mb-6 relative">
+              <Zap className="h-8 w-8 text-accent/10" />
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-[-4px] border border-primary/20 rounded-[1.75rem] border-t-transparent"
+                className="absolute inset-[-4px] border border-primary/20 rounded-xl border-t-transparent"
               />
             </div>
-            <h4 className="text-sm font-black text-white/30 uppercase tracking-[0.4em] mb-2">NEURAL SLOT LOCKED</h4>
-            <p className="text-[10px] font-bold text-white/10 uppercase tracking-widest max-w-[150px] leading-relaxed">Upgrade to PRO for infinite multidimensional profiles.</p>
+            <h4 className="text-sm font-black text-accent/20 uppercase tracking-[0.4em] mb-2">NEURAL SLOT LOCKED</h4>
+            <p className="text-[10px] font-bold text-accent/10 uppercase tracking-widest max-w-[150px] leading-relaxed">Upgrade to PRO for infinite multidimensional profiles.</p>
             <Link href="/settings" className="mt-8 px-8 py-4 premium-gradient rounded-2xl text-white text-[10px] font-black tracking-widest uppercase shadow-xl shadow-primary/20 hover:scale-105 transition-all">
               Initialize Pro Uplink
             </Link>

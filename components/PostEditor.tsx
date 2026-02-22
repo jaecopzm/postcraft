@@ -36,20 +36,20 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
-            className="glass-card rounded-2xl sm:rounded-3xl border-white/10 overflow-hidden shadow-2xl"
+            className="glass-card rounded-2xl sm:rounded-3xl border-gray-200 overflow-hidden shadow-2xl"
         >
             {/* Header */}
-            <div className="flex items-center justify-between p-3 sm:p-6 border-b border-white/5 bg-white/5">
+            <div className="flex items-center justify-between p-3 sm:p-6 border-b border-border bg-accent/5">
                 <div className="flex items-center gap-2 sm:gap-4">
                     <div className="px-2.5 py-1.5 sm:p-2.5 premium-gradient rounded-lg sm:rounded-xl shadow-lg shadow-primary/20 text-white font-black text-[9px] sm:text-xs uppercase tracking-widest">
                         {platform}
                     </div>
-                    <h3 className="text-[9px] sm:text-xs font-black text-white/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] hidden xs:block">Editor</h3>
+                    <h3 className="text-[9px] sm:text-xs font-black text-accent/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] hidden xs:block">Editor</h3>
                 </div>
                 <div className="flex items-center gap-1.5 sm:gap-2">
                     <button
                         onClick={handleCopy}
-                        className="p-2 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/30 hover:text-white transition-all overflow-hidden relative group"
+                        className="p-2 sm:p-3 bg-accent/5 rounded-lg sm:rounded-xl text-accent/40 hover:text-accent transition-all overflow-hidden relative group"
                     >
                         <AnimatePresence mode="wait">
                             {copied ? (
@@ -65,7 +65,7 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                     </button>
                     <button
                         onClick={onCancel}
-                        className="p-2 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl text-white/30 hover:text-red-400 transition-all"
+                        className="p-2 sm:p-3 bg-accent/5 rounded-lg sm:rounded-xl text-accent/40 hover:text-red-400 transition-all"
                     >
                         <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </button>
@@ -84,7 +84,7 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                                 onSave(content);
                             }
                         }}
-                        className="w-full bg-transparent border-none text-white text-sm sm:text-base leading-relaxed font-medium placeholder-white/10 focus:outline-none focus:ring-0 resize-none min-h-[150px] sm:min-h-[200px]"
+                        className="w-full bg-transparent border-none text-foreground text-sm sm:text-base leading-relaxed font-medium placeholder-accent/20 focus:outline-none focus:ring-0 resize-none min-h-[150px] sm:min-h-[200px]"
                         placeholder="REFINE YOUR MESSAGE..."
                         autoFocus
                     />
@@ -93,10 +93,10 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-white/5 gap-3">
+                <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-gray-200 gap-3">
                     <div className="flex items-center gap-2">
                         <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${isOverLimit ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-primary'}`} />
-                        <span className={`text-[9px] sm:text-[10px] font-black tracking-widest uppercase ${isOverLimit ? 'text-red-500' : 'text-white/30'}`}>
+                        <span className={`text-[9px] sm:text-[10px] font-black tracking-widest uppercase ${isOverLimit ? 'text-red-500' : 'text-accent/30'}`}>
                             {content.length}/{limit}
                         </span>
                     </div>

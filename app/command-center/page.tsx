@@ -93,7 +93,7 @@ export default function CommandCenterPage() {
                     particleCount: 100,
                     spread: 70,
                     origin: { y: 0.6 },
-                    colors: ['#EC5800', '#FFE135', '#ffffff'] // Brand colors
+                    colors: ['#F97316', '#0D9488', '#ffffff'] // Brand colors
                 });
             }, 500);
         }
@@ -112,17 +112,17 @@ export default function CommandCenterPage() {
                         <Rocket className="h-4 w-4 text-primary" />
                         <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Mission Control</span>
                     </motion.div>
-                    <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-white uppercase">Command <span className="text-gradient">Center</span></h1>
+                    <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-foreground uppercase">Command <span className="text-gradient">Center</span></h1>
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <div className="glass-card px-5 sm:px-6 py-4 rounded-2xl border-white/5 flex items-center gap-4">
-                        <div className="h-10 w-10 bg-orange-500/10 rounded-xl flex items-center justify-center shrink-0">
-                            <TrendingUp className="h-5 w-5 text-orange-500" />
+                    <div className="glass-card px-5 sm:px-6 py-4 rounded-2xl border-border bg-accent/5 flex items-center gap-4">
+                        <div className="h-10 w-10 bg-accent/10 rounded-xl flex items-center justify-center shrink-0">
+                            <TrendingUp className="h-5 w-5 text-accent" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-white/20 uppercase tracking-widest">Growth Streak</p>
-                            <p className="text-xl font-black text-white">{streak} DAYS</p>
+                            <p className="text-[10px] font-black text-accent/30 uppercase tracking-widest">Growth Streak</p>
+                            <p className="text-xl font-black text-foreground">{streak} DAYS</p>
                         </div>
                     </div>
                 </div>
@@ -133,13 +133,13 @@ export default function CommandCenterPage() {
                 <div className="lg:col-span-1 space-y-8">
                     <PresenceHeatmap publishedDates={publishedDates} />
 
-                    <div className="glass-card rounded-3xl p-8 border-white/5 bg-primary/[0.02] relative overflow-hidden">
+                    <div className="glass-card rounded-3xl p-8 border-border bg-accent/5 relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-8 opacity-10">
                             <ShieldCheck className="h-20 w-20 text-primary" />
                         </div>
                         <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] mb-2">Neural Integrity</h4>
-                        <p className="text-xl font-black text-white tracking-tight uppercase mb-4">Habit Score: {Math.min(streak * 10, 100)}%</p>
-                        <p className="text-xs text-white/40 leading-relaxed">
+                        <p className="text-xl font-black text-foreground tracking-tight uppercase mb-4">Habit Score: {Math.min(streak * 10, 100)}%</p>
+                        <p className="text-xs text-accent/40 leading-relaxed font-medium">
                             Consistent publication increases your aura's resonance across social nodes.
                         </p>
                     </div>

@@ -47,7 +47,7 @@ export default function PrivacyPage() {
     ];
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
+        <div className="min-h-screen bg-background text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
             {/* Cinematic Background Artifacts */}
             <div className="absolute top-0 left-0 w-[800px] h-[600px] bg-primary/5 blur-[150px] pointer-events-none rounded-full" />
 
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
                         <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
                             PRIVACY <span className="text-gradient">POLICY</span>
                         </motion.h1>
-                        <motion.p variants={itemVariants} className="text-white/30 mt-6 font-bold tracking-widest uppercase text-xs">
+                        <motion.p variants={itemVariants} className="text-gray-400 mt-6 font-bold tracking-widest uppercase text-xs">
                             Secure Transmissions Enabled
                         </motion.p>
                     </header>
@@ -75,15 +75,15 @@ export default function PrivacyPage() {
                     {/* Protocol Grid */}
                     <div className="grid md:grid-cols-2 gap-8">
                         {protocols.map((protocol, i) => (
-                            <motion.div key={i} variants={itemVariants} className="glass-card p-10 rounded-[2.5rem] border-white/5 relative group overflow-hidden">
+                            <motion.div key={i} variants={itemVariants} className="glass-card p-10 rounded-2xl border-gray-200 relative group overflow-hidden">
                                 <div className="absolute top-0 right-0 w-24 h-24 premium-gradient blur-[60px] opacity-0 group-hover:opacity-10 transition-opacity" />
-                                <div className="w-12 h-12 rounded-2xl bg-white/[0.03] border border-white/10 flex items-center justify-center mb-8">
+                                <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-8">
                                     <protocol.icon className="h-5 w-5 text-primary" />
                                 </div>
                                 <h2 className="text-xl font-black tracking-widest uppercase mb-4 text-white group-hover:text-primary transition-colors">
                                     {protocol.title}
                                 </h2>
-                                <p className="text-white/40 leading-relaxed font-medium text-sm">
+                                <p className="text-gray-400 leading-relaxed font-medium text-sm">
                                     {protocol.desc}
                                 </p>
                             </motion.div>
@@ -91,17 +91,17 @@ export default function PrivacyPage() {
                     </div>
 
                     {/* Contact Integration */}
-                    <motion.div variants={itemVariants} className="p-8 bg-white/[0.02] border border-white/5 rounded-3xl">
+                    <motion.div variants={itemVariants} className="p-8 bg-gray-50 border border-gray-200 rounded-3xl">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                             <div className="flex items-center gap-4 text-left">
                                 <div className="shrink-0">
                                     <ShieldCheck className="h-8 w-8 text-primary" />
                                 </div>
-                                <span className="text-sm font-bold text-white/50 leading-tight">
+                                <span className="text-sm font-bold text-gray-500 leading-tight">
                                     Questions regarding your data sovereignty? Our Data Protection Officer is standing by to assist your inquiry.
                                 </span>
                             </div>
-                            <Link href="/contact" className="flex items-center gap-2 text-[10px] font-black tracking-[0.2em] uppercase text-primary hover:text-white transition-colors">
+                            <Link href="/contact" className="flex items-center gap-2 text-[10px] font-black tracking-[0.2em] uppercase text-primary hover:text-gray-900 transition-colors">
                                 Contact DPO <ChevronRight className="h-4 w-4" />
                             </Link>
                         </div>
@@ -109,7 +109,7 @@ export default function PrivacyPage() {
 
                     {/* Footer Navigation Link */}
                     <motion.div variants={itemVariants} className="text-center pt-10">
-                        <Link href="/" className="text-white/20 hover:text-white transition-colors text-xs font-black tracking-[0.3em] uppercase">
+                        <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black tracking-[0.3em] uppercase">
                             ← Return to Matrix
                         </Link>
                     </motion.div>

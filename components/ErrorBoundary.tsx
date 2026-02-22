@@ -29,11 +29,11 @@ export class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-gradient-to-br from-[#1A1A1F] to-[#22222A] flex items-center justify-center p-4">
-          <div className="bg-gradient-to-br from-[#22222A] to-[#1E1E27] border border-cool-blue/10 rounded-2xl p-8 max-w-md text-center">
+        <div className="min-h-screen bg-gradient-to-br background flex items-center justify-center p-4">
+          <div className="bg-gradient-to-br white border border-gray-200 rounded-2xl p-8 max-w-md text-center">
             <div className="text-6xl mb-4">⚠️</div>
-            <h1 className="text-2xl font-bold text-white mb-2">Something went wrong</h1>
-            <p className="text-cool-blue/60 mb-6">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Something went wrong</h1>
+            <p className="text-gray-500 mb-6">
               We're sorry for the inconvenience. Please try refreshing the page.
             </p>
             <button

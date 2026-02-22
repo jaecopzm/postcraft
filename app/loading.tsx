@@ -2,7 +2,7 @@ import { Skeleton } from '../components/Skeleton';
 
 export default function Loading() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#1A1A1F] to-[#22222A] p-6 sm:p-10">
+    <div className="min-h-screen bg-background p-6 sm:p-10">
       <div className="max-w-6xl mx-auto space-y-10">
         {/* Header skeleton */}
         <div className="space-y-3">
@@ -18,7 +18,7 @@ export default function Loading() {
         </div>
 
         {/* Large content area */}
-        <Skeleton className="h-64 w-full rounded-2xl sm:rounded-[2.5rem]" />
+        <Skeleton className="h-64 w-full rounded-2xl" />
       </div>
     </div>
   );

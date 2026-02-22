@@ -54,11 +54,22 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden`}
       >
+        {/* Background Grain & Orbs */}
+        <div className="grain-overlay" />
+        <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+          <div className="ambient-orb w-[600px] h-[600px] -top-20 -left-20 bg-primary/5" />
+          <div className="ambient-orb w-[500px] h-[500px] bottom-0 -right-20 bg-accent/5 animation-delay-2000" />
+        </div>
+
         <ErrorBoundary>
           <ToastProvider>
-            <AuthProvider>{children}</AuthProvider>
+            <AuthProvider>
+              <main className="relative z-10">
+                {children}
+              </main>
+            </AuthProvider>
           </ToastProvider>
         </ErrorBoundary>
       </body>

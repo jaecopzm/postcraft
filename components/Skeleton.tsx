@@ -30,7 +30,7 @@ export function DashboardSkeleton() {
             </div>
 
             {/* Generation form card */}
-            <div className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-8 md:p-10 space-y-8">
+            <div className="glass-card rounded-2xl p-4 sm:p-6 space-y-6">
                 <div className="space-y-3">
                     <Skeleton className="h-4 w-32 rounded-lg" />
                     <Skeleton className="h-14 w-full rounded-2xl" />
@@ -92,7 +92,7 @@ export function AnalyticsSkeleton() {
             {/* Two-column data panels */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
                 {[1, 2].map(i => (
-                    <div key={i} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 space-y-8">
+                    <div key={i} className="glass-card rounded-2xl p-4 sm:p-6 space-y-6">
                         <div className="flex items-center justify-between">
                             <div className="space-y-2">
                                 <Skeleton className="h-6 w-40 rounded-xl" />
@@ -132,7 +132,7 @@ export function HistorySkeleton() {
             </div>
 
             {/* Toolbar */}
-            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 sm:gap-6 bg-white/[0.02] border border-white/5 p-2 rounded-2xl sm:rounded-[2.5rem]">
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-4 sm:gap-6 bg-gray-50 border border-gray-200 p-2 rounded-2xl">
                 <Skeleton className="h-14 flex-1 rounded-xl sm:rounded-2xl" />
                 <Skeleton className="h-14 flex-[1.5] rounded-xl sm:rounded-2xl" />
             </div>
@@ -141,13 +141,13 @@ export function HistorySkeleton() {
             <div className="space-y-10">
                 {/* Date separator */}
                 <div className="flex items-center gap-4 px-2">
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
                     <Skeleton className="h-3 w-20 rounded-md" />
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent via-gray-200 to-transparent" />
                 </div>
 
                 {[1, 2].map(i => (
-                    <div key={i} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-4 sm:p-10 space-y-8">
+                    <div key={i} className="glass-card rounded-2xl p-4 sm:p-6 space-y-6">
                         <div className="flex flex-col sm:flex-row items-start justify-between gap-6">
                             <div className="flex items-center gap-4 sm:gap-6">
                                 <Skeleton className="h-10 w-10 sm:h-14 sm:w-14 rounded-xl sm:rounded-2xl" />
@@ -237,7 +237,7 @@ export function LibrarySkeleton() {
                                     </div>
                                 </div>
                                 <Skeleton className="h-12 w-full rounded-lg" />
-                                <div className="flex justify-between pt-3 border-t border-white/5">
+                                <div className="flex justify-between pt-3 border-t border-gray-200">
                                     <Skeleton className="h-3 w-24 rounded-md" />
                                 </div>
                             </div>
@@ -265,7 +265,7 @@ export function BrandVoiceSkeleton() {
             {/* Voice cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {[1, 2].map(i => (
-                    <div key={i} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 space-y-8">
+                    <div key={i} className="glass-card rounded-2xl p-4 sm:p-6 space-y-6">
                         <div className="flex items-start justify-between">
                             <div className="flex items-center gap-3 sm:gap-5">
                                 <Skeleton className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl" />
@@ -394,7 +394,7 @@ export function SettingsSkeleton() {
 
             <div className="space-y-8">
                 {[1, 2, 3].map(i => (
-                    <div key={i} className="glass-card rounded-2xl sm:rounded-[2.5rem] p-5 sm:p-10 space-y-8">
+                    <div key={i} className="glass-card rounded-2xl p-4 sm:p-6 space-y-6">
                         <div className="flex items-center gap-4">
                             <Skeleton className="h-12 w-12 rounded-2xl" />
                             <div className="space-y-2">

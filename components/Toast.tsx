@@ -47,14 +47,14 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 10, scale: 0.95 }}
                             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-                            className={`pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-2xl border shadow-2xl backdrop-blur-2xl min-w-[240px] max-w-[340px] ${t.type === 'success'
-                                    ? 'bg-green-500/10 border-green-500/30 text-green-400'
-                                    : t.type === 'error'
-                                        ? 'bg-red-500/10 border-red-500/30 text-red-400'
-                                        : 'bg-primary/10 border-primary/30 text-primary'
+                            className={`pointer-events-auto flex items-center gap-3 px-5 py-4 rounded-2xl border shadow-xl backdrop-blur-xl min-w-[240px] max-w-[340px] ${t.type === 'success'
+                                ? 'bg-[#F0FAFA] border-accent/20 text-[#0D9488]'
+                                : t.type === 'error'
+                                    ? 'bg-red-50 border-red-200 text-red-700'
+                                    : 'bg-orange-50 border-orange-200 text-primary'
                                 }`}
                         >
-                            <div className={`shrink-0 h-7 w-7 rounded-xl flex items-center justify-center ${t.type === 'success' ? 'bg-green-500/20' : t.type === 'error' ? 'bg-red-500/20' : 'bg-primary/20'
+                            <div className={`shrink-0 h-7 w-7 rounded-xl flex items-center justify-center ${t.type === 'success' ? 'bg-[#0D9488]/10 text-[#0D9488]' : t.type === 'error' ? 'bg-red-100 text-red-700' : 'bg-orange-100 text-primary'
                                 }`}>
                                 {t.type === 'success' && <Check className="h-4 w-4" />}
                                 {t.type === 'error' && <AlertCircle className="h-4 w-4" />}
