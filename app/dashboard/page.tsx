@@ -30,9 +30,9 @@ export default function Dashboard() {
   const [voiceDropdownOpen, setVoiceDropdownOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(true);
   const [stats, setStats] = useState([
-    { label: 'Generated', value: '...', icon: Sparkles, color: 'text-primary' },
-    { label: 'This Month', value: '...', icon: TrendingUp, color: 'text-accent' },
-    { label: 'Avg. Time', value: '8s', icon: Clock, color: 'text-accent/60' }
+    { label: 'Generated', value: '...', icon: Sparkles, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
+    { label: 'This Month', value: '...', icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
+    { label: 'Avg. Time', value: '8s', icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
   ]);
 
   useEffect(() => {
@@ -58,9 +58,9 @@ export default function Dashboard() {
       if (respStats.ok) {
         const data = await respStats.json();
         setStats([
-          { label: 'Generated', value: data.totalGenerations?.toString() || '0', icon: Sparkles, color: 'text-primary' },
-          { label: 'This Month', value: data.monthTotal?.toString() || '0', icon: TrendingUp, color: 'text-accent' },
-          { label: 'Avg. Time', value: `${data.avgTime || 8}s`, icon: Clock, color: 'text-accent/60' }
+          { label: 'Generated', value: data.totalGenerations?.toString() || '0', icon: Sparkles, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
+          { label: 'This Month', value: data.monthTotal?.toString() || '0', icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
+          { label: 'Avg. Time', value: `${data.avgTime || 8}s`, icon: Clock, color: 'text-blue-600', bg: 'bg-blue-50', border: 'border-blue-200' }
         ]);
       }
 
@@ -243,12 +243,18 @@ export default function Dashboard() {
         </div>
         {/* Stats — scrollable on mobile */}
         <div className="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1">
-          {stats.map((stat, idx) => (
-            <div key={idx} className="flex flex-col items-center px-3 sm:px-5 py-2.5 glass-card rounded-xl shrink-0">
-              <span className="text-[9px] sm:text-[10px] font-bold text-accent/60 uppercase tracking-widest mb-1">{stat.label}</span>
-              <span className={`text-lg sm:text-xl font-black ${stat.color}`}>{stat.value}</span>
-            </div>
-          ))}
+          {stats.map((stat, idx) => {
+            const IconComponent = stat.icon;
+            return (
+              <div key={idx} className={`flex flex-col items-center px-3 sm:px-5 py-3 rounded-xl shrink-0 border-2 ${stat.bg} ${stat.border} shadow-sm`}>
+                <div className="flex items-center gap-1.5 mb-1">
+                  <IconComponent className={`h-3 w-3 ${stat.color}`} />
+                  <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase tracking-widest">{stat.label}</span>
+                </div>
+                <span className={`text-lg sm:text-xl font-black ${stat.color}`}>{stat.value}</span>
+              </div>
+            );
+          })}
         </div>
       </motion.div>
 
@@ -298,7 +304,7 @@ export default function Dashboard() {
           <div className="flex items-center justify-center p-1 bg-accent/5 rounded-xl w-full sm:w-fit mx-auto border border-border">
             <button
               onClick={() => setIsCampaignMode(false)}
-              className={`flex-1 sm:flex-none px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${!isCampaignMode ? 'bg-white text-foreground shadow-sm' : 'text-accent/40 hover:text-accent'}`}
+              className={`flex-1 sm:flex-none px-5 py-2 rounded-lg text-xs font-black uppercase tracking-widest transition-all ${!isCampaignMode ? 'bg-teal-100 text-teal-800 shadow-sm border border-teal-200' : 'text-accent/40 hover:text-accent'}`}
             >
               Single Post
             </button>
@@ -332,6 +338,26 @@ export default function Dashboard() {
                 {platforms.map((platform) => {
                   const isSelected = selectedPlatforms.includes(platform.id);
                   const IconComponent = platform.icon;
+                  
+                  // Platform-specific colors when selected
+                  const platformColors = {
+                    twitter: 'border-blue-400 bg-blue-50 shadow-blue-100',
+                    linkedin: 'border-blue-600 bg-blue-50 shadow-blue-100',
+                    instagram: 'border-pink-400 bg-pink-50 shadow-pink-100',
+                    facebook: 'border-blue-500 bg-blue-50 shadow-blue-100',
+                    tiktok: 'border-black bg-gray-50 shadow-gray-100',
+                    youtube: 'border-red-500 bg-red-50 shadow-red-100'
+                  };
+
+                  const platformIconColors = {
+                    twitter: 'text-blue-500',
+                    linkedin: 'text-blue-600',
+                    instagram: 'text-pink-500',
+                    facebook: 'text-blue-600',
+                    tiktok: 'text-black',
+                    youtube: 'text-red-600'
+                  };
+
                   return (
                     <motion.button
                       key={platform.id}
@@ -345,12 +371,12 @@ export default function Dashboard() {
                         }
                       }}
                       className={`relative flex flex-col items-center justify-center p-3 rounded-xl border-2 transition-all duration-300 ${isSelected
-                        ? 'border-accent bg-accent/10 shadow-sm'
-                        : 'border-border bg-accent/5 hover:border-accent/30'
+                        ? `${platformColors[platform.id as keyof typeof platformColors]} shadow-lg`
+                        : 'border-gray-200 bg-gray-50 hover:border-gray-300'
                         }`}
                     >
-                      <IconComponent className={`h-5 w-5 mb-1 ${isSelected ? 'text-accent' : 'text-accent/30'}`} />
-                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-foreground' : 'text-accent/50'}`}>
+                      <IconComponent className={`h-5 w-5 mb-1 ${isSelected ? platformIconColors[platform.id as keyof typeof platformIconColors] : 'text-gray-400'}`} />
+                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-gray-800' : 'text-gray-500'}`}>
                         {platform.name.split('/')[0]}
                       </span>
                       {isSelected && (
@@ -358,7 +384,7 @@ export default function Dashboard() {
                           layoutId="active-platform"
                           className="absolute -top-1 -right-1"
                         >
-                          <CheckCircle2 className="h-5 w-5 text-accent bg-background rounded-full" />
+                          <CheckCircle2 className="h-5 w-5 text-green-500 bg-white rounded-full shadow-sm" />
                         </motion.div>
                       )}
                     </motion.button>
@@ -418,6 +444,22 @@ export default function Dashboard() {
                 <div className="grid grid-cols-2 gap-2">
                   {tones.map((t) => {
                     const IconComponent = t.icon;
+                    
+                    // Tone-specific colors when selected
+                    const toneColors = {
+                      professional: 'border-blue-500 bg-blue-50 shadow-blue-100',
+                      casual: 'border-purple-400 bg-purple-50 shadow-purple-100',
+                      enthusiastic: 'border-yellow-400 bg-yellow-50 shadow-yellow-100',
+                      informative: 'border-green-500 bg-green-50 shadow-green-100'
+                    };
+
+                    const toneIconColors = {
+                      professional: 'text-blue-600',
+                      casual: 'text-purple-500',
+                      enthusiastic: 'text-yellow-600',
+                      informative: 'text-green-600'
+                    };
+
                     return (
                       <motion.button
                         key={t.value}
@@ -425,12 +467,12 @@ export default function Dashboard() {
                         whileTap={{ scale: 0.98 }}
                         onClick={() => setTone(t.value)}
                         className={`flex items-center gap-2.5 p-3 rounded-xl border-2 transition-all duration-300 ${tone === t.value
-                          ? 'border-accent bg-accent/10'
-                          : 'border-border bg-accent/5 hover:border-accent/30'
+                          ? `${toneColors[t.value as keyof typeof toneColors]} shadow-lg`
+                          : 'border-gray-200 bg-gray-50 hover:border-gray-300'
                           }`}
                       >
-                        <IconComponent className={`h-4 w-4 shrink-0 ${tone === t.value ? 'text-accent' : 'text-accent/30'}`} />
-                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-foreground' : 'text-accent/30'}`}>
+                        <IconComponent className={`h-4 w-4 shrink-0 ${tone === t.value ? toneIconColors[t.value as keyof typeof toneIconColors] : 'text-gray-400'}`} />
+                        <span className={`text-[10px] sm:text-xs font-bold uppercase tracking-tight sm:tracking-widest truncate ${tone === t.value ? 'text-gray-800' : 'text-gray-500'}`}>
                           {t.label}
                         </span>
                       </motion.button>
@@ -466,14 +508,39 @@ export default function Dashboard() {
           )}
 
           {/* Generate Button */}
-          <div className="space-y-2">
+          <div className="space-y-4">
+            {/* Quick Topic Templates */}
+            <div className="space-y-2">
+              <label className="text-xs font-black text-gray-500 uppercase tracking-[0.2em] ml-1">Quick Start</label>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  "🚀 Product launch announcement",
+                  "📊 Weekly business update", 
+                  "💡 Industry insights",
+                  "🎉 Company milestone"
+                ].map((template) => (
+                  <button
+                    key={template}
+                    onClick={() => setTopic(template)}
+                    className="text-left p-2 text-xs font-medium text-gray-600 bg-gray-50 hover:bg-gray-100 rounded-lg border border-gray-200 hover:border-gray-300 transition-all"
+                  >
+                    {template}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <motion.button
-              whileHover={(!generating && !!topic.trim() && selectedPlatforms.length > 0) ? { scale: 1.01, boxShadow: "0 20px 40px rgba(232, 89, 12, 0.25)" } : {}}
+              whileHover={(!generating && !!topic.trim() && selectedPlatforms.length > 0) ? { 
+                scale: 1.02, 
+                boxShadow: "0 25px 50px rgba(249, 115, 22, 0.4)" 
+              } : {}}
               whileTap={{ scale: 0.98 }}
               onClick={handleGenerate}
               disabled={generating || !topic.trim() || selectedPlatforms.length === 0}
-              className="w-full relative group premium-button premium-gradient rounded-xl sm:rounded-2xl py-3 sm:py-5 px-4 sm:px-8 text-white font-black text-sm sm:text-lg tracking-wider sm:tracking-widest shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full relative group premium-button bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 hover:from-orange-600 hover:via-orange-700 hover:to-orange-600 rounded-xl sm:rounded-2xl py-4 sm:py-6 px-4 sm:px-8 text-white font-black text-sm sm:text-lg tracking-wider sm:tracking-widest shadow-2xl shadow-orange-500/25 hover:shadow-orange-500/40 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-300"
             >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl sm:rounded-2xl"></div>
               <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
                 {generating ? (
                   <>
@@ -486,7 +553,7 @@ export default function Dashboard() {
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4 sm:h-6 sm:w-6" />
+                    <Sparkles className="h-4 w-4 sm:h-6 sm:w-6 group-hover:rotate-12 transition-transform" />
                     GENERATE UNIVERSE
                   </>
                 )}
