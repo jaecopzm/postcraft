@@ -107,22 +107,22 @@ export default function CommandCenterPage() {
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-4"
+                        className="inline-flex items-center gap-3 px-4 py-2 bg-orange-100 border border-orange-200 rounded-full mb-4"
                     >
-                        <Rocket className="h-4 w-4 text-primary" />
-                        <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Mission Control</span>
+                        <Rocket className="h-4 w-4 text-orange-600" />
+                        <span className="text-[10px] font-black tracking-[0.3em] uppercase text-orange-600">Mission Control</span>
                     </motion.div>
-                    <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-foreground uppercase">Command <span className="text-gradient">Center</span></h1>
+                    <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-teal-900 uppercase">Command <span className="text-gradient">Center</span></h1>
                 </div>
 
                 <div className="flex items-center gap-4">
-                    <div className="glass-card px-5 sm:px-6 py-4 rounded-2xl border-border bg-accent/5 flex items-center gap-4">
-                        <div className="h-10 w-10 bg-accent/10 rounded-xl flex items-center justify-center shrink-0">
-                            <TrendingUp className="h-5 w-5 text-accent" />
+                    <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-3xl border border-teal-200 rounded-2xl px-5 sm:px-6 py-4 flex items-center gap-4">
+                        <div className="h-10 w-10 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
+                            <TrendingUp className="h-5 w-5 text-teal-600" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-accent/60 uppercase tracking-widest">Growth Streak</p>
-                            <p className="text-xl font-black text-foreground">{streak} DAYS</p>
+                            <p className="text-[10px] font-black text-teal-600 uppercase tracking-widest">Growth Streak</p>
+                            <p className="text-xl font-black text-teal-900">{streak} DAYS</p>
                         </div>
                     </div>
                 </div>
@@ -133,15 +133,59 @@ export default function CommandCenterPage() {
                 <div className="lg:col-span-1 space-y-8">
                     <PresenceHeatmap publishedDates={publishedDates} />
 
-                    <div className="glass-card rounded-3xl p-8 border-border bg-accent/5 relative overflow-hidden">
+                    <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-3xl border border-teal-200 rounded-3xl p-8 relative overflow-hidden">
                         <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <ShieldCheck className="h-20 w-20 text-primary" />
+                            <ShieldCheck className="h-20 w-20 text-orange-500" />
                         </div>
-                        <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] mb-2">Neural Integrity</h4>
-                        <p className="text-xl font-black text-foreground tracking-tight uppercase mb-4">Habit Score: {Math.min(streak * 10, 100)}%</p>
-                        <p className="text-xs text-accent/70 leading-relaxed font-medium">
+                        <h4 className="text-xs font-black text-orange-600 uppercase tracking-[0.2em] mb-2">Neural Integrity</h4>
+                        
+                        <div className="mb-4">
+                            <div className="flex items-center justify-between mb-2">
+                                <p className="text-xl font-black text-teal-900 tracking-tight uppercase">Habit Score: {Math.min(streak * 10, 100)}%</p>
+                                {streak > 0 && streak % 5 === 0 && (
+                                    <div className="text-xs text-orange-600 font-bold animate-pulse">🔥 {streak} DAY STREAK!</div>
+                                )}
+                            </div>
+                            
+                            {/* Progress Bar */}
+                            <div className="w-full bg-gray-200 rounded-full h-2 mb-3">
+                                <div 
+                                    className={`h-2 rounded-full transition-all duration-1000 ${
+                                        streak * 10 < 30 ? 'bg-red-400' : 
+                                        streak * 10 < 70 ? 'bg-yellow-400' : 
+                                        'bg-green-500'
+                                    }`}
+                                    style={{width: `${Math.min(streak * 10, 100)}%`}}
+                                ></div>
+                            </div>
+                            
+                            {/* Next Milestone */}
+                            {streak < 10 && (
+                                <div className="text-xs text-teal-600 font-medium mb-3">
+                                    {10 - streak} days to 10-day streak milestone! 🎯
+                                </div>
+                            )}
+                        </div>
+                        
+                        <p className="text-xs text-teal-600 leading-relaxed font-medium mb-4">
                             Consistent publication increases your aura's resonance across social nodes.
                         </p>
+                        
+                        {/* Quick Actions */}
+                        <div className="flex gap-2">
+                            <button 
+                                onClick={() => window.location.href = '/dashboard'}
+                                className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs font-bold transition-colors"
+                            >
+                                Schedule Post
+                            </button>
+                            <button 
+                                onClick={() => window.location.href = '/analytics'}
+                                className="px-3 py-1.5 bg-teal-500 hover:bg-teal-600 text-white rounded-lg text-xs font-bold transition-colors"
+                            >
+                                View Analytics
+                            </button>
+                        </div>
                     </div>
                 </div>
 

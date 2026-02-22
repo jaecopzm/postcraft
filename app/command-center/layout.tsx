@@ -7,7 +7,7 @@ function CommandCenterContent({ children }: { children: React.ReactNode }) {
     const { isCollapsed } = useSidebar();
 
     return (
-        <div className="flex min-h-screen bg-background">
+        <div className="flex min-h-screen bg-teal-50">
             <Sidebar />
             <main className={`flex-1 p-8 transition-all duration-300 ${isCollapsed ? 'lg:ml-[72px]' : 'lg:ml-[280px]'}`}>
                 {children}

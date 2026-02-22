@@ -27,19 +27,19 @@ export default function PresenceHeatmap({ publishedDates }: PresenceHeatmapProps
     }, [publishedDates]);
 
     return (
-        <div className="glass-card rounded-3xl p-8 border-border bg-accent/5">
+        <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-3xl border border-teal-200 rounded-3xl p-8">
             <div className="flex items-center justify-between mb-8">
                 <div>
-                    <h4 className="text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-1">Social Velocity</h4>
-                    <p className="text-xl font-black text-foreground tracking-tight uppercase">Presence Heatmap</p>
+                    <h4 className="text-[10px] font-black text-teal-500 uppercase tracking-[0.3em] mb-1">Social Velocity</h4>
+                    <p className="text-xl font-black text-teal-900 tracking-tight uppercase">Presence Heatmap</p>
                 </div>
                 <div className="flex items-center gap-2">
                     {[0, 1, 2, 3].map((level) => (
                         <div
                             key={level}
-                            className={`h-2 w-2 rounded-full ${level === 0 ? 'bg-white' :
-                                level === 1 ? 'bg-primary/30' :
-                                    level === 2 ? 'bg-primary/60' : 'bg-primary shadow-[0_0_10px_rgba(236,88,0,0.5)]'
+                            className={`h-2 w-2 rounded-full ${level === 0 ? 'bg-gray-200' :
+                                level === 1 ? 'bg-orange-300' :
+                                    level === 2 ? 'bg-orange-500' : 'bg-orange-600 shadow-[0_0_10px_rgba(249,115,22,0.5)]'
                                 }`}
                         />
                     ))}
@@ -56,20 +56,20 @@ export default function PresenceHeatmap({ publishedDates }: PresenceHeatmapProps
                         className="group relative"
                     >
                         <div
-                            className={`aspect-square rounded-lg transition-all duration-500 ${day.level === 0 ? 'bg-white hover:bg-accent/5' :
-                                day.level === 1 ? 'bg-primary/30' :
-                                    day.level === 2 ? 'bg-primary/60' : 'bg-primary shadow-[0_0_15px_rgba(236,88,0,0.4)]'
+                            className={`aspect-square rounded-lg transition-all duration-500 ${day.level === 0 ? 'bg-gray-100 hover:bg-gray-200' :
+                                day.level === 1 ? 'bg-orange-300' :
+                                    day.level === 2 ? 'bg-orange-500' : 'bg-orange-600 shadow-[0_0_15px_rgba(249,115,22,0.4)]'
                                 }`}
                         />
                         {/* Tooltip */}
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-white border border-border rounded-md text-[8px] font-bold text-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
+                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-white border border-teal-200 rounded-md text-[8px] font-bold text-teal-900 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
                             {day.date.toLocaleDateString([], { month: 'short', day: 'numeric' })}: {day.count} POSTS
                         </div>
                     </motion.div>
                 ))}
             </div>
 
-            <div className="mt-6 pt-6 border-t border-border flex items-center justify-between text-[8px] font-black text-accent/30 uppercase tracking-widest">
+            <div className="mt-6 pt-6 border-t border-teal-200 flex items-center justify-between text-[8px] font-black text-teal-500 uppercase tracking-widest">
                 <span>{activityData[0].date.toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
                 <span>{activityData[activityData.length - 1].date.toLocaleDateString([], { month: 'short', day: 'numeric' })}</span>
             </div>
