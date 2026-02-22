@@ -121,7 +121,7 @@ export default function CommandCenterPage() {
                             <TrendingUp className="h-5 w-5 text-accent" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-accent/30 uppercase tracking-widest">Growth Streak</p>
+                            <p className="text-[10px] font-black text-accent/60 uppercase tracking-widest">Growth Streak</p>
                             <p className="text-xl font-black text-foreground">{streak} DAYS</p>
                         </div>
                     </div>
@@ -139,7 +139,7 @@ export default function CommandCenterPage() {
                         </div>
                         <h4 className="text-xs font-black text-primary uppercase tracking-[0.2em] mb-2">Neural Integrity</h4>
                         <p className="text-xl font-black text-foreground tracking-tight uppercase mb-4">Habit Score: {Math.min(streak * 10, 100)}%</p>
-                        <p className="text-xs text-accent/40 leading-relaxed font-medium">
+                        <p className="text-xs text-accent/70 leading-relaxed font-medium">
                             Consistent publication increases your aura's resonance across social nodes.
                         </p>
                     </div>

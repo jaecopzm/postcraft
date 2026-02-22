@@ -239,13 +239,13 @@ export default function Dashboard() {
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gradient mb-1 sm:mb-2">Create Magic</h1>
-          <p className="text-accent/60 font-medium text-sm sm:text-base">Power up your social presence with AI excellence.</p>
+          <p className="text-accent/80 font-medium text-sm sm:text-base">Power up your social presence with AI excellence.</p>
         </div>
         {/* Stats — scrollable on mobile */}
         <div className="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1">
           {stats.map((stat, idx) => (
             <div key={idx} className="flex flex-col items-center px-3 sm:px-5 py-2.5 glass-card rounded-xl shrink-0">
-              <span className="text-[9px] sm:text-[10px] font-bold text-accent/40 uppercase tracking-widest mb-1">{stat.label}</span>
+              <span className="text-[9px] sm:text-[10px] font-bold text-accent/60 uppercase tracking-widest mb-1">{stat.label}</span>
               <span className={`text-lg sm:text-xl font-black ${stat.color}`}>{stat.value}</span>
             </div>
           ))}
@@ -312,7 +312,7 @@ export default function Dashboard() {
 
           {/* Topic Input */}
           <div className="space-y-2">
-            <label className="flex items-center gap-2 text-xs font-black text-accent/40 uppercase tracking-[0.2em] ml-1">
+            <label className="flex items-center gap-2 text-xs font-black text-accent/60 uppercase tracking-[0.2em] ml-1">
               <Zap className="h-3 w-3 text-primary" /> {isCampaignMode ? 'Campaign Objective' : 'Content Topic'}
             </label>
             <input
@@ -320,14 +320,14 @@ export default function Dashboard() {
               value={topic}
               onChange={(e) => setTopic(e.target.value)}
               placeholder="What's on your mind today?"
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-accent/5 border border-border rounded-xl focus:ring-4 focus:ring-accent/10 focus:border-accent/40 text-foreground text-base sm:text-lg font-medium placeholder-accent/20 transition-all outline-none"
+              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-accent/5 border border-border rounded-xl focus:ring-4 focus:ring-accent/10 focus:border-accent/40 text-foreground text-base sm:text-lg font-medium placeholder-accent/40 transition-all outline-none"
             />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
             {/* Platforms */}
             <div className="space-y-3">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Distribution channels</label>
+              <label className="text-xs font-black text-accent/60 uppercase tracking-[0.2em] ml-1">Distribution channels</label>
               <div className="grid grid-cols-3 gap-2">
                 {platforms.map((platform) => {
                   const isSelected = selectedPlatforms.includes(platform.id);
@@ -350,7 +350,7 @@ export default function Dashboard() {
                         }`}
                     >
                       <IconComponent className={`h-5 w-5 mb-1 ${isSelected ? 'text-accent' : 'text-accent/30'}`} />
-                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-foreground' : 'text-accent/30'}`}>
+                      <span className={`text-[9px] sm:text-[10px] font-bold uppercase tracking-tight sm:tracking-wider ${isSelected ? 'text-foreground' : 'text-accent/50'}`}>
                         {platform.name.split('/')[0]}
                       </span>
                       {isSelected && (
@@ -369,7 +369,7 @@ export default function Dashboard() {
 
             {/* Tone / Voice Selection */}
             <div className="space-y-3">
-              <label className="text-xs font-black text-gray-400 uppercase tracking-[0.2em] ml-1">Brand Voice (Aura)</label>
+              <label className="text-xs font-black text-accent/60 uppercase tracking-[0.2em] ml-1">Brand Voice (Aura)</label>
 
               {voices.length > 0 ? (
                 <div className="flex flex-col gap-2">

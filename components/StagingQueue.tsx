@@ -208,7 +208,7 @@ export default function StagingQueue() {
                     </div>
                     <div className="min-w-0">
                         <h3 className="text-base sm:text-xl font-black text-foreground tracking-wider sm:tracking-widest uppercase">Staging Queue</h3>
-                        <p className="text-[9px] sm:text-[10px] font-bold text-accent/30 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{stagedCount} POSTS AWAITING DEPLOYMENT</p>
+                        <p className="text-[9px] sm:text-[10px] font-bold text-accent/60 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{stagedCount} POSTS AWAITING DEPLOYMENT</p>
                     </div>
                 </div>
 
@@ -223,7 +223,7 @@ export default function StagingQueue() {
                             }`}>
                             {selectedPosts.length === stagedCount && stagedCount > 0 && <Check className="w-3 h-3 text-white" />}
                         </div>
-                        <span className="text-[10px] font-black tracking-widest uppercase text-accent/30">
+                        <span className="text-[10px] font-black tracking-widest uppercase text-accent/60">
                             {selectedPosts.length === stagedCount ? 'Deselect All' : 'Select All'}
                         </span>
                     </button>
@@ -239,8 +239,8 @@ export default function StagingQueue() {
                             className="flex flex-col items-center justify-center py-20 glass-card rounded-2xl border-dashed border-border text-center"
                         >
                             <Calendar className="h-10 w-10 text-accent/10 mb-6" />
-                            <h4 className="text-sm font-black text-accent/30 uppercase tracking-[0.3em]">No posts staged</h4>
-                            <p className="text-xs text-accent/20 mt-2">Go to the Dashboard to craft and stage content.</p>
+                            <h4 className="text-sm font-black text-accent/60 uppercase tracking-[0.3em]">No posts staged</h4>
+                            <p className="text-xs text-accent/40 mt-2">Go to the Dashboard to craft and stage content.</p>
                         </motion.div>
                     ) : (
                         posts.map((post) => (
@@ -269,14 +269,14 @@ export default function StagingQueue() {
                                                     {selectedPosts.includes(post.id) && <Check className="w-3 h-3 text-white" />}
                                                 </div>
                                             )}
-                                            <div className="p-3 bg-accent/5 rounded-xl text-accent/30 shrink-0">
+                                            <div className="p-3 bg-accent/5 rounded-xl text-accent/60 shrink-0">
                                                 {getPlatformIcon(post.platform)}
                                             </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
                                             <p className="text-xs sm:text-sm font-bold text-foreground line-clamp-2 sm:line-clamp-3 leading-relaxed">{post.content}</p>
                                             <div className="flex items-center gap-3 mt-2 sm:mt-3">
-                                                <span className="text-[9px] font-black text-accent/20 uppercase tracking-[0.2em]">
+                                                <span className="text-[9px] font-black text-accent/50 uppercase tracking-[0.2em]">
                                                     {new Date(post.stagedAt).toLocaleDateString()}
                                                 </span>
                                                 {post.status === 'live' && (

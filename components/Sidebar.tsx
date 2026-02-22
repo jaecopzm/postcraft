@@ -196,7 +196,7 @@ export default function Sidebar() {
                       ${isCollapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'}
                       ${active
                         ? 'bg-accent/10 text-accent'
-                        : 'text-foreground/60 hover:text-foreground hover:bg-accent/5'
+                        : 'text-foreground/80 hover:text-foreground hover:bg-accent/5'
                       }
                     `}
                   >
@@ -251,7 +251,7 @@ export default function Sidebar() {
                       <p className="text-sm font-bold text-gray-900 truncate uppercase tracking-wider leading-tight">
                         {user?.displayName || user?.email?.split('@')[0] || 'Member'}
                       </p>
-                      <p className="text-[10px] text-accent/60 truncate font-mono">
+                      <p className="text-[10px] text-accent/80 truncate font-mono">
                         {isPro ? 'PRO ACCOUNT' : 'FREE ACCOUNT'}
                       </p>
                     </div>
@@ -261,7 +261,7 @@ export default function Sidebar() {
                     <div className="space-y-2.5">
                       <div className="space-y-1.5">
                         <div className="flex items-center justify-between text-[10px] font-bold">
-                          <span className="text-accent/60">USAGE</span>
+                          <span className="text-accent/80">USAGE</span>
                           <span className="text-foreground">{generationsUsed}/{generationsLimit}</span>
                         </div>
                         <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
@@ -320,7 +320,7 @@ export default function Sidebar() {
                     { label: 'Terms', href: '/terms' },
                     { label: 'Privacy', href: '/privacy' }
                   ].map((link) => (
-                    <Link key={link.href} href={link.href} className="text-[7px] font-black tracking-widest uppercase text-accent/60 hover:text-accent transition-colors">
+                    <Link key={link.href} href={link.href} className="text-[7px] font-black tracking-widest uppercase text-accent/80 hover:text-accent transition-colors">
                       {link.label}
                     </Link>
                   ))}
@@ -328,7 +328,7 @@ export default function Sidebar() {
                 <motion.button
                   whileHover={{ x: -2 }}
                   onClick={() => signOut()}
-                  className="group flex items-center gap-2 px-3 py-2 rounded-xl font-bold text-accent/40 hover:text-red-500 hover:bg-red-50 transition-all"
+                  className="group flex items-center gap-2 px-3 py-2 rounded-xl font-bold text-accent/60 hover:text-red-500 hover:bg-red-50 transition-all"
                 >
                   <LogOut className="h-4 w-4" />
                   <span className="text-[10px] tracking-widest uppercase">Logout</span>

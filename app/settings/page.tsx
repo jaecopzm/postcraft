@@ -220,13 +220,13 @@ export default function SettingsPage() {
               <div className="space-y-6">
                 <div className="p-6 bg-accent/5 border border-accent/10 rounded-3xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 premium-gradient blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity" />
-                  <p className="text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-2">OPERATIONAL STATUS</p>
+                  <p className="text-[10px] font-black text-accent/60 uppercase tracking-[0.3em] mb-2">OPERATIONAL STATUS</p>
                   <p className="text-3xl font-black text-foreground tracking-tighter uppercase">{isPro ? 'ELITE PRO' : 'LEGACY FREE'}</p>
                 </div>
 
                 <div className="space-y-3">
                   {(isPro ? PRO_FEATURES : FREE_FEATURES).map((f, i) => (
-                    <div key={i} className="flex items-center gap-4 text-sm font-medium text-accent/60">
+                    <div key={i} className="flex items-center gap-4 text-sm font-medium text-accent/80">
                       <div className="w-5 h-5 rounded-full flex items-center justify-center bg-primary/10 border border-primary/20">
                         <Check className="h-3 w-3 text-primary" />
                       </div>
@@ -246,7 +246,7 @@ export default function SettingsPage() {
                     <div className="relative z-10 text-center">
                       <Zap className="h-10 w-10 text-primary mx-auto mb-4" />
                       <h3 className="text-2xl font-black text-foreground tracking-tighter uppercase mb-2">TRANSCEND TO PRO</h3>
-                      <p className="text-sm text-accent/60 mb-8">Unlock the full neural potential of DraftRapid.</p>
+                      <p className="text-sm text-accent/70 mb-8">Unlock the full neural potential of DraftRapid.</p>
                       <button
                         onClick={handleUpgrade}
                         disabled={upgrading}
@@ -262,7 +262,7 @@ export default function SettingsPage() {
                   <div className="p-8 glass-card border-emerald-500/20 rounded-2xl text-center">
                     <Crown className="h-12 w-12 text-accent mx-auto mb-4" />
                     <h3 className="text-2xl font-black text-accent tracking-tighter uppercase mb-2">ELITE STATUS ACTIVE</h3>
-                    <p className="text-sm text-accent/60">Your neural uplink is operating at 100% capacity.</p>
+                    <p className="text-sm text-accent/80">Your neural uplink is operating at 100% capacity.</p>
                   </div>
                 )}
               </div>
@@ -295,22 +295,22 @@ export default function SettingsPage() {
               <div className="flex-1 space-y-8">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <div>
-                    <label className="block text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-4">UPLINK ADDRESS</label>
+                    <label className="block text-[10px] font-black text-accent/50 uppercase tracking-[0.3em] mb-4">UPLINK ADDRESS</label>
                     <input
                       type="email"
                       value={user?.email || ''}
                       disabled
-                      className="w-full px-6 py-4 bg-accent/5 border border-border rounded-2xl text-accent/30 text-sm font-bold tracking-tight cursor-not-allowed"
+                      className="w-full px-6 py-4 bg-accent/5 border border-border rounded-2xl text-accent/50 text-sm font-bold tracking-tight cursor-not-allowed"
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-black text-accent/30 uppercase tracking-[0.3em] mb-4">DESIGNATION</label>
+                    <label className="block text-[10px] font-black text-accent/60 uppercase tracking-[0.3em] mb-4">DESIGNATION</label>
                     <input
                       type="text"
                       value={displayName}
                       onChange={e => setDisplayName(e.target.value)}
                       placeholder="Your Name"
-                      className="w-full px-6 py-4 bg-accent/5 border border-border rounded-2xl text-foreground placeholder-accent/20 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/40 transition-all"
+                      className="w-full px-6 py-4 bg-accent/5 border border-border rounded-2xl text-foreground placeholder-accent/40 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/40 transition-all"
                     />
                   </div>
                 </div>
@@ -346,7 +346,7 @@ export default function SettingsPage() {
                     <Icon className="h-6 w-6 text-accent/30 group-hover:text-accent transition-colors" />
                   </div>
                   <h4 className="text-[10px] font-black text-foreground tracking-[0.2em] mb-2">{label}</h4>
-                  <p className="text-[10px] font-bold text-accent/30 uppercase tracking-widest mb-8">{sub}</p>
+                  <p className="text-[10px] font-bold text-accent/50 uppercase tracking-widest mb-8">{sub}</p>
                   <Toggle on={notifications[key]} onChange={() => toggle(key)} />
                 </div>
               ))}
@@ -361,7 +361,7 @@ export default function SettingsPage() {
 
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 sm:gap-8">
               <div className="max-w-md">
-                <p className="text-sm font-medium text-accent/60 leading-relaxed">
+                <p className="text-sm font-medium text-accent/80 leading-relaxed">
                   Initiating a total account termination will permanently erase all neural patterns, brand voices, and operational history from the DraftRapid matrix.
                 </p>
               </div>

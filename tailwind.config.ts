@@ -9,9 +9,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#F97316', // Orange-500
-        accent: '#0D9488',  // Teal-600
+        background: '#F0FAFA',
+        foreground: '#134E4A',
+        primary: '#F97316',
+        'primary-hover': '#EA580C',
+        accent: '#0D9488',
         surface: '#FFFFFF',
+        border: '#CCFBF1',
+        'card-bg': 'rgba(255, 255, 255, 0.9)',
+        // Keep legacy colors for compatibility
         'text-primary': '#134E4A',
         'border-teal': '#CCFBF1',
       },
