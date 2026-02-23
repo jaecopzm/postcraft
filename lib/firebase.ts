@@ -1,7 +1,6 @@
 import { initializeApp, getApps } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY!,
@@ -19,15 +18,34 @@ if (!firebaseConfig.apiKey || !firebaseConfig.projectId) {
   throw new Error('Firebase configuration error');
 }
 
-// Initialize Firebase
+// Initialize Firebase core services (safe to import on server)
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// Analytics only on client side
-let analytics;
-if (typeof window !== 'undefined') {
-  analytics = getAnalytics(app);
+let _analyticsInstance: any = null;
+
+// Dynamically load Firebase Analytics on-demand (consent or interaction)
+export async function loadAnalytics() {
+  if (typeof window === 'undefined') return null;
+  if (!process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID) return null;
+  if (_analyticsInstance) return _analyticsInstance;
+
+  try {
+    const analyticsModule = await import('firebase/analytics');
+    const { isSupported, getAnalytics } = analyticsModule as any;
+
+    if (typeof isSupported === 'function') {
+      const supported = await isSupported();
+      if (!supported) return null;
+    }
+
+    _analyticsInstance = getAnalytics(app);
+    return _analyticsInstance;
+  } catch (err) {
+    console.warn('Failed to load Firebase Analytics', err);
+    return null;
+  }
 }
 
-export { app, auth, db, analytics };
+export { app, auth, db };

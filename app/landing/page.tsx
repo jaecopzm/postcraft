@@ -2,20 +2,21 @@
 
 import {
   Sparkles, Zap, Target, TrendingUp, ArrowRight, Check,
-  Globe, ShieldCheck, Twitter, Linkedin, Instagram, Star,
-  Activity, Music, Youtube
+  Globe, ShieldCheck, Star,
+  Activity, Music
 } from 'lucide-react';
+import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from '../../components/SocialIcons';
 import Link from 'next/link';
 import { useAuth } from '../contexts/AuthContext';
 import { motion, Variants } from 'framer-motion';
 
 const PLATFORMS = [
-  { name: 'Twitter / X', icon: Twitter, color: '#1A1A1A' },
-  { name: 'LinkedIn', icon: Linkedin, color: '#0A66C2' },
-  { name: 'Instagram', icon: Instagram, color: '#E1306C' },
-  { name: 'TikTok', icon: Music, color: '#00F2EA' },
-  { name: 'YouTube', icon: Youtube, color: '#FF0000' },
-  { name: 'Facebook', icon: Globe, color: '#1877F2' },
+  { name: 'Twitter / X', icon: XIcon, color: '#1A1A1A' },
+  { name: 'LinkedIn', icon: LinkedInIcon, color: '#0A66C2' },
+  { name: 'Instagram', icon: InstagramIcon, color: '#E1306C' },
+  { name: 'TikTok', icon: TikTokIcon, color: '#00F2EA' },
+  { name: 'YouTube', icon: YouTubeIcon, color: '#FF0000' },
+  { name: 'Facebook', icon: FacebookIcon, color: '#1877F2' },
 ];
 
 const TESTIMONIALS = [
@@ -72,26 +73,24 @@ export default function LandingPage() {
       {/* ── Nav ── */}
       <nav className="fixed top-0 left-0 right-0 z-[100] border-b border-gray-200/60 bg-white/70 backdrop-blur-xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 sm:gap-3 group">
-            <div className="w-8 h-8 sm:w-10 sm:h-10 premium-gradient rounded-xl flex items-center justify-center shadow-lg shadow-primary/20 group-hover:scale-110 transition-transform">
-              <Sparkles className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
-            </div>
-            <span className="text-base sm:text-xl font-black tracking-widest uppercase">DraftRapid</span>
+          <Link href="/" className="flex items-center gap-2 group">
+            <img src="/draftrapid-icon.png" alt="DraftRapid" className="w-8 h-8 sm:w-10 sm:h-10 group-hover:scale-110 transition-transform" />
+            <img src="/draftrapid.png" alt="DraftRapid" className="h-[150px]" />
           </Link>
           <div className="flex items-center gap-2 sm:gap-4">
             {user ? (
-              <Link href="/dashboard" className="px-4 sm:px-6 py-2 sm:py-2.5 premium-gradient text-white text-xs font-black tracking-widest uppercase rounded-full hover:scale-105 transition-all shadow-lg shadow-primary/20">
+              <Link href="/dashboard" className="px-4 sm:px-6 py-2 sm:py-2.5 premium-gradient text-white text-xs font-bold rounded-full hover:scale-105 transition-all shadow-lg shadow-primary/20">
                 Dashboard
               </Link>
             ) : (
               <>
-                <Link href="/pricing" className="hidden sm:block px-6 py-2.5 text-xs font-black tracking-widest uppercase text-gray-400 hover:text-gray-900 transition-colors">
+                <Link href="/pricing" className="hidden sm:block px-6 py-2.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">
                   Pricing
                 </Link>
-                <Link href="/auth/signin" className="hidden sm:block px-6 py-2.5 text-xs font-black tracking-widest uppercase text-gray-400 hover:text-gray-900 transition-colors">
+                <Link href="/auth/signin" className="hidden sm:block px-6 py-2.5 text-xs font-semibold text-gray-500 hover:text-gray-900 transition-colors">
                   Sign In
                 </Link>
-                <Link href="/auth/signup" className="px-5 sm:px-8 py-2 sm:py-2.5 premium-gradient text-white text-xs font-black tracking-widest uppercase rounded-full hover:scale-105 transition-all shadow-lg shadow-primary/20">
+                <Link href="/auth/signup" className="px-5 sm:px-8 py-2 sm:py-2.5 premium-gradient text-white text-xs font-bold rounded-full hover:scale-105 transition-all shadow-lg shadow-primary/20">
                   Start Free
                 </Link>
               </>
@@ -111,7 +110,7 @@ export default function LandingPage() {
           {/* Hook badge */}
           <motion.div variants={itemVariants} className="inline-flex items-center gap-2 sm:gap-3 px-3 sm:px-5 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6 sm:mb-10">
             <div className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-            <span className="text-[9px] sm:text-[11px] font-black tracking-widest uppercase text-primary">
+            <span className="text-[9px] sm:text-[11px] font-bold text-primary">
               Turn any topic into 6 platform-ready posts — in 8 seconds
             </span>
           </motion.div>
@@ -121,7 +120,7 @@ export default function LandingPage() {
             <span className="text-gradient">ARCHITECT</span>
           </motion.h1>
 
-          <motion.p variants={itemVariants} className="text-base sm:text-xl md:text-2xl text-gray-400 font-medium mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-2">
+          <motion.p variants={itemVariants} className="text-base sm:text-xl md:text-2xl text-gray-500 font-medium mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-2">
             Stop staring at a blank screen. DraftRapid generates perfectly on-brand posts for every major platform — trained on your exact voice.
           </motion.p>
 
@@ -129,7 +128,7 @@ export default function LandingPage() {
           <motion.div variants={itemVariants} className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-6 px-4 sm:px-0 mb-10 sm:mb-16">
             <Link
               href="/auth/signup"
-              className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 premium-gradient rounded-2xl text-white font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-sm shadow-xl shadow-primary/20 group relative overflow-hidden transition-all hover:scale-105 text-center"
+              className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 premium-gradient rounded-2xl text-white font-bold uppercase text-sm shadow-xl shadow-primary/20 group relative overflow-hidden transition-all hover:scale-105 text-center"
             >
               <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700" />
               <span className="relative z-10 flex items-center justify-center gap-3">
@@ -139,7 +138,7 @@ export default function LandingPage() {
             </Link>
             <Link
               href="/auth/signin"
-              className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-white border border-gray-200 rounded-2xl text-gray-500 font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-sm hover:text-gray-900 hover:border-gray-300 transition-all text-center shadow-sm"
+              className="w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 bg-white border border-gray-200 rounded-2xl text-gray-500 font-bold uppercase text-sm hover:text-gray-900 hover:border-gray-300 transition-all text-center shadow-sm"
             >
               Sign In
             </Link>
@@ -154,7 +153,7 @@ export default function LandingPage() {
                   key={p.name}
                   className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-xl text-[11px] font-bold text-gray-500 tracking-wide hover:border-gray-300 hover:text-gray-700 transition-all shadow-sm"
                 >
-                  <Icon className="h-3.5 w-3.5" style={{ color: p.color }} />
+                  <Icon size={14} style={{ color: p.color }} />
                   {p.name}
                 </div>
               );
@@ -179,8 +178,8 @@ export default function LandingPage() {
           ].map((stat, i) => (
             <div key={i} className="space-y-2">
               <div className="text-2xl sm:text-4xl font-black text-gray-900 tracking-tighter">{stat.value}</div>
-              <div className="text-[10px] font-black tracking-[0.2em] sm:tracking-[0.3em] text-gray-400 uppercase">{stat.label}</div>
-              <div className="text-[10px] text-gray-300 font-medium">{stat.sub}</div>
+              <div className="text-[10px] font-bold text-gray-700 uppercase">{stat.label}</div>
+              <div className="text-[10px] text-gray-500 font-medium">{stat.sub}</div>
             </div>
           ))}
         </div>
@@ -190,10 +189,10 @@ export default function LandingPage() {
       <section className="py-16 sm:py-24 md:py-32 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-6 mb-12 sm:mb-20">
           <div className="max-w-2xl">
-            <h2 className="text-gray-400 text-xs font-black tracking-[0.4em] uppercase mb-4">What You Get</h2>
-            <h3 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">BUILT FOR THE<br />MODERN ARCHITECT.</h3>
+            <h2 className="text-gray-400 text-xs font-bold uppercase mb-4">What You Get</h2>
+            <h3 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight">Built for the<br />Modern Creator</h3>
           </div>
-          <p className="max-w-xs text-gray-400 font-medium leading-relaxed text-sm sm:text-base">
+          <p className="max-w-xs text-gray-500 font-medium leading-relaxed text-sm sm:text-base">
             Everything you need to go from zero to published — across every major platform — in minutes.
           </p>
         </div>
@@ -232,7 +231,7 @@ export default function LandingPage() {
                 <feature.icon className="h-6 w-6" style={{ color: feature.color }} />
               </div>
               <h4 className="text-lg sm:text-xl font-black text-gray-900 tracking-tight mb-1">{feature.title}</h4>
-              <p className="text-[10px] font-black tracking-widest uppercase mb-3 sm:mb-4" style={{ color: feature.color }}>{feature.subtitle}</p>
+              <p className="text-[10px] font-bold uppercase mb-3 sm:mb-4" style={{ color: feature.color }}>{feature.subtitle}</p>
               <p className="text-gray-500 font-medium leading-relaxed text-sm">{feature.desc}</p>
             </motion.div>
           ))}
@@ -242,8 +241,8 @@ export default function LandingPage() {
       {/* ── Testimonials ── */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-gray-400 text-xs font-black tracking-[0.4em] uppercase mb-4">Early Adopters</h2>
-          <h3 className="text-3xl sm:text-5xl font-black tracking-tight">WHAT THEY&apos;RE <span className="text-gradient">SAYING</span></h3>
+          <h2 className="text-gray-400 text-xs font-bold uppercase mb-4">Early Adopters</h2>
+          <h3 className="text-3xl sm:text-5xl font-black tracking-tight">What They're <span className="text-gradient">Saying</span></h3>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
           {TESTIMONIALS.map((t, i) => (
@@ -283,19 +282,19 @@ export default function LandingPage() {
       {/* ── Pricing: Free vs Pro ── */}
       <section className="py-16 sm:py-24 px-4 sm:px-6 max-w-5xl mx-auto relative z-10">
         <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">SIMPLE PRICING</h2>
-          <p className="text-gray-400 text-base sm:text-lg">Start free. Upgrade when you&apos;re ready.</p>
+          <h2 className="text-3xl sm:text-5xl font-black tracking-tight mb-4">Simple Pricing</h2>
+          <p className="text-gray-500 text-base sm:text-lg">Start free. Upgrade when you're ready.</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 max-w-3xl mx-auto">
           {/* Free */}
           <div className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 flex flex-col shadow-sm">
             <div className="mb-5">
-              <p className="text-[10px] font-black tracking-widest uppercase text-gray-400 mb-3">Starter</p>
+              <p className="text-[10px] font-bold uppercase text-gray-400 mb-3">Starter</p>
               <div className="flex items-end gap-2">
                 <span className="text-4xl sm:text-5xl font-black text-gray-900">Free</span>
               </div>
-              <p className="text-sm text-gray-400 font-medium mt-2">No credit card needed</p>
+              <p className="text-sm text-gray-500 font-medium mt-2">No credit card needed</p>
             </div>
             <div className="space-y-3 flex-1 mb-6">
               {[
@@ -313,7 +312,7 @@ export default function LandingPage() {
                 </div>
               ))}
             </div>
-            <Link href="/auth/signup" className="flex items-center justify-center gap-2 w-full py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-black tracking-widest uppercase text-xs hover:bg-gray-100 hover:border-gray-300 transition-all">
+            <Link href="/auth/signup" className="flex items-center justify-center gap-2 w-full py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-gray-700 font-bold uppercase text-xs hover:bg-gray-100 hover:border-gray-300 transition-all">
               Get Started Free
             </Link>
           </div>
@@ -328,14 +327,14 @@ export default function LandingPage() {
               <div className="absolute top-0 left-0 right-0 h-1 premium-gradient" />
               <div className="mb-5">
                 <div className="flex items-center justify-between mb-3">
-                  <p className="text-[10px] font-black tracking-widest uppercase text-primary">Founder V1</p>
-                  <span className="px-3 py-1 bg-primary/10 text-primary text-[9px] font-black tracking-widest rounded-full uppercase border border-primary/20">Best Value</span>
+                  <p className="text-[10px] font-bold uppercase text-primary">Founder V1</p>
+                  <span className="px-3 py-1 bg-primary/10 text-primary text-[9px] font-bold rounded-full uppercase border border-primary/20">Best Value</span>
                 </div>
                 <div className="flex items-end gap-2">
                   <span className="text-4xl sm:text-5xl font-black text-gray-900">$9.99</span>
-                  <span className="text-gray-400 font-bold mb-1">/ mo</span>
+                  <span className="text-gray-500 font-bold mb-1">/ mo</span>
                 </div>
-                <p className="text-sm text-gray-400 font-medium mt-2 line-through">Normally $19.99 — locked in forever</p>
+                <p className="text-sm text-gray-500 font-medium mt-2 line-through">Normally $19.99 — locked in forever</p>
               </div>
               <div className="space-y-3 flex-1 mb-6">
                 {[
@@ -355,7 +354,7 @@ export default function LandingPage() {
                   </div>
                 ))}
               </div>
-              <Link href="/auth/signup" className="flex items-center justify-center gap-3 w-full py-4 premium-gradient rounded-xl text-white font-black tracking-[0.2em] uppercase text-xs shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
+              <Link href="/auth/signup" className="flex items-center justify-center gap-3 w-full py-4 premium-gradient rounded-xl text-white font-bold uppercase text-xs shadow-lg shadow-primary/20 transition-all hover:scale-105 active:scale-95">
                 Claim Beta Price
                 <ArrowRight className="h-4 w-4" />
               </Link>
@@ -375,12 +374,12 @@ export default function LandingPage() {
           >
             <div className="absolute inset-0 bg-primary/[0.02] blur-[120px] pointer-events-none" />
             <h2 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tighter mb-6 sm:mb-8 max-w-3xl mx-auto leading-[0.9]">
-              JOIN THE <span className="text-gradient">NEW STANDARD</span> OF CREATION.
+              Join the <span className="text-gradient">New Standard</span> of Creation
             </h2>
-            <p className="text-gray-400 text-base sm:text-lg font-medium mb-8 sm:mb-10 max-w-xl mx-auto">
-              The noise is deafening. Let&apos;s make sure your voice cuts through it — effortlessly.
+            <p className="text-gray-500 text-base sm:text-lg font-medium mb-8 sm:mb-10 max-w-xl mx-auto">
+              The noise is deafening. Let's make sure your voice cuts through it — effortlessly.
             </p>
-            <Link href="/auth/signup" className="inline-flex items-center gap-3 px-8 sm:px-12 py-4 sm:py-5 premium-gradient rounded-2xl text-white font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase text-sm shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 group">
+            <Link href="/auth/signup" className="inline-flex items-center gap-3 px-8 sm:px-12 py-4 sm:py-5 premium-gradient rounded-2xl text-white font-bold uppercase text-sm shadow-xl shadow-primary/20 transition-all hover:scale-105 active:scale-95 group">
               Generate My First Post — Free
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
             </Link>
@@ -390,11 +389,9 @@ export default function LandingPage() {
 
       {/* ── Footer ── */}
       <footer className="py-12 sm:py-20 px-4 sm:px-6 border-t border-gray-200/60 text-center">
-        <div className="flex items-center justify-center gap-3 mb-8 sm:mb-10">
-          <div className="w-8 h-8 premium-gradient rounded-lg flex items-center justify-center shadow-lg shadow-primary/20">
-            <Sparkles className="h-4 w-4 text-white" />
-          </div>
-          <span className="text-sm font-black tracking-widest uppercase">DraftRapid</span>
+        <div className="flex items-center justify-center gap-2 mb-8 sm:mb-10">
+          <img src="/draftrapid-icon.png" alt="DraftRapid" className="w-8 h-8" />
+          <img src="/draftrapid.png" alt="DraftRapid" className="h-[150px]" />
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-x-8 sm:gap-x-12 gap-y-4 sm:gap-y-6 mb-8 sm:mb-12">
@@ -409,7 +406,7 @@ export default function LandingPage() {
             <Link
               key={link.path}
               href={link.path}
-              className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-400 hover:text-gray-900 transition-colors"
+              className="text-[10px] font-bold uppercase text-gray-400 hover:text-gray-900 transition-colors"
             >
               {link.label}
             </Link>

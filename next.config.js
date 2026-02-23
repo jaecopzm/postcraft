@@ -1,5 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Allow tunneling services in development
+  allowedDevOrigins: [
+    'localhost:3000',
+    '*.ngrok-free.app',
+    '*.ngrok.app',
+    '*.ngrok.io',
+    '*.loca.lt',
+    '*.localtunnel.me',
+    '*.serveo.net',
+  ],
+
   // Production optimizations
   reactStrictMode: true,
 

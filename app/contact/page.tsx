@@ -29,7 +29,7 @@ export default function ContactPage() {
     };
 
     return (
-        <div className="min-h-screen bg-background text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
+        <div className="min-h-screen bg-gradient-to-br from-white via-primary/5 to-accent/10 text-gray-900 selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
             {/* Cinematic Background Artifacts */}
             <div className="absolute top-0 right-0 w-[1000px] h-[600px] bg-primary/10 blur-[150px] pointer-events-none rounded-full opacity-30" />
             <div className="absolute bottom-0 left-0 w-[800px] h-[800px] bg-primary/5 blur-[150px] pointer-events-none rounded-full" />
@@ -46,12 +46,12 @@ export default function ContactPage() {
                         <div>
                             <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6">
                                 <Globe className="h-4 w-4 text-primary" />
-                                <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Global Communications</span>
+                                <span className="text-[10px] font-black  uppercase text-primary">Global Communications</span>
                             </motion.div>
                             <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-[0.8] mb-8">
                                 ESTABLISH <span className="text-gradient">UPLINK</span>
                             </motion.h1>
-                            <motion.p variants={itemVariants} className="text-xl text-gray-400 font-medium max-w-md leading-relaxed">
+                            <motion.p variants={itemVariants} className="text-xl text-gray-600 font-medium max-w-md leading-relaxed">
                                 Connect with our neural architects to explore customized solutions for your brand's digital evolution.
                             </motion.p>
                         </div>
@@ -63,7 +63,7 @@ export default function ContactPage() {
                             ].map((item, i) => (
                                 <div key={i} className="flex gap-6 items-center group cursor-pointer">
                                     <div className="w-14 h-14 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center group-hover:border-primary transition-colors">
-                                        <item.icon className="h-6 w-6 text-gray-400 group-hover:text-primary transition-colors" />
+                                        <item.icon className="h-6 w-6 text-gray-600 group-hover:text-primary transition-colors" />
                                     </div>
                                     <div>
                                         <h3 className="text-[10px] font-black tracking-[0.2em] uppercase text-gray-300 mb-1">{item.label}</h3>
@@ -89,7 +89,7 @@ export default function ContactPage() {
                                     <form onSubmit={handleSubmit} className="space-y-8">
                                         <div className="space-y-6">
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-300 ml-2">Designation</label>
+                                                <label className="text-[10px] font-black  uppercase text-gray-300 ml-2">Designation</label>
                                                 <input
                                                     required
                                                     type="text"
@@ -100,7 +100,7 @@ export default function ContactPage() {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-300 ml-2">Digital Address</label>
+                                                <label className="text-[10px] font-black  uppercase text-gray-300 ml-2">Digital Address</label>
                                                 <input
                                                     required
                                                     type="email"
@@ -111,7 +111,7 @@ export default function ContactPage() {
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <label className="text-[10px] font-black tracking-[0.3em] uppercase text-gray-300 ml-2">Transmission</label>
+                                                <label className="text-[10px] font-black  uppercase text-gray-300 ml-2">Transmission</label>
                                                 <textarea
                                                     required
                                                     rows={4}
@@ -148,7 +148,7 @@ export default function ContactPage() {
                                         <CheckCircle2 className="h-20 w-20 text-primary mb-8" />
                                     </motion.div>
                                     <h2 className="text-4xl font-black tracking-tighter uppercase mb-4">Uplink Success</h2>
-                                    <p className="text-lg text-gray-400 font-medium max-w-xs mx-auto leading-relaxed mb-10">
+                                    <p className="text-lg text-gray-600 font-medium max-w-xs mx-auto leading-relaxed mb-10">
                                         Your signal has been received by our neural architects. Expect a response within one operational cycle.
                                     </p>
                                     <button
@@ -165,8 +165,8 @@ export default function ContactPage() {
 
                 {/* Footer Navigation Link */}
                 <motion.div variants={itemVariants} initial="hidden" animate="visible" className="text-center pt-24">
-                    <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black tracking-[0.3em] uppercase">
-                        ← Return to Matrix
+                    <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black  uppercase">
+                        ← Return to Home
                     </Link>
                 </motion.div>
             </div>

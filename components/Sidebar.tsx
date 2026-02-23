@@ -22,6 +22,9 @@ export default function Sidebar() {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isPro, setIsPro] = useState(false);
   const [generationsUsed, setGenerationsUsed] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const isExpanded = isMobileOpen || !isCollapsed || isHovered;
 
   // Close sidebar on route change (mobile)
   useEffect(() => {
@@ -79,8 +82,10 @@ export default function Sidebar() {
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         onClick={() => setIsMobileOpen(!isMobileOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2.5 bg-white/90 backdrop-blur-xl border border-border/50 rounded-xl shadow-lg active:scale-95"
+        className="lg:hidden fixed top-4 right-4 z-50 p-2.5 bg-white/90 backdrop-blur-xl border border-border/50 rounded-xl shadow-lg active:scale-95"
         aria-label="Toggle menu"
+        aria-expanded={isMobileOpen}
+        aria-controls="sidebar"
       >
         <AnimatePresence mode="wait">
           {isMobileOpen ? (
@@ -109,51 +114,52 @@ export default function Sidebar() {
 
       {/* ── Sidebar ── */}
       <motion.aside
+        id="sidebar"
         initial={false}
+        onMouseEnter={() => isCollapsed && setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
         animate={{
           x: 0,
-          width: isCollapsed ? 72 : 280,
+          width: isExpanded ? 280 : 72,
         }}
         transition={{ type: 'tween', duration: 0.25, ease: 'easeInOut' }}
         className={`
           fixed top-0 left-0 z-40 h-screen
-          bg-white/80 backdrop-blur-3xl
-          border-r border-border
+          bg-gradient-to-br from-white via-primary/5 to-accent/10 backdrop-blur-xl
+          border-r border-border shadow-xl
           ${isMobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
           transition-transform duration-250 lg:transition-none
+          ${isHovered ? 'shadow-2xl ring-1 ring-black/5' : ''}
         `}
-        style={{ width: isCollapsed ? 72 : 280 }}
+        style={{ width: isExpanded ? 280 : 72 }}
       >
-        {/* Subtle glow background */}
-        <div className="absolute top-0 left-0 w-full h-[500px] bg-primary/[0.03] blur-[120px] pointer-events-none" />
 
-        <div className={`flex flex-col h-full ${isCollapsed ? 'px-3' : 'px-5'} py-6 relative z-10`}>
+        <div className={`flex flex-col h-full ${!isExpanded ? 'px-3' : 'px-5'} py-6 relative z-10`}>
 
           {/* ── Logo + collapse toggle ── */}
           <div className="flex items-center justify-between mb-8 h-10">
-            <div className={`flex items-center gap-3 ${isCollapsed ? 'justify-center w-full' : ''}`}>
+            <div className={`flex items-center gap-2 ${!isExpanded ? 'justify-center w-full' : ''}`}>
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="relative shrink-0 p-2.5 premium-gradient rounded-xl shadow-lg shadow-primary/20"
+                className="relative shrink-0"
               >
-                <Sparkles className="h-5 w-5 text-white" />
+                <img src="/draftrapid-icon.png" alt="DraftRapid" className="h-8 w-8" />
               </motion.div>
-              {!isCollapsed && (
-                <motion.h1
+              {isExpanded && (
+                <motion.div
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
-                  className="text-xl font-bold text-gradient tracking-tight"
                 >
-                  DraftRapid
-                </motion.h1>
+                  <img src="/draftrapid.png" alt="DraftRapid" className="h-[180px]" />
+                </motion.div>
               )}
             </div>
 
-            {!isCollapsed && (
+            {isExpanded && !isHovered && (
               <motion.button
                 whileHover={{ backgroundColor: 'rgba(0,0,0,0.04)' }}
-                onClick={() => setIsCollapsed(true)}
+                onClick={() => { setIsCollapsed(true); setIsHovered(false); }}
                 className="hidden lg:flex items-center justify-center h-8 w-8 rounded-lg text-gray-400 hover:text-gray-700"
               >
                 <ChevronLeft className="h-5 w-5" />
@@ -162,7 +168,7 @@ export default function Sidebar() {
           </div>
 
           <AnimatePresence>
-            {isCollapsed && (
+            {!isExpanded && (
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -175,7 +181,7 @@ export default function Sidebar() {
           </AnimatePresence>
 
           {/* ── Navigation ── */}
-          <nav className="flex-1 space-y-0.5 overflow-y-auto no-scrollbar">
+          <nav aria-label="Main navigation" className="flex-1 space-y-0.5 overflow-y-auto no-scrollbar">
             {navigation.map((item, idx) => {
               const Icon = item.icon;
               const active = isActive(item.href);
@@ -193,7 +199,7 @@ export default function Sidebar() {
                     className={`
                       group relative flex items-center gap-3 rounded-xl font-medium
                       transition-all duration-200
-                      ${isCollapsed ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'}
+                      ${!isExpanded ? 'justify-center px-0 py-2.5' : 'px-3 py-2.5'}
                       ${active
                         ? 'bg-accent/10 text-accent'
                         : 'text-foreground/80 hover:text-foreground hover:bg-accent/5'
@@ -210,12 +216,12 @@ export default function Sidebar() {
 
                     <Icon className={`h-[18px] w-[18px] shrink-0 transition-transform ${active ? 'scale-110' : 'group-hover:scale-110'}`} />
 
-                    {!isCollapsed && (
+                    {isExpanded && (
                       <span className="text-[13px] font-semibold tracking-wide">{item.name}</span>
                     )}
 
-                    {isCollapsed && (
-                      <div className="absolute left-full ml-4 px-3 py-2 text-xs font-bold text-foreground bg-white/90 backdrop-blur-xl border border-border rounded-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap z-50 shadow-lg">
+                    {!isExpanded && (
+                      <div role="tooltip" className="absolute left-full ml-4 px-3 py-2 text-xs font-bold text-foreground bg-white/90 backdrop-blur-xl border border-border rounded-lg opacity-0 group-hover:opacity-100 group-focus:opacity-100 pointer-events-none group-focus:pointer-events-auto transition-opacity whitespace-nowrap z-50 shadow-lg">
                         {item.name}
                       </div>
                     )}
@@ -228,7 +234,7 @@ export default function Sidebar() {
           {/* ── User Profile ── */}
           <div className="mt-auto space-y-2 shrink-0">
             <AnimatePresence mode="wait">
-              {!isCollapsed ? (
+              {isExpanded ? (
                 <motion.div
                   key="expanded-user"
                   initial={{ opacity: 0, y: 20 }}
@@ -248,11 +254,11 @@ export default function Sidebar() {
                       <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 bg-accent border-2 border-white rounded-full" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-bold text-gray-900 truncate uppercase tracking-wider leading-tight">
+                      <p className="text-sm font-semibold text-gray-900 truncate leading-tight">
                         {user?.displayName || user?.email?.split('@')[0] || 'Member'}
                       </p>
-                      <p className="text-[10px] text-accent/80 truncate font-mono">
-                        {isPro ? 'PRO ACCOUNT' : 'FREE ACCOUNT'}
+                      <p className="text-[10px] text-accent/70 truncate">
+                        {isPro ? 'Pro' : 'Free Plan'}
                       </p>
                     </div>
                   </div>
@@ -260,9 +266,9 @@ export default function Sidebar() {
                   {!isPro && (
                     <div className="space-y-2.5">
                       <div className="space-y-1.5">
-                        <div className="flex items-center justify-between text-[10px] font-bold">
-                          <span className="text-accent/80">USAGE</span>
-                          <span className="text-foreground">{generationsUsed}/{generationsLimit}</span>
+                        <div className="flex items-center justify-between text-[10px] font-medium">
+                          <span className="text-accent/70">Usage</span>
+                          <span className="text-foreground font-semibold">{generationsUsed}/{generationsLimit}</span>
                         </div>
                         <div className="h-1 bg-gray-200 rounded-full overflow-hidden">
                           <motion.div
@@ -275,10 +281,10 @@ export default function Sidebar() {
 
                       <Link
                         href="/settings"
-                        className="flex items-center justify-center gap-2 w-full py-2.5 premium-button premium-gradient rounded-xl text-[10px] font-black tracking-wider text-white group"
+                        className="flex items-center justify-center gap-2 w-full py-2.5 premium-button premium-gradient rounded-xl text-xs font-bold text-white group"
                       >
-                        <Zap className="h-3 w-3 group-hover:rotate-12 transition-transform" />
-                        UPGRADE TO PRO
+                        <Zap className="h-3.5 w-3.5 group-hover:rotate-12 transition-transform" />
+                        Upgrade to Pro
                       </Link>
                     </div>
                   )}
@@ -286,7 +292,7 @@ export default function Sidebar() {
                   {isPro && (
                     <div className="flex items-center gap-2 py-1.5 px-3 bg-accent/10 rounded-lg">
                       <Crown className="h-3.5 w-3.5 text-accent" />
-                      <span className="text-[10px] font-bold text-accent tracking-wide whitespace-nowrap">PREMIUM ACTIVE</span>
+                      <span className="text-[10px] font-semibold text-accent whitespace-nowrap">Pro Active</span>
                     </div>
                   )}
                 </motion.div>
@@ -312,7 +318,7 @@ export default function Sidebar() {
             </AnimatePresence>
 
             {/* Footer links + Logout row */}
-            {!isCollapsed ? (
+            {isExpanded ? (
               <div className="flex items-center justify-between px-1">
                 <div className="flex items-center gap-3 opacity-40 hover:opacity-60 transition-opacity">
                   {[
@@ -320,7 +326,7 @@ export default function Sidebar() {
                     { label: 'Terms', href: '/terms' },
                     { label: 'Privacy', href: '/privacy' }
                   ].map((link) => (
-                    <Link key={link.href} href={link.href} className="text-[7px] font-black tracking-widest uppercase text-accent/80 hover:text-accent transition-colors">
+                    <Link key={link.href} href={link.href} className="text-[9px] font-medium text-accent/80 hover:text-accent transition-colors">
                       {link.label}
                     </Link>
                   ))}
@@ -328,10 +334,10 @@ export default function Sidebar() {
                 <motion.button
                   whileHover={{ x: -2 }}
                   onClick={() => signOut()}
-                  className="group flex items-center gap-2 px-3 py-2 rounded-xl font-bold text-accent/60 hover:text-red-500 hover:bg-red-50 transition-all"
+                  className="group flex items-center gap-2 px-3 py-2 rounded-xl font-semibold text-accent/60 hover:text-red-500 hover:bg-red-50 transition-all"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span className="text-[10px] tracking-widest uppercase">Logout</span>
+                  <span className="text-[10px]">Logout</span>
                 </motion.button>
               </div>
             ) : (

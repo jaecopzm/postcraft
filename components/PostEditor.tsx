@@ -12,6 +12,7 @@ interface PostEditorProps {
 export default function PostEditor({ initialContent, platform, onSave, onCancel }: PostEditorProps) {
     const [content, setContent] = useState(initialContent);
     const [copied, setCopied] = useState(false);
+    const [announce, setAnnounce] = useState('');
 
     const characterLimits: Record<string, number> = {
         twitter: 280,
@@ -19,7 +20,7 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
         instagram: 2200,
         facebook: 63206,
         tiktok: 2200,
-        youtube: 5000
+        youtube: 5000,
     };
 
     const limit = characterLimits[platform] || 280;
@@ -28,7 +29,9 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
     const handleCopy = () => {
         navigator.clipboard.writeText(content);
         setCopied(true);
+        setAnnounce('Post copied to clipboard');
         setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setAnnounce(''), 1200);
     };
 
     return (
@@ -50,6 +53,7 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                     <button
                         onClick={handleCopy}
                         className="p-2 sm:p-3 bg-accent/5 rounded-lg sm:rounded-xl text-accent/40 hover:text-accent transition-all overflow-hidden relative group"
+                        aria-label="Copy post"
                     >
                         <AnimatePresence mode="wait">
                             {copied ? (
@@ -66,6 +70,7 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                     <button
                         onClick={onCancel}
                         className="p-2 sm:p-3 bg-accent/5 rounded-lg sm:rounded-xl text-accent/40 hover:text-red-400 transition-all"
+                        aria-label="Close editor"
                     >
                         <X className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </button>
@@ -84,11 +89,16 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                                 onSave(content);
                             }
                         }}
+                        aria-label={`Post editor for ${platform}`}
+                        aria-describedby="posteditor-charcount"
+                        maxLength={limit}
                         className="w-full bg-transparent border-none text-foreground text-sm sm:text-base leading-relaxed font-medium placeholder-accent/20 focus:outline-none focus:ring-0 resize-none min-h-[150px] sm:min-h-[200px]"
                         placeholder="REFINE YOUR MESSAGE..."
                         autoFocus
                     />
 
+                    {/* Announcements for screen readers */}
+                    <div aria-live="polite" className="sr-only">{announce}</div>
                     <div className="absolute top-0 right-0 w-32 h-32 premium-gradient blur-[100px] opacity-10 pointer-events-none" />
                 </div>
 
@@ -96,18 +106,24 @@ export default function PostEditor({ initialContent, platform, onSave, onCancel 
                 <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-gray-200 gap-3">
                     <div className="flex items-center gap-2">
                         <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${isOverLimit ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.5)]' : 'bg-primary'}`} />
-                        <span className={`text-[9px] sm:text-[10px] font-black tracking-widest uppercase ${isOverLimit ? 'text-red-500' : 'text-accent/30'}`}>
+                        <span id="posteditor-charcount" className={`text-[9px] sm:text-[10px] font-black tracking-widest uppercase ${isOverLimit ? 'text-red-500' : 'text-accent/30'}`}>
                             {content.length}/{limit}
                         </span>
                     </div>
 
-                    <button
-                        onClick={() => onSave(content)}
-                        className="flex items-center gap-2 sm:gap-3 px-5 sm:px-8 py-3 sm:py-4 premium-gradient text-white text-[9px] sm:text-[10px] font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-xl shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
-                    >
-                        <Save className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-                        Save
-                    </button>
+                    <div className="flex items-center">
+                        <button
+                            onClick={() => onSave(content)}
+                            aria-keyshortcuts="Ctrl+Enter"
+                            title="Save (Ctrl/Cmd+Enter)"
+                            className="flex items-center gap-2 sm:gap-3 px-5 sm:px-8 py-3 sm:py-4 premium-gradient text-white text-[9px] sm:text-[10px] font-black tracking-[0.15em] sm:tracking-[0.2em] uppercase rounded-xl shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+                        >
+                            <Save className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+                            Save
+                        </button>
+
+                        <span className="ml-3 text-[9px] sm:text-[10px] opacity-60">Ctrl/Cmd+Enter</span>
+                    </div>
                 </div>
             </div>
         </motion.div>

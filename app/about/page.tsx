@@ -19,7 +19,7 @@ const itemVariants: Variants = {
 
 export default function AboutPage() {
     return (
-        <div className="min-h-screen bg-background text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
+        <div className="min-h-screen bg-gradient-to-br from-white via-primary/5 to-accent/10 text-gray-900 selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
             {/* Cinematic Background Artifacts */}
             <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-primary/10 blur-[150px] pointer-events-none rounded-full opacity-50" />
             <div className="absolute top-[40%] right-[-10%] w-[600px] h-[600px] bg-accent/5 blur-[120px] pointer-events-none rounded-full" />
@@ -35,12 +35,12 @@ export default function AboutPage() {
                     <section className="text-center">
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-8">
                             <Sparkles className="h-4 w-4 text-primary" />
-                            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">The Genesis of DraftRapid</span>
+                            <span className="text-[10px] font-black  uppercase text-primary">The Genesis of DraftRapid</span>
                         </motion.div>
                         <motion.h1 variants={itemVariants} className="text-6xl md:text-8xl font-black tracking-tighter mb-8 leading-[0.9]">
                             NARRATING THE <span className="text-gradient">FUTURE</span>
                         </motion.h1>
-                        <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-400 font-medium max-w-2xl mx-auto leading-relaxed">
+                        <motion.p variants={itemVariants} className="text-xl md:text-2xl text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed">
                             DraftRapid isn't just a tool; it's a Neural Forge designed to bridge the gap between human creativity and machine intelligence.
                         </motion.p>
                     </section>
@@ -56,7 +56,7 @@ export default function AboutPage() {
                             </p>
                             <div className="flex items-center gap-4 text-primary">
                                 <Target className="h-6 w-6" />
-                                <span className="text-sm font-black tracking-widest uppercase">Targeted Excellence</span>
+                                <span className="text-sm font-black  uppercase">Targeted Excellence</span>
                             </div>
                         </motion.div>
 
@@ -71,8 +71,8 @@ export default function AboutPage() {
                                         <item.icon className="h-6 w-6 text-primary" />
                                     </div>
                                     <div>
-                                        <h3 className="text-lg font-black tracking-widest uppercase mb-1">{item.label}</h3>
-                                        <p className="text-gray-400 text-sm leading-relaxed">{item.desc}</p>
+                                        <h3 className="text-lg font-black  uppercase mb-1">{item.label}</h3>
+                                        <p className="text-gray-600 text-sm leading-relaxed">{item.desc}</p>
                                     </div>
                                 </div>
                             ))}
@@ -86,10 +86,10 @@ export default function AboutPage() {
                             <div className="relative z-10">
                                 <Activity className="h-16 w-16 text-primary mx-auto mb-8 animate-pulse" />
                                 <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase mb-6">The Neural Forge</h2>
-                                <p className="text-lg text-gray-400 max-w-xl mx-auto leading-relaxed mb-10">
+                                <p className="text-lg text-gray-600 max-w-xl mx-auto leading-relaxed mb-10">
                                     Built on top of cutting-edge LLM architectures, DraftRapid is continuously evolving. We're not just creating content; we're refining the way humanity interacts with information.
                                 </p>
-                                <Link href="/auth/signup" className="inline-flex items-center gap-3 px-10 py-5 premium-gradient rounded-full text-white text-[10px] font-black tracking-[0.3em] uppercase shadow-2xl shadow-primary/20 hover:scale-105 transition-all">
+                                <Link href="/auth/signup" className="inline-flex items-center gap-3 px-10 py-5 premium-gradient rounded-full text-white text-[10px] font-black  uppercase shadow-2xl shadow-primary/20 hover:scale-105 transition-all">
                                     Join the Evolution
                                 </Link>
                             </div>
@@ -98,8 +98,8 @@ export default function AboutPage() {
 
                     {/* Footer Navigation Link */}
                     <motion.div variants={itemVariants} className="text-center pt-10">
-                        <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black tracking-[0.3em] uppercase">
-                            ← Return to Matrix
+                        <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black  uppercase">
+                            ← Return to Home
                         </Link>
                     </motion.div>
                 </motion.div>

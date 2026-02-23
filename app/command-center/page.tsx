@@ -100,50 +100,50 @@ export default function CommandCenterPage() {
     };
 
     return (
-        <div className="container mx-auto max-w-6xl animate-in fade-in duration-700">
+        <div className="container mx-auto max-w-6xl animate-in fade-in duration-700 px-4 sm:px-0">
             {/* Header */}
-            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 sm:gap-6 mb-8 sm:mb-12">
+            <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
                 <div>
                     <motion.div
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
-                        className="inline-flex items-center gap-3 px-4 py-2 bg-orange-100 border border-orange-200 rounded-full mb-4"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-orange-50 border border-orange-200 rounded-full mb-2 sm:mb-3"
                     >
-                        <Rocket className="h-4 w-4 text-orange-600" />
-                        <span className="text-[10px] font-black tracking-[0.3em] uppercase text-orange-600">Mission Control</span>
+                        <Rocket className="h-3 w-3 text-orange-600" />
+                        <span className="text-[10px] font-bold tracking-wider uppercase text-orange-600">Mission Control</span>
                     </motion.div>
-                    <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-teal-900 uppercase">Command <span className="text-gradient">Center</span></h1>
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">Command <span className="text-gradient">Center</span></h1>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-3xl border border-teal-200 rounded-2xl px-5 sm:px-6 py-4 flex items-center gap-4">
-                        <div className="h-10 w-10 bg-teal-100 rounded-xl flex items-center justify-center shrink-0">
-                            <TrendingUp className="h-5 w-5 text-teal-600" />
+                <div className="flex items-center gap-3 sm:gap-4">
+                    <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-xl border border-teal-200 rounded-xl px-4 sm:px-5 py-3 flex items-center gap-3">
+                        <div className="h-8 w-8 sm:h-10 sm:w-10 bg-teal-100 rounded-lg flex items-center justify-center shrink-0">
+                            <TrendingUp className="h-4 w-4 sm:h-5 sm:w-5 text-teal-600" />
                         </div>
                         <div>
-                            <p className="text-[10px] font-black text-teal-600 uppercase tracking-widest">Growth Streak</p>
-                            <p className="text-xl font-black text-teal-900">{streak} DAYS</p>
+                            <p className="text-[9px] sm:text-[10px] font-bold text-teal-600 uppercase tracking-wide">Streak</p>
+                            <p className="text-lg sm:text-xl font-bold text-teal-900">{streak} Days</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
                 {/* Left Column: Metrics & Heatmap */}
-                <div className="lg:col-span-1 space-y-8">
+                <div className="lg:col-span-1 space-y-4 sm:space-y-6">
                     <PresenceHeatmap publishedDates={publishedDates} />
 
-                    <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-3xl border border-teal-200 rounded-3xl p-8 relative overflow-hidden">
-                        <div className="absolute top-0 right-0 p-8 opacity-10">
-                            <ShieldCheck className="h-20 w-20 text-orange-500" />
+                    <div className="bg-gradient-to-br from-white/80 to-teal-50 backdrop-blur-xl border border-teal-200 rounded-xl p-5 sm:p-6 relative overflow-hidden">
+                        <div className="absolute top-0 right-0 p-6 opacity-10">
+                            <ShieldCheck className="h-16 w-16 text-orange-500" />
                         </div>
-                        <h4 className="text-xs font-black text-orange-600 uppercase tracking-[0.2em] mb-2">Neural Integrity</h4>
+                        <h4 className="text-xs font-bold text-orange-600 uppercase tracking-wide mb-3">Activity Score</h4>
                         
                         <div className="mb-4">
                             <div className="flex items-center justify-between mb-2">
-                                <p className="text-xl font-black text-teal-900 tracking-tight uppercase">Habit Score: {Math.min(streak * 10, 100)}%</p>
+                                <p className="text-lg sm:text-xl font-bold text-teal-900">Score: {Math.min(streak * 10, 100)}%</p>
                                 {streak > 0 && streak % 5 === 0 && (
-                                    <div className="text-xs text-orange-600 font-bold animate-pulse">🔥 {streak} DAY STREAK!</div>
+                                    <div className="text-xs text-orange-600 font-bold animate-pulse">🔥 {streak} Days!</div>
                                 )}
                             </div>
                             
@@ -162,28 +162,28 @@ export default function CommandCenterPage() {
                             {/* Next Milestone */}
                             {streak < 10 && (
                                 <div className="text-xs text-teal-600 font-medium mb-3">
-                                    {10 - streak} days to 10-day streak milestone! 🎯
+                                    {10 - streak} days to 10-day milestone! 🎯
                                 </div>
                             )}
                         </div>
                         
-                        <p className="text-xs text-teal-600 leading-relaxed font-medium mb-4">
-                            Consistent publication increases your aura's resonance across social nodes.
+                        <p className="text-xs text-teal-600 leading-relaxed mb-4">
+                            Consistent posting builds momentum and engagement.
                         </p>
                         
                         {/* Quick Actions */}
                         <div className="flex gap-2">
                             <button 
                                 onClick={() => window.location.href = '/dashboard'}
-                                className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs font-bold transition-colors"
+                                className="px-3 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg text-xs font-bold transition-colors"
                             >
-                                Schedule Post
+                                Create Post
                             </button>
                             <button 
                                 onClick={() => window.location.href = '/analytics'}
-                                className="px-3 py-1.5 bg-teal-500 hover:bg-teal-600 text-white rounded-lg text-xs font-bold transition-colors"
+                                className="px-3 py-2 bg-teal-500 hover:bg-teal-600 text-white rounded-lg text-xs font-bold transition-colors"
                             >
-                                View Analytics
+                                Analytics
                             </button>
                         </div>
                     </div>

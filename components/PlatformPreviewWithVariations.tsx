@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import { Twitter, Linkedin, Instagram, Facebook, Music, Youtube, ChevronLeft, ChevronRight, Copy, Check, Edit2, ExternalLink, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, Check, Edit2, ExternalLink, Zap, BookOpen } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from './SocialIcons';
 
 import PostEditor from './PostEditor';
 
@@ -16,15 +17,20 @@ interface PlatformPreviewWithVariationsProps {
   isCampaignMode?: boolean;
   onUpdate?: (index: number, newContent: string) => void;
   onStage?: (content: string) => void;
+  onSaveToLibrary?: (content: string) => void;
+  savedToLibrary?: Set<string>;
 }
 
-export default function PlatformPreviewWithVariations({ platform, variations, isCampaignMode, onUpdate, onStage }: PlatformPreviewWithVariationsProps) {
+export default function PlatformPreviewWithVariations({ platform, variations, isCampaignMode, onUpdate, onStage, onSaveToLibrary, savedToLibrary }: PlatformPreviewWithVariationsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isEditing, setIsEditing] = useState(false);
   const [copied, setCopied] = useState(false);
   const [expanded, setExpanded] = useState(false);
   const [isStaged, setIsStaged] = useState(false);
   const current = variations[currentIndex];
+
+  const saveKey = `${platform}-${current.content.substring(0, 50)}`;
+  const isSaved = savedToLibrary?.has(saveKey);
 
   const handleUplink = () => {
     const text = encodeURIComponent(current.content);
@@ -43,12 +49,12 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
 
   const getPlatformIcon = () => {
     switch (platform) {
-      case 'twitter': return <Twitter className="h-5 w-5 text-white" />;
-      case 'linkedin': return <Linkedin className="h-5 w-5 text-white" />;
-      case 'instagram': return <Instagram className="h-5 w-5 text-white" />;
-      case 'facebook': return <Facebook className="h-5 w-5 text-white" />;
-      case 'tiktok': return <Music className="h-5 w-5 text-white" />;
-      case 'youtube': return <Youtube className="h-5 w-5 text-white" />;
+      case 'twitter': return <XIcon size={20} className="text-blue-400" />;
+      case 'linkedin': return <LinkedInIcon size={20} className="text-blue-600" />;
+      case 'instagram': return <InstagramIcon size={20} className="text-pink-500" />;
+      case 'facebook': return <FacebookIcon size={20} className="text-blue-600" />;
+      case 'tiktok': return <TikTokIcon size={20} className="text-gray-900" />;
+      case 'youtube': return <YouTubeIcon size={20} className="text-red-600" />;
       default: return null;
     }
   };
@@ -94,12 +100,12 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
 
       case 'linkedin':
         return (
-          <div className="bg-[#1B1B1F] border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-2xl">
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-2xl">
             <div className="flex items-start gap-2 sm:gap-4 mb-3 sm:mb-5">
               <div className="w-10 h-10 sm:w-14 sm:h-14 bg-gray-50 rounded-lg flex-shrink-0 border border-gray-200"></div>
               <div className="py-1 min-w-0 flex-1">
-                <div className="font-bold text-white text-sm sm:text-[16px] truncate">Professional Profile</div>
-                <div className="text-gray-400 text-[11px] sm:text-[13px] font-medium truncate">Visionary Founder | Tech Specialist</div>
+                <div className="font-bold text-gray-900 text-sm sm:text-[16px] truncate">Professional Profile</div>
+                <div className="text-gray-600 text-[11px] sm:text-[13px] font-medium truncate">Visionary Founder | Tech Specialist</div>
               </div>
             </div>
             <p className="text-gray-800 text-xs sm:text-[15px] leading-[1.6] whitespace-pre-wrap break-words">{content}</p>
@@ -120,16 +126,30 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
               <span className="text-gray-300 text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] sm:tracking-[0.3em]">Visual Preview</span>
             </div>
             <div className="p-3 sm:p-4">
-              <p className={`text-gray-800 text-xs sm:text-[14px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-4' : ''}`}>{content}</p>
+              <p className={`text-white text-xs sm:text-[14px] leading-relaxed whitespace-pre-wrap break-words ${!expanded && content.length > 200 ? 'line-clamp-4' : ''}`}>{content}</p>
               {content.length > 200 && (
                 <button
                   onClick={() => setExpanded(!expanded)}
-                  className="text-gray-400 hover:text-gray-900 text-[11px] sm:text-xs font-bold mt-1.5 transition-colors"
+                  className="text-gray-300 hover:text-white text-[11px] sm:text-xs font-bold mt-1.5 transition-colors"
                 >
                   {expanded ? 'show less' : '... more'}
                 </button>
               )}
             </div>
+          </div>
+        );
+
+      case 'facebook':
+        return (
+          <div className="bg-white border border-gray-200 rounded-lg sm:rounded-xl p-4 sm:p-6 shadow-2xl">
+            <div className="flex items-start gap-2 sm:gap-4 mb-3 sm:mb-4">
+              <div className="w-9 h-9 sm:w-11 sm:h-11 bg-gray-50 rounded-full flex-shrink-0 border border-gray-200"></div>
+              <div className="py-1 min-w-0 flex-1">
+                <div className="font-bold text-gray-900 text-sm sm:text-[15px] truncate">Your Business Page</div>
+                <div className="text-gray-600 text-[11px] sm:text-[12px] font-medium truncate">Just now · 🌐</div>
+              </div>
+            </div>
+            <p className="text-gray-900 text-xs sm:text-[15px] leading-[1.5] whitespace-pre-wrap break-words">{content}</p>
           </div>
         );
 
@@ -170,7 +190,7 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
         <div className="flex items-center gap-2 sm:gap-4">
           <motion.div
             whileHover={{ scale: 1.1, rotate: 5 }}
-            className="p-2 sm:p-3 bg-primary rounded-lg sm:rounded-xl shadow-lg shadow-primary/20 shrink-0"
+            className="p-2 sm:p-3 bg-white rounded-lg sm:rounded-xl shadow-lg border border-gray-200 shrink-0"
           >
             {getPlatformIcon()}
           </motion.div>
@@ -264,6 +284,31 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
+            onClick={() => onSaveToLibrary?.(current.content)}
+            className={`flex items-center justify-center gap-2 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase transition-all
+              ${isSaved
+                ? 'bg-green-500/10 text-green-500 border border-green-500/20'
+                : 'bg-white/60 backdrop-blur-lg text-purple-600 border border-purple-200 hover:bg-purple-50'
+              }`}
+          >
+            <AnimatePresence mode="wait">
+              {isSaved ? (
+                <motion.div key="saved" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="flex items-center gap-2">
+                  <Check className="h-3 w-3 sm:h-4 sm:w-4" /> SAVED
+                </motion.div>
+              ) : (
+                <motion.div key="save" initial={{ scale: 0 }} animate={{ scale: 1 }} exit={{ scale: 0 }} className="flex items-center gap-2">
+                  <BookOpen className="h-3 w-3 sm:h-4 sm:w-4" /> SAVE
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
+        </div>
+
+        <div className="grid grid-cols-2 gap-2 sm:gap-3">
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             onClick={handleStage}
             className={`flex items-center justify-center gap-2 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase transition-all
               ${isStaged
@@ -283,20 +328,18 @@ export default function PlatformPreviewWithVariations({ platform, variations, is
               )}
             </AnimatePresence>
           </motion.button>
-        </div>
 
-        {(platform === 'twitter' || platform === 'linkedin') && (
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             onClick={handleUplink}
-            className="w-full flex items-center justify-center gap-2 py-3 sm:py-4 premium-gradient text-white rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase shadow-xl shadow-primary/20"
+            className="w-full flex items-center justify-center gap-2 py-3 sm:py-4 premium-gradient text-white rounded-xl sm:rounded-2xl font-black text-[9px] sm:text-[10px] tracking-wider sm:tracking-[0.2em] uppercase shadow-xl shadow-primary/20 col-span-2"
           >
             <ExternalLink className="h-3 w-3 sm:h-4 sm:w-4" />
-            <span className="hidden sm:inline">DIRECT UPLINK TO {platform === 'twitter' ? 'X' : 'LINKEDIN'}</span>
-            <span className="sm:hidden">POST TO {platform === 'twitter' ? 'X' : 'LINKEDIN'}</span>
+            <span className="hidden sm:inline">Post to {platform === 'twitter' ? 'X' : 'LinkedIn'}</span>
+            <span className="sm:hidden">Post to {platform === 'twitter' ? 'X' : 'LinkedIn'}</span>
           </motion.button>
-        )}
+        </div>
       </div>
     </div>
   );

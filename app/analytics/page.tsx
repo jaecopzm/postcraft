@@ -26,25 +26,25 @@ function StatCard({
 }) {
   return (
     <motion.div
-      whileHover={{ y: -5, scale: 1.02 }}
-      className="glass-card rounded-3xl p-5 sm:p-8 relative overflow-hidden group border-border"
+      whileHover={{ y: -2, scale: 1.01 }}
+      className="glass-card rounded-xl p-4 sm:p-5 relative overflow-hidden group border-border"
     >
       <div
-        className="absolute -right-4 -top-4 w-32 h-32 blur-3xl opacity-0 group-hover:opacity-20 transition-opacity"
+        className="absolute -right-4 -top-4 w-24 h-24 blur-3xl opacity-0 group-hover:opacity-20 transition-opacity"
         style={{ background: accent }}
       />
 
-      <div className="flex items-start justify-between mb-4 sm:mb-8">
-        <div className="p-3 sm:p-4 premium-gradient rounded-2xl shadow-lg shadow-primary/20">
-          <Icon className="h-5 w-5 sm:h-6 sm:w-6 text-white" />
+      <div className="flex items-start justify-between mb-3 sm:mb-4">
+        <div className="p-2 sm:p-2.5 premium-gradient rounded-lg shadow-lg shadow-primary/20">
+          <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
         </div>
-        <ArrowUpRight className="h-5 w-5 text-gray-300 group-hover:text-primary transition-colors" />
+        <ArrowUpRight className="h-4 w-4 text-gray-300 group-hover:text-primary transition-colors" />
       </div>
 
-      <div className="space-y-1">
-        <p className="text-[10px] font-black text-accent/30 uppercase tracking-[0.2em]">{label}</p>
-        <p className="text-2xl sm:text-4xl font-black text-foreground tracking-tight">{value}</p>
-        {sub && <p className="text-xs font-bold text-accent/20 uppercase tracking-widest pt-2">{sub}</p>}
+      <div className="space-y-0.5">
+        <p className="text-[10px] font-bold text-accent/40 uppercase tracking-wider">{label}</p>
+        <p className="text-2xl sm:text-3xl font-bold text-foreground">{value}</p>
+        {sub && <p className="text-[10px] text-accent/30 uppercase tracking-wide pt-1">{sub}</p>}
       </div>
     </motion.div>
   );
@@ -119,60 +119,59 @@ export default function AnalyticsPage() {
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="space-y-10"
+      className="space-y-6 sm:space-y-8 px-4 sm:px-0"
     >
       {/* Header */}
-      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="h-12 w-12 sm:h-16 sm:w-16 premium-gradient rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 shrink-0">
-            <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8 text-white" />
+      <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-primary/10 border border-primary/20 rounded-full mb-2 sm:mb-3">
+            <BarChart3 className="h-3 w-3 text-primary" />
+            <span className="text-[10px] font-bold tracking-wider uppercase text-primary">Analytics</span>
           </div>
-          <div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-gradient mb-1 sm:mb-2 tracking-tight">Intelligence</h1>
-            <p className="text-accent/60 font-medium text-sm sm:text-base">Deep insights into your creative momentum.</p>
-          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground tracking-tight">Performance <span className="text-gradient">Insights</span></h1>
+          <p className="text-accent/60 text-xs sm:text-sm mt-1">Track your content generation activity.</p>
         </div>
       </motion.div>
 
       {/* Stat grid */}
-      <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <StatCard icon={Zap} label="GENS" value={total} sub="LIFETIME FLOW" accent="#EC5800" />
-        <StatCard icon={TrendingUp} label="WEEK" value={weekCount} sub="RECENT BURST" accent="#06B6D4" />
-        <StatCard icon={Activity} label="NODES" value={platforms} sub="PLATFORMS" accent="#8B5CF6" />
-        <StatCard icon={Hash} label="AREAS" value={topics} sub="UNIQ TOPICS" accent="#F59E0B" />
+      <motion.div variants={itemVariants} className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <StatCard icon={Zap} label="Total" value={total} sub="Generations" accent="#EC5800" />
+        <StatCard icon={TrendingUp} label="This Week" value={weekCount} sub="Recent" accent="#06B6D4" />
+        <StatCard icon={Activity} label="Platforms" value={platforms} sub="Active" accent="#8B5CF6" />
+        <StatCard icon={Hash} label="Topics" value={topics} sub="Unique" accent="#F59E0B" />
       </motion.div>
 
       {/* Data Visuals */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-8">
-        {/* Platform DNA */}
-        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-2xl p-5 sm:p-10 border-border relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[100px] pointer-events-none" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        {/* Platform Breakdown */}
+        <motion.div variants={itemVariants} className="glass-card rounded-xl p-4 sm:p-6 border-border relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[80px] pointer-events-none" />
 
-          <div className="flex items-center justify-between mb-6 sm:mb-10">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h3 className="text-lg sm:text-2xl font-black text-foreground tracking-widest uppercase">Platform DNA</h3>
-              <p className="text-accent/30 text-xs font-bold tracking-[0.2em] mt-1">DISTRIBUTION BREAKDOWN</p>
+              <h3 className="text-base sm:text-lg font-bold text-foreground">Platform Breakdown</h3>
+              <p className="text-accent/40 text-[10px] sm:text-xs mt-0.5">Distribution by platform</p>
             </div>
-            <div className="px-3 sm:px-4 py-1.5 bg-accent/5 rounded-full border border-accent/10">
-              <span className="text-[10px] font-black text-primary tracking-widest uppercase">{total} TOTAL</span>
+            <div className="px-2.5 sm:px-3 py-1 bg-accent/5 rounded-full border border-accent/10">
+              <span className="text-[9px] sm:text-[10px] font-bold text-primary tracking-wide uppercase">{total} Total</span>
             </div>
           </div>
 
-          <div className="space-y-8">
+          <div className="space-y-4 sm:space-y-5">
             {platformEntries.length > 0 ? platformEntries.map(([platform, count]) => {
               const meta = PLATFORM_META[platform];
               const pct = total > 0 ? (count / total) * 100 : 0;
               const barW = (count / maxPlatformCount) * 100;
               return (
-                <div key={platform} className="space-y-3">
+                <div key={platform} className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2">
                       <div className="w-1.5 h-1.5 rounded-full" style={{ background: meta?.color ?? '#EC5800' }} />
-                      <span className="text-xs font-black tracking-widest text-accent/40">{meta?.label ?? platform}</span>
+                      <span className="text-[11px] sm:text-xs font-bold text-accent/40">{meta?.label ?? platform}</span>
                     </div>
-                    <div className="flex items-center gap-4">
-                      <span className="text-[10px] font-black text-accent/20">{pct.toFixed(0)}%</span>
-                      <span className="text-sm font-black text-foreground">{count}</span>
+                    <div className="flex items-center gap-2 sm:gap-3">
+                      <span className="text-[10px] font-bold text-accent/30">{pct.toFixed(0)}%</span>
+                      <span className="text-sm font-bold text-foreground">{count}</span>
                     </div>
                   </div>
                   <div className="h-2 bg-accent/5 rounded-full overflow-hidden border border-accent/10">
@@ -183,36 +182,36 @@ export default function AnalyticsPage() {
                       className="h-full rounded-full"
                       style={{
                         background: `linear-gradient(to right, ${meta?.color ?? '#EC5800'}, ${meta?.color ?? '#EC5800'}80)`,
-                        boxShadow: `0 0 15px ${meta?.color ?? '#EC5800'}40`
+                        boxShadow: `0 0 10px ${meta?.color ?? '#EC5800'}30`
                       }}
                     />
                   </div>
                 </div>
               );
             }) : (
-              <div className="flex flex-col items-center justify-center py-10 text-gray-300 gap-4">
-                <Activity className="h-10 w-10 opacity-20" />
-                <p className="text-[10px] font-black tracking-widest uppercase">Waiting for data frequency...</p>
+              <div className="flex flex-col items-center justify-center py-8 text-gray-300 gap-3">
+                <Activity className="h-8 w-8 opacity-20" />
+                <p className="text-[10px] font-bold tracking-wide uppercase">No data yet</p>
               </div>
             )}
           </div>
         </motion.div>
 
-        {/* Neural Map / Top Topics */}
-        <motion.div variants={itemVariants} className="glass-card rounded-2xl sm:rounded-2xl p-5 sm:p-10 border-border relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[100px] pointer-events-none" />
+        {/* Top Topics */}
+        <motion.div variants={itemVariants} className="glass-card rounded-xl p-4 sm:p-6 border-border relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-48 h-48 bg-accent/5 blur-[80px] pointer-events-none" />
 
-          <div className="flex items-center justify-between mb-6 sm:mb-10">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
             <div>
-              <h3 className="text-lg sm:text-2xl font-black text-foreground tracking-widest uppercase">Neural Map</h3>
-              <p className="text-accent/30 text-xs font-bold tracking-[0.2em] mt-1">TOP RECURRING TOPICS</p>
+              <h3 className="text-base sm:text-lg font-bold text-foreground">Top Topics</h3>
+              <p className="text-accent/40 text-[10px] sm:text-xs mt-0.5">Most generated topics</p>
             </div>
-            <div className="p-3 bg-accent/5 rounded-xl border border-accent/10">
+            <div className="p-2 bg-accent/5 rounded-lg border border-accent/10">
               <Hash className="h-4 w-4 text-accent/20" />
             </div>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-2 sm:space-y-3">
             {analytics?.topTopics?.length > 0 ? analytics.topTopics.slice(0, 6).map((topic: any, i: number) => {
               const maxCount = analytics.topTopics[0]?.count ?? 1;
               const barPct = (topic.count / maxCount) * 100;
@@ -222,26 +221,25 @@ export default function AnalyticsPage() {
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.1 }}
-                  className="group relative flex items-center gap-5 p-4 bg-accent/5 border border-border hover:border-accent/20 rounded-2xl transition-all overflow-hidden"
+                  className="group relative flex items-center gap-3 p-3 bg-accent/5 border border-border hover:border-accent/20 rounded-lg transition-all overflow-hidden"
                 >
                   <div
                     className="absolute inset-y-0 left-0 bg-primary opacity-[0.03] transition-all group-hover:opacity-[0.05]"
                     style={{ width: `${barPct}%` }}
                   />
-                  <div className="shrink-0 w-8 h-8 rounded-lg bg-white border border-border flex items-center justify-center text-[10px] font-black text-accent/20">
-                    0{i + 1}
+                  <div className="shrink-0 w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-white border border-border flex items-center justify-center text-[9px] sm:text-[10px] font-bold text-accent/20">
+                    {i + 1}
                   </div>
-                  <span className="flex-1 text-[13px] font-black text-foreground tracking-wide uppercase truncate relative z-10">{topic.topic}</span>
-                  <div className="flex items-center gap-2 px-3 py-1 bg-white rounded-lg border border-border relative z-10">
-                    <span className="text-[10px] font-black text-primary">{topic.count}</span>
-                    <span className="text-[8px] font-black text-accent/20 tracking-tighter uppercase">X</span>
+                  <span className="flex-1 text-xs sm:text-sm font-bold text-foreground truncate relative z-10">{topic.topic}</span>
+                  <div className="flex items-center gap-1.5 px-2 sm:px-2.5 py-1 bg-white rounded-lg border border-border relative z-10">
+                    <span className="text-[10px] font-bold text-primary">{topic.count}</span>
                   </div>
                 </motion.div>
               );
             }) : (
-              <div className="flex flex-col items-center justify-center py-10 text-gray-300 gap-4">
-                <Hash className="h-10 w-10 opacity-20" />
-                <p className="text-[10px] font-black tracking-widest uppercase">Neural network is empty...</p>
+              <div className="flex flex-col items-center justify-center py-8 text-gray-300 gap-3">
+                <Hash className="h-8 w-8 opacity-20" />
+                <p className="text-[10px] font-bold tracking-wide uppercase">No topics yet</p>
               </div>
             )}
           </div>

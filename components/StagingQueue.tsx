@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Twitter, Linkedin, Instagram, Facebook, Music, Youtube, Zap, Check, ExternalLink, Loader2, Calendar, Activity, AlertCircle, Trash2 } from 'lucide-react';
+import { Zap, Check, ExternalLink, Loader2, Calendar, Activity, AlertCircle, Trash2 } from 'lucide-react';
+import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from './SocialIcons';
 import { useAuth } from '../app/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
+import { useToast } from './Toast';
+import EmptyState from './EmptyState';
 
 interface StagedPost {
     id: string;
@@ -17,6 +20,7 @@ interface StagedPost {
 export default function StagingQueue() {
     const { user } = useAuth();
     const router = useRouter();
+    const { toast } = useToast();
     const [posts, setPosts] = useState<StagedPost[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -69,6 +73,7 @@ export default function StagingQueue() {
 
             // Update local state
             setPosts(posts.map(p => p.id === postId ? { ...p, status: 'live', publishedAt: new Date() } : p));
+            toast('Post marked as live!');
 
             // Also trigger the native uplink for convenience
             const text = encodeURIComponent(content);
@@ -80,6 +85,7 @@ export default function StagingQueue() {
 
         } catch (error) {
             console.error('Failed to mark post as live:', error);
+            toast('Failed to mark as live', 'error');
         }
     };
 
@@ -100,8 +106,10 @@ export default function StagingQueue() {
 
             setPosts(posts.map(p => selectedPosts.includes(p.id) ? { ...p, status: 'live', publishedAt: new Date() } : p));
             setSelectedPosts([]);
+            toast(`${selectedPosts.length} posts marked as live!`);
         } catch (error) {
             console.error('Failed to bulk uplink posts:', error);
+            toast('Failed to update posts', 'error');
         } finally {
             setIsBulkProcessing(false);
         }
@@ -125,8 +133,10 @@ export default function StagingQueue() {
 
             setPosts(posts.filter(p => !selectedPosts.includes(p.id)));
             setSelectedPosts([]);
+            toast(`${selectedPosts.length} posts deleted`);
         } catch (error) {
             console.error('Failed to bulk delete posts:', error);
+            toast('Failed to delete posts', 'error');
         } finally {
             setIsBulkProcessing(false);
         }
@@ -161,13 +171,14 @@ export default function StagingQueue() {
     };
 
     const getPlatformIcon = (platform: string) => {
+        const iconProps = { size: 16, className: "text-current" };
         switch (platform) {
-            case 'twitter': return <Twitter className="h-4 w-4" />;
-            case 'linkedin': return <Linkedin className="h-4 w-4" />;
-            case 'instagram': return <Instagram className="h-4 w-4" />;
-            case 'facebook': return <Facebook className="h-4 w-4" />;
-            case 'tiktok': return <Music className="h-4 w-4" />;
-            case 'youtube': return <Youtube className="h-4 w-4" />;
+            case 'twitter': return <XIcon {...iconProps} />;
+            case 'linkedin': return <LinkedInIcon {...iconProps} />;
+            case 'instagram': return <InstagramIcon {...iconProps} />;
+            case 'facebook': return <FacebookIcon {...iconProps} />;
+            case 'tiktok': return <TikTokIcon {...iconProps} />;
+            case 'youtube': return <YouTubeIcon {...iconProps} />;
             default: return null;
         }
     };
@@ -207,8 +218,8 @@ export default function StagingQueue() {
                         <Zap className="h-4 w-4 sm:h-5 sm:w-5 text-white" />
                     </div>
                     <div className="min-w-0">
-                        <h3 className="text-base sm:text-xl font-black text-foreground tracking-wider sm:tracking-widest uppercase">Staging Queue</h3>
-                        <p className="text-[9px] sm:text-[10px] font-bold text-accent/60 uppercase tracking-[0.15em] sm:tracking-[0.2em]">{stagedCount} POSTS AWAITING DEPLOYMENT</p>
+                        <h3 className="text-base sm:text-xl font-bold text-foreground">Staged Content</h3>
+                        <p className="text-[10px] sm:text-xs text-accent/60">{stagedCount} ready to post</p>
                     </div>
                 </div>
 
@@ -223,7 +234,7 @@ export default function StagingQueue() {
                             }`}>
                             {selectedPosts.length === stagedCount && stagedCount > 0 && <Check className="w-3 h-3 text-white" />}
                         </div>
-                        <span className="text-[10px] font-black tracking-widest uppercase text-accent/60">
+                        <span className="text-[10px] font-bold tracking-wide uppercase text-accent/60">
                             {selectedPosts.length === stagedCount ? 'Deselect All' : 'Select All'}
                         </span>
                     </button>
@@ -233,15 +244,15 @@ export default function StagingQueue() {
             <div className="grid grid-cols-1 gap-6 pb-24">
                 <AnimatePresence>
                     {posts.length === 0 ? (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            className="flex flex-col items-center justify-center py-20 glass-card rounded-2xl border-dashed border-border text-center"
-                        >
-                            <Calendar className="h-10 w-10 text-accent/10 mb-6" />
-                            <h4 className="text-sm font-black text-accent/60 uppercase tracking-[0.3em]">No posts staged</h4>
-                            <p className="text-xs text-accent/40 mt-2">Go to the Dashboard to craft and stage content.</p>
-                        </motion.div>
+                        <EmptyState
+                            icon={Calendar}
+                            title="No staged content"
+                            description="Stage content from the dashboard to manage and publish it here."
+                            action={{
+                                label: "Go to Dashboard",
+                                onClick: () => router.push('/dashboard')
+                            }}
+                        />
                     ) : (
                         posts.map((post) => (
                             <motion.div
@@ -250,7 +261,7 @@ export default function StagingQueue() {
                                 initial={{ opacity: 0, y: 20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 exit={{ opacity: 0, scale: 0.95 }}
-                                className={`group glass-card rounded-3xl overflow-hidden transition-all ${post.status === 'live'
+                                className={`group glass-card rounded-xl sm:rounded-2xl overflow-hidden transition-all ${post.status === 'live'
                                     ? 'opacity-50 border-border'
                                     : selectedPosts.includes(post.id)
                                         ? 'border-accent/40 bg-accent/5'
@@ -258,7 +269,7 @@ export default function StagingQueue() {
                                     }`}
                                 onClick={() => post.status === 'staged' && toggleSelection(post.id)}
                             >
-                                <div className="p-6 flex flex-col gap-5 sm:gap-6 cursor-pointer">
+                                <div className="p-4 sm:p-6 flex flex-col gap-4 sm:gap-5 cursor-pointer">
                                     <div className="flex items-start gap-3 sm:gap-4">
                                         <div className="mt-1 flex items-center justify-center gap-3">
                                             {post.status === 'staged' && (
@@ -274,14 +285,14 @@ export default function StagingQueue() {
                                             </div>
                                         </div>
                                         <div className="flex-1 min-w-0">
-                                            <p className="text-xs sm:text-sm font-bold text-foreground line-clamp-2 sm:line-clamp-3 leading-relaxed">{post.content}</p>
-                                            <div className="flex items-center gap-3 mt-2 sm:mt-3">
-                                                <span className="text-[9px] font-black text-accent/50 uppercase tracking-[0.2em]">
+                                            <p className="text-xs sm:text-sm font-medium text-foreground line-clamp-2 sm:line-clamp-3 leading-relaxed">{post.content}</p>
+                                            <div className="flex items-center gap-2 sm:gap-3 mt-2">
+                                                <span className="text-[10px] text-accent/50">
                                                     {new Date(post.stagedAt).toLocaleDateString()}
                                                 </span>
                                                 {post.status === 'live' && (
-                                                    <span className="flex items-center gap-1 text-[9px] font-black text-green-400 uppercase tracking-[0.2em] px-2 py-0.5 bg-green-400/10 rounded-full">
-                                                        <Check className="h-2 w-2" /> LIVE
+                                                    <span className="flex items-center gap-1 text-[10px] font-bold text-green-500 px-2 py-0.5 bg-green-50 border border-green-200 rounded-full">
+                                                        <Check className="h-2.5 w-2.5" /> Live
                                                     </span>
                                                 )}
                                             </div>

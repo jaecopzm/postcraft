@@ -285,29 +285,23 @@ export default function LibraryPage() {
       animate="visible"
       className="container mx-auto max-w-7xl space-y-8 sm:space-y-12"
     >
-      {/* ── Cinematic Header ── */}
+      {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex flex-col md:flex-row md:items-end justify-between gap-6"
+        className="flex flex-col md:flex-row md:items-end justify-between gap-4"
       >
-        <div className="flex items-center gap-4 sm:gap-6">
-          <div className="h-14 w-14 sm:h-20 sm:w-20 premium-gradient rounded-2xl sm:rounded-2xl flex items-center justify-center shadow-2xl shadow-primary/20 shrink-0 relative overflow-hidden group">
-            <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-            <Library className="h-7 w-7 sm:h-10 sm:w-10 text-white relative z-10" />
+        <div>
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-purple-50 border border-purple-200 rounded-full mb-3">
+            <BookOpen className="h-3 w-3 text-purple-600" />
+            <span className="text-[10px] font-bold tracking-wider uppercase text-purple-600">Content Library</span>
           </div>
-          <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 border border-primary/20 rounded-full mb-2">
-              <Sparkles className="h-3 w-3 text-primary" />
-              <span className="text-[10px] font-black tracking-[0.2em] uppercase text-primary">Content Vault</span>
-            </div>
-            <h1 className="text-3xl sm:text-5xl font-black text-foreground tracking-tighter uppercase">
-              Your <span className="text-gradient">Library</span>
-            </h1>
-          </div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground tracking-tight">
+            Saved <span className="text-gradient">Content</span>
+          </h1>
         </div>
-        <div className="flex items-center gap-3 text-[11px] font-black tracking-widest text-accent/30 uppercase">
-          <span>{content.length} items saved</span>
+        <div className="flex items-center gap-3 text-xs font-medium text-accent/40">
+          <span>{content.length} items</span>
           {content.filter(c => c.isFavorite).length > 0 && (
             <>
               <div className="h-4 w-px bg-accent/10" />

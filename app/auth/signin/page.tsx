@@ -75,13 +75,11 @@ export default function SignIn() {
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-[2px] bg-gradient-to-r from-transparent via-primary/60 to-transparent" />
 
           {/* Header */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="p-2.5 premium-gradient rounded-xl shadow-lg shadow-primary/20 shrink-0">
-              <Sparkles className="h-5 w-5 text-white" />
-            </div>
+          <div className="flex items-center gap-2 mb-6">
+            <img src="/draftrapid-icon.png" alt="DraftRapid" className="w-10 h-10" />
             <div>
-              <h1 className="text-lg font-black text-gray-900 tracking-widest uppercase leading-none">DraftRapid</h1>
-              <p className="text-gray-400 text-[10px] font-bold tracking-[0.2em] uppercase mt-0.5">Intelligence for creators</p>
+              <img src="/draftrapid.png" alt="DraftRapid" className="h-[150px] mb-1" />
+              <p className="text-gray-500 text-[10px] font-medium">Intelligence for creators</p>
             </div>
           </div>
 

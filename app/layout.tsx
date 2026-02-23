@@ -4,6 +4,7 @@ import "./globals.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ErrorBoundary } from "../components/ErrorBoundary";
 import { ToastProvider } from "../components/Toast";
+import AnalyticsConsent from "../components/AnalyticsConsent";
 import Script from "next/script";
 
 const geistSans = Geist({
@@ -47,15 +48,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <Script
-          src="https://cdn.paddle.com/paddle/v2/paddle.js"
-          strategy="beforeInteractive"
-        />
-      </head>
+      <head />
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased selection:bg-primary/20 selection:text-primary overflow-x-hidden`}
       >
+        {/* Skip link for keyboard users */}
+        <a href="#main-content" className="skip-link">Skip to content</a>
         {/* Background Grain & Orbs */}
         <div className="grain-overlay" />
         <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -63,10 +61,11 @@ export default function RootLayout({
           <div className="ambient-orb w-[500px] h-[500px] bottom-0 -right-20 bg-accent/5 animation-delay-2000" />
         </div>
 
+        <AnalyticsConsent />
         <ErrorBoundary>
           <ToastProvider>
             <AuthProvider>
-              <main className="relative z-10">
+              <main id="main-content" tabIndex={-1} className="relative z-10">
                 {children}
               </main>
             </AuthProvider>

@@ -12,6 +12,8 @@ import {
 import AuraHarvester from '../../components/AuraHarvester';
 import { BrandVoiceSkeleton } from '../../components/Skeleton';
 
+import { getUserSubscription } from '@/lib/firestore';
+
 interface BrandVoice {
   id: string;
   name: string;
@@ -58,21 +60,9 @@ export default function BrandVoicePage() {
     }
   }, [user, loading, router]);
 
-  if (loading) {
-    return <BrandVoiceSkeleton />;
-  }
-
-  const [isPro] = useState(false);
-  const [voices, setVoices] = useState<BrandVoice[]>([
-    {
-      id: '1',
-      name: 'PRO CORE',
-      tone: 'professional',
-      keywords: ['innovative', 'strategic', 'results-driven'],
-      style: 'Clear, authoritative, data-backed architecture.',
-      isDefault: true,
-    },
-  ]);
+  const [isPro, setIsPro] = useState(false);
+  const [voices, setVoices] = useState<BrandVoice[]>([]);
+  const [dataLoading, setDataLoading] = useState(true);
   const [isCreating, setIsCreating] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState({ name: '', tone: 'professional', keywords: '', style: '', brandGuide: '' });
@@ -80,30 +70,60 @@ export default function BrandVoicePage() {
   const [creationMode, setCreationMode] = useState<'manual' | 'harvest'>('manual');
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
-  const isFormOpen = isCreating || !!editingId;
+  const fetchData = async () => {
+    if (!user) return;
+    try {
+      setDataLoading(true);
+      const [sub, voicesRes] = await Promise.all([
+        getUserSubscription(user.uid),
+        fetch('/api/brand-voices', {
+          headers: { 'Authorization': `Bearer ${await user.getIdToken()}` }
+        }).then(res => res.json())
+      ]);
 
-  const handleSave = () => {
-    if (editingId) {
-      setVoices(voices.map(v =>
-        v.id === editingId
-          ? { ...v, name: formData.name, tone: formData.tone, keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean), style: formData.style, brandGuide: formData.brandGuide }
-          : v
-      ));
-      setEditingId(null);
-    } else {
-      setVoices([...voices, {
-        id: Date.now().toString(),
-        name: formData.name,
-        tone: formData.tone,
-        keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean),
-        style: formData.style,
-        brandGuide: formData.brandGuide,
-        isDefault: voices.length === 0,
-      }]);
-      setIsCreating(false);
+      setIsPro(sub.isPro);
+      if (voicesRes.success) {
+        setVoices(voicesRes.voices);
+      }
+    } catch (error) {
+      console.error('Failed to fetch brand voice data:', error);
+    } finally {
+      setDataLoading(false);
     }
-    setFormData({ name: '', tone: 'professional', keywords: '', style: '', brandGuide: '' });
-    setToneOpen(false);
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+
+    const voiceData = {
+      id: editingId || undefined,
+      name: formData.name,
+      tone: formData.tone,
+      keywords: formData.keywords.split(',').map(k => k.trim()).filter(Boolean),
+      style: formData.style,
+      brandGuide: formData.brandGuide,
+      isDefault: editingId ? voices.find(v => v.id === editingId)?.isDefault : voices.length === 0,
+    };
+
+    try {
+      const res = await fetch('/api/brand-voices', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${await user.getIdToken()}`
+        },
+        body: JSON.stringify(voiceData)
+      });
+
+      if (res.ok) {
+        await fetchData();
+        setIsCreating(false);
+        setEditingId(null);
+        setFormData({ name: '', tone: 'professional', keywords: '', style: '', brandGuide: '' });
+      }
+    } catch (error) {
+      console.error('Failed to save voice:', error);
+    }
   };
 
   const handleEdit = (voice: BrandVoice) => {
@@ -119,12 +139,55 @@ export default function BrandVoicePage() {
     setToneOpen(false);
   };
 
-  const handleDelete = (id: string) => {
-    setVoices(voices.filter(v => v.id !== id));
+  const handleDelete = async (id: string) => {
+    if (!user) return;
+    try {
+      const res = await fetch(`/api/brand-voices?id=${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${await user.getIdToken()}` }
+      });
+      if (res.ok) {
+        setVoices(voices.filter(v => v.id !== id));
+      }
+    } catch (error) {
+      console.error('Failed to delete voice:', error);
+    }
     setDeletingId(null);
   };
 
-  const setDefault = (id: string) => setVoices(voices.map(v => ({ ...v, isDefault: v.id === id })));
+  const setDefault = async (id: string) => {
+    if (!user) return;
+    const voice = voices.find(v => v.id === id);
+    if (!voice) return;
+
+    try {
+      const res = await fetch('/api/brand-voices', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${await user.getIdToken()}`
+        },
+        body: JSON.stringify({ ...voice, isDefault: true })
+      });
+      if (res.ok) {
+        setVoices(voices.map(v => ({ ...v, isDefault: v.id === id })));
+      }
+    } catch (error) {
+      console.error('Failed to set default voice:', error);
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      fetchData();
+    }
+  }, [user]);
+
+  if (loading || dataLoading) {
+    return <BrandVoiceSkeleton />;
+  }
+
+  const isFormOpen = isCreating || !!editingId;
 
   const canCreate = isPro || voices.length < 1;
   const selectedTone = TONE_OPTIONS.find(t => t.value === formData.tone);
@@ -141,9 +204,9 @@ export default function BrandVoicePage() {
             className="inline-flex items-center gap-3 px-4 py-2 bg-accent/10 border border-accent/20 rounded-full mb-4"
           >
             <Palette className="h-4 w-4 text-accent" />
-            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-accent">Aura Configurator</span>
+            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-accent">Voice Identity</span>
           </motion.div>
-          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-foreground">GENETIC <span className="text-gradient">AURA</span></h1>
+          <h1 className="text-3xl sm:text-5xl font-black tracking-tighter text-foreground">BRAND <span className="text-gradient">VOICES</span></h1>
         </div>
 
         {!isFormOpen && (
@@ -158,7 +221,7 @@ export default function BrandVoicePage() {
                 : 'bg-white border border-border text-accent/20 cursor-not-allowed'}`}
           >
             <Plus className="h-4 w-4" />
-            SYNTHESIZE NEW CORE
+            CREATE NEW VOICE
           </motion.button>
         )}
       </div>
@@ -180,9 +243,9 @@ export default function BrandVoicePage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-black text-foreground tracking-widest uppercase">
-                    {editingId ? 'Edit Profile' : 'Configure Aura'}
+                    {editingId ? 'Edit Voice' : 'New Voice Identity'}
                   </h3>
-                  <p className="text-[10px] font-bold text-accent/40 uppercase tracking-[0.2em]">Neural Calibration Active</p>
+                  <p className="text-[10px] font-bold text-accent/40 uppercase tracking-[0.2em]">Voice Configuration</p>
                 </div>
               </div>
               <button onClick={handleCancel} className="p-3 hover:bg-accent/5 rounded-2xl text-accent/40 hover:text-foreground transition-all">
@@ -195,13 +258,13 @@ export default function BrandVoicePage() {
                 onClick={() => setCreationMode('manual')}
                 className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${creationMode === 'manual' ? 'bg-white text-foreground shadow-sm' : 'text-accent/20 hover:text-accent/40'}`}
               >
-                <LayoutGrid className="h-3.5 w-3.5" /> MANUAL FORGE
+                <LayoutGrid className="h-3.5 w-3.5" /> CREATE MANUALLY
               </button>
               <button
                 onClick={() => setCreationMode('harvest')}
                 className={`flex-1 flex items-center justify-center gap-3 py-3 rounded-xl text-[10px] font-black tracking-widest transition-all ${creationMode === 'harvest' ? 'bg-primary/10 text-primary shadow-sm' : 'text-accent/20 hover:text-accent/40'}`}
               >
-                <BrainCircuit className="h-3.5 w-3.5" /> NEURAL HARVEST
+                <BrainCircuit className="h-3.5 w-3.5" /> ANALYZE BRAND
               </button>
             </div>
 
@@ -213,8 +276,8 @@ export default function BrandVoicePage() {
                       <BrainCircuit className="h-6 w-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-sm font-black text-foreground tracking-widest uppercase">Neural Synchronization</h4>
-                      <p className="text-[10px] font-bold text-accent/40 uppercase tracking-widest">Awaiting uplink signal...</p>
+                      <h4 className="text-sm font-black text-foreground tracking-widest uppercase">Brand Analysis</h4>
+                      <p className="text-[10px] font-bold text-accent/40 uppercase tracking-widest">Extracting writing style...</p>
                     </div>
                   </div>
                   <AuraHarvester onAnalysisComplete={(aura, sourceText) => {
@@ -235,20 +298,20 @@ export default function BrandVoicePage() {
               <div className="space-y-8">
                 <div>
                   <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
-                    Designation <span className="normal-case tracking-normal text-accent/20 font-bold">(Name)</span>
+                    Voice Name
                   </label>
                   <input
                     type="text"
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="E.G. SILICON VALLEY NEXUS"
+                    placeholder="E.G. PROFESSIONAL BLOGGER"
                     className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 focus:ring-4 focus:ring-accent/5 transition-all"
                   />
                 </div>
 
                 <div>
                   <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
-                    Neural Tone <span className="normal-case tracking-normal text-accent/20 font-bold">(Tone)</span>
+                    Base Tone
                   </label>
                   <div className="relative">
                     <button
@@ -292,25 +355,25 @@ export default function BrandVoicePage() {
               <div className="space-y-8">
                 <div>
                   <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
-                    Semantic Nodes <span className="normal-case tracking-normal text-accent/20 font-bold">(Keywords, comma-separated)</span>
+                    Key Attributes <span className="normal-case tracking-normal text-accent/20 font-bold">(Comma-separated)</span>
                   </label>
                   <input
                     type="text"
                     value={formData.keywords}
                     onChange={e => setFormData({ ...formData, keywords: e.target.value })}
-                    placeholder="INNOVATIVE, ARCHITECTURAL, BOLD"
+                    placeholder="INNOVATIVE, BOLD, FRIENDLY"
                     className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 transition-all"
                   />
                 </div>
 
                 <div>
                   <label className="block text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
-                    Aura Blueprint <span className="normal-case tracking-normal text-accent/20 font-bold">(Writing style)</span>
+                    Style Description <span className="normal-case tracking-normal text-accent/20 font-bold">(Writing personality)</span>
                   </label>
                   <textarea
                     value={formData.style}
                     onChange={e => setFormData({ ...formData, style: e.target.value })}
-                    placeholder="DESCRIBE THE CORE ESSENCE OF THIS VOICE..."
+                    placeholder="DESCRIBE HOW THIS VOICE SHOULD SOUND..."
                     rows={1}
                     className="w-full px-6 py-4 bg-white border border-border rounded-2xl text-foreground placeholder-accent/10 text-sm font-bold tracking-tight focus:outline-none focus:border-accent/50 transition-all resize-none"
                   />
@@ -339,13 +402,13 @@ export default function BrandVoicePage() {
                   disabled={!formData.name.trim()}
                   className="flex-1 sm:flex-none px-6 sm:px-10 py-4 sm:py-5 premium-gradient text-white text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl shadow-xl shadow-primary/20 disabled:opacity-40 text-center"
                 >
-                  Confirm Configuration
+                  Save Identity
                 </motion.button>
                 <button
                   onClick={handleCancel}
                   className="flex-1 sm:flex-none px-6 sm:px-10 py-4 sm:py-5 bg-white border border-border text-accent/40 text-[10px] font-black tracking-[0.3em] uppercase rounded-2xl hover:text-foreground hover:border-accent/30 transition-all text-center"
                 >
-                  Abort
+                  Cancel
                 </button>
               </div>
             </div>
@@ -410,7 +473,7 @@ export default function BrandVoicePage() {
             <div className="space-y-8">
               <div>
                 <div className="flex items-center gap-3 text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
-                  <Layers className="h-3.5 w-3.5" /> Semantic Framework
+                  <Layers className="h-3.5 w-3.5" /> Key Attributes
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {voice.keywords.map((kw, i) => (
@@ -421,7 +484,7 @@ export default function BrandVoicePage() {
 
               <div>
                 <div className="flex items-center gap-3 text-[10px] font-black text-accent/40 uppercase tracking-[0.3em] mb-4">
-                  <Activity className="h-3.5 w-3.5" /> Style Dynamics
+                  <Activity className="h-3.5 w-3.5" /> Writing Style
                 </div>
                 <p className="text-sm font-medium text-accent/60 leading-relaxed">{voice.style}</p>
               </div>
@@ -434,11 +497,11 @@ export default function BrandVoicePage() {
                   animate={{ opacity: 1 }}
                   className="absolute inset-0 bg-background/90 backdrop-blur-xl flex flex-col items-center justify-center p-10 text-center z-50"
                 >
-                  <h4 className="text-xl font-black text-foreground tracking-widest uppercase mb-4">Terminate Profile?</h4>
-                  <p className="text-sm text-accent/40 mb-8 max-w-xs">This operation is irreversible. Neural patterns will be lost.</p>
+                  <h4 className="text-xl font-black text-foreground tracking-widest uppercase mb-4">Delete Voice?</h4>
+                  <p className="text-sm text-accent/40 mb-8 max-w-xs">This operation is irreversible. All data for this voice will be lost.</p>
                   <div className="flex items-center gap-4">
                     <button onClick={() => handleDelete(voice.id)} className="px-8 py-4 bg-red-500 text-white text-[10px] font-black tracking-[0.2em] uppercase rounded-2xl">Confirm</button>
-                    <button onClick={() => setDeletingId(null)} className="px-8 py-4 bg-white border border-border text-accent/40 text-[10px] font-black tracking-[0.2em] uppercase rounded-2xl">Abort</button>
+                    <button onClick={() => setDeletingId(null)} className="px-8 py-4 bg-white border border-border text-accent/40 text-[10px] font-black tracking-[0.2em] uppercase rounded-2xl">Cancel</button>
                   </div>
                 </motion.div>
               )}
@@ -457,10 +520,10 @@ export default function BrandVoicePage() {
                 className="absolute inset-[-4px] border border-primary/20 rounded-xl border-t-transparent"
               />
             </div>
-            <h4 className="text-sm font-black text-accent/20 uppercase tracking-[0.4em] mb-2">NEURAL SLOT LOCKED</h4>
-            <p className="text-[10px] font-bold text-accent/10 uppercase tracking-widest max-w-[150px] leading-relaxed">Upgrade to PRO for infinite multidimensional profiles.</p>
+            <h4 className="text-sm font-black text-accent/20 uppercase tracking-[0.4em] mb-2">VOICE LIMIT REACHED</h4>
+            <p className="text-[10px] font-bold text-accent/10 uppercase tracking-widest max-w-[150px] leading-relaxed">Upgrade to PRO for unlimited brand voices.</p>
             <Link href="/settings" className="mt-8 px-8 py-4 premium-gradient rounded-2xl text-white text-[10px] font-black tracking-widest uppercase shadow-xl shadow-primary/20 hover:scale-105 transition-all">
-              Initialize Pro Uplink
+              Upgrade to Pro
             </Link>
           </div>
         )}

@@ -10,7 +10,7 @@ export async function generateContent(
   brandGuide?: string,
   isCampaignMode: boolean = false
 ): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const platformLimits: Record<string, { limit: number; style: string }> = {
     twitter: { limit: 280, style: 'concise, engaging, with hashtags' },
@@ -79,7 +79,7 @@ Do not include numbering, labels, or any other text.`;
 }
 
 export async function generateHashtags(topic: string, count: number = 10): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `Generate ${count} relevant and trending hashtags for the topic: "${topic}"
 
@@ -108,7 +108,7 @@ Return ONLY the hashtags, one per line, nothing else.`;
 }
 
 export async function generateCTA(context: string): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `Generate 8 engaging call-to-action phrases for social media based on: "${context}"
 
@@ -140,7 +140,7 @@ export async function analyzeAura(sampleContent: string): Promise<{
   keywords: string[];
   style: string;
 }> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `Analyze the stylistic DNA of the following content samples to create a "Brand Aura" profile.
   
@@ -178,7 +178,7 @@ export async function analyzeVirality(content: string, platform: string): Promis
   hookQuality: number;
   tips: string[];
 }> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `You are an expert social media strategist. Analyze the following content intended for ${platform}.
   
@@ -212,7 +212,7 @@ export async function analyzeVirality(content: string, platform: string): Promis
 }
 
 export async function generateReply(comment: string, tone: string): Promise<string[]> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-3-flash-preview' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
   const prompt = `You are an expert social media community manager. Generate 3 distinct, engaging replies to the following user comment.
 

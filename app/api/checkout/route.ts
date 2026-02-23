@@ -14,6 +14,7 @@ export async function POST(request: NextRequest) {
         try {
             user = await adminAuth.verifyIdToken(idToken);
         } catch (error) {
+            console.error('Token verification failed for checkout POST:', error);
             return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
         }
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Palette, ChevronDown, X } from 'lucide-react';
+import { Target, Zap, Sparkles, TrendingUp, Clock, CheckCircle2, Palette, ChevronDown, X, AlertTriangle, BookOpen } from 'lucide-react';
 import { XIcon, LinkedInIcon, InstagramIcon, FacebookIcon, TikTokIcon, YouTubeIcon } from '../../components/SocialIcons';
 import { useRouter } from 'next/navigation';
 import PlatformPreviewWithVariations from '../../components/PlatformPreviewWithVariations';
@@ -10,12 +10,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useToast } from '../../components/Toast';
 import { DashboardSkeleton } from '../../components/Skeleton';
+import EmptyState from '../../components/EmptyState';
 
 export default function Dashboard() {
   const { user, loading } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const [isPro] = useState(false); // TODO: Connect to actual subscription
+  const [isPro, setIsPro] = useState(false);
   const [topic, setTopic] = useState('');
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>(['twitter', 'linkedin']);
   const [tone, setTone] = useState('professional');
@@ -29,6 +30,13 @@ export default function Dashboard() {
   const [staging, setStaging] = useState<string | null>(null);
   const [voiceDropdownOpen, setVoiceDropdownOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(true);
+  const [generationError, setGenerationError] = useState<string | null>(null);
+  const [remainingGenerations, setRemainingGenerations] = useState<number | null>(null);
+  const [generationProgress, setGenerationProgress] = useState<string>('');
+  const [savedToLibrary, setSavedToLibrary] = useState<Set<string>>(new Set());
+
+  const TOPIC_MAX_LENGTH = 500;
+  const TOPIC_MIN_LENGTH = 10;
   const [stats, setStats] = useState([
     { label: 'Generated', value: '...', icon: Sparkles, color: 'text-orange-600', bg: 'bg-orange-50', border: 'border-orange-200' },
     { label: 'This Month', value: '...', icon: TrendingUp, color: 'text-green-600', bg: 'bg-green-50', border: 'border-green-200' },
@@ -41,6 +49,19 @@ export default function Dashboard() {
       // Check if user has dismissed onboarding before
       const dismissed = localStorage.getItem('dr_onboarding_dismissed');
       if (dismissed) setShowOnboarding(false);
+      
+      // Restore draft from localStorage
+      const draft = localStorage.getItem('dr_draft');
+      if (draft) {
+        try {
+          const parsed = JSON.parse(draft);
+          if (parsed.topic) setTopic(parsed.topic);
+          if (parsed.platforms) setSelectedPlatforms(parsed.platforms);
+          if (parsed.tone) setTone(parsed.tone);
+        } catch (e) {
+          console.error('Failed to restore draft:', e);
+        }
+      }
     }
   }, [user]);
 
@@ -52,6 +73,12 @@ export default function Dashboard() {
   const fetchAnalytics = async () => {
     try {
       const idToken = await user!.getIdToken();
+
+      // Fetch subscription
+      const { getUserSubscription } = await import('@/lib/firestore');
+      const sub = await getUserSubscription(user!.uid);
+      setIsPro(sub.isPro);
+      setRemainingGenerations(sub.remainingGenerations ?? null);
 
       // Fetch stats
       const respStats = await fetch('/api/analytics', { headers: { 'Authorization': `Bearer ${idToken}` } });
@@ -88,6 +115,14 @@ export default function Dashboard() {
     }
   }, [user, loading, router]);
 
+  // Auto-save draft to localStorage
+  useEffect(() => {
+    if (topic || selectedPlatforms.length > 0) {
+      const draft = { topic, platforms: selectedPlatforms, tone };
+      localStorage.setItem('dr_draft', JSON.stringify(draft));
+    }
+  }, [topic, selectedPlatforms, tone]);
+
   if (loading) {
     return <DashboardSkeleton />;
   }
@@ -110,9 +145,16 @@ export default function Dashboard() {
 
   const handleGenerate = async () => {
     if (!topic.trim() || !user) return;
+    if (topic.trim().length < TOPIC_MIN_LENGTH) {
+      setGenerationError(`Topic must be at least ${TOPIC_MIN_LENGTH} characters.`);
+      return;
+    }
 
     setGenerating(true);
     setHistoryId(null);
+    setGenerationError(null);
+    setGenerationProgress('Preparing your content...');
+    
     try {
       // Get the ID token from the user
       const idToken = await user.getIdToken();
@@ -120,6 +162,8 @@ export default function Dashboard() {
       const selectedVoice = voices.find(v => v.id === selectedVoiceId);
       const activeTone = selectedVoice ? selectedVoice.tone : tone;
       const brandGuide = selectedVoice ? selectedVoice.brandGuide : undefined;
+
+      setGenerationProgress(`Generating for ${selectedPlatforms.length} platform${selectedPlatforms.length > 1 ? 's' : ''}...`);
 
       const response = await fetch('/api/generate', {
         method: 'POST',
@@ -145,9 +189,19 @@ export default function Dashboard() {
       const data = await response.json();
       setResults(data.results || []);
       setHistoryId(data.historyId);
+      
+      // Update remaining generations
+      if (data.remainingGenerations !== undefined) {
+        setRemainingGenerations(data.remainingGenerations);
+      }
+      
+      // Clear draft after successful generation
+      localStorage.removeItem('dr_draft');
+      setGenerationProgress('');
     } catch (error: any) {
       console.error('Generation failed:', error);
-      alert(error.message || 'Generation failed. Please try again.');
+      setGenerationError(error.message || 'Something went wrong. Please try again.');
+      setGenerationProgress('');
     } finally {
       setGenerating(false);
     }
@@ -215,6 +269,45 @@ export default function Dashboard() {
     }
   };
 
+  const handleSaveToLibrary = async (platform: string, content: string) => {
+    if (!user) return;
+
+    const key = `${platform}-${content.substring(0, 50)}`;
+    try {
+      const idToken = await user.getIdToken();
+      const response = await fetch('/api/library', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${idToken}`
+        },
+        body: JSON.stringify({
+          title: `${platform} - ${topic.substring(0, 50)}`,
+          content,
+          platform,
+          folder: 'Generated',
+          tags: [topic.split(' ')[0]],
+          isFavorite: false,
+          isEvergreen: false
+        })
+      });
+
+      if (response.ok) {
+        setSavedToLibrary(prev => new Set(prev).add(key));
+        toast('Saved to library!');
+        setTimeout(() => {
+          setSavedToLibrary(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(key);
+            return newSet;
+          });
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Failed to save to library:', error);
+    }
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -238,23 +331,33 @@ export default function Dashboard() {
       {/* Header */}
       <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gradient mb-1 sm:mb-2">Create Magic</h1>
-          <p className="text-accent/80 font-medium text-sm sm:text-base">Power up your social presence with AI excellence.</p>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gradient mb-1 sm:mb-2">Create Content</h1>
+          <p className="text-accent/80 font-medium text-sm sm:text-base">Generate engaging posts for your social media platforms.</p>
         </div>
         {/* Stats — scrollable on mobile */}
         <div className="flex gap-2 sm:gap-3 overflow-x-auto no-scrollbar pb-1">
           {stats.map((stat, idx) => {
             const IconComponent = stat.icon;
             return (
-              <div key={idx} className={`flex flex-col items-center px-3 sm:px-5 py-3 rounded-xl shrink-0 border-2 ${stat.bg} ${stat.border} shadow-sm`}>
+              <div key={idx} className={`flex flex-col items-center px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl shrink-0 border-2 ${stat.bg} ${stat.border} shadow-sm min-w-[90px] sm:min-w-0`}>
                 <div className="flex items-center gap-1.5 mb-1">
-                  <IconComponent className={`h-3 w-3 ${stat.color}`} />
-                  <span className="text-[9px] sm:text-[10px] font-bold text-gray-600 uppercase tracking-widest">{stat.label}</span>
+                  <IconComponent className={`h-3.5 w-3.5 sm:h-3 sm:w-3 ${stat.color}`} />
+                  <span className="text-[10px] font-semibold text-gray-600">{stat.label}</span>
                 </div>
-                <span className={`text-lg sm:text-xl font-black ${stat.color}`}>{stat.value}</span>
+                <span className={`text-xl sm:text-xl font-bold ${stat.color}`}>{stat.value}</span>
               </div>
             );
           })}
+          {/* Remaining Generations for Free Users */}
+          {!isPro && remainingGenerations !== null && (
+            <div className="flex flex-col items-center px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl shrink-0 border-2 bg-purple-50 border-purple-200 shadow-sm min-w-[90px] sm:min-w-0">
+              <div className="flex items-center gap-1.5 mb-1">
+                <Zap className="h-3.5 w-3.5 sm:h-3 sm:w-3 text-purple-600" />
+                <span className="text-[10px] font-semibold text-purple-600">Remaining</span>
+              </div>
+              <span className="text-xl sm:text-xl font-bold text-purple-600">{remainingGenerations}</span>
+            </div>
+          )}
         </div>
       </motion.div>
 
@@ -293,6 +396,42 @@ export default function Dashboard() {
         )}
       </AnimatePresence>
 
+      {/* Error Message */}
+      <AnimatePresence>
+        {generationError && (
+          <motion.div
+            initial={{ opacity: 0, y: -10, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -10, scale: 0.95 }}
+            className="glass-card rounded-xl border-2 border-red-500/20 bg-red-50/50 p-4 relative overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-transparent pointer-events-none" />
+            <button
+              onClick={() => setGenerationError(null)}
+              className="absolute top-3 right-3 p-1.5 text-red-400 hover:text-red-600 transition-colors rounded-lg hover:bg-red-100 z-10"
+            >
+              <X className="h-4 w-4" />
+            </button>
+            <div className="flex items-start gap-3 pr-8 relative">
+              <div className="h-10 w-10 shrink-0 bg-red-500 rounded-lg flex items-center justify-center shadow-lg shadow-red-500/20">
+                <AlertTriangle className="h-5 w-5 text-white" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-red-900 mb-1">Generation Failed</p>
+                <p className="text-xs text-red-700 font-medium mb-3">{generationError}</p>
+                <button
+                  onClick={() => { setGenerationError(null); handleGenerate(); }}
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-red-500 hover:bg-red-600 rounded-lg text-white text-xs font-bold shadow-lg shadow-red-500/20 transition-all"
+                >
+                  <Zap className="h-3 w-3" />
+                  Try Again
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Generation Form */}
       <motion.div variants={itemVariants} className="glass-card rounded-2xl p-4 sm:p-6 relative overflow-hidden">
         {/* Subtle inner glow */}
@@ -321,13 +460,35 @@ export default function Dashboard() {
             <label className="flex items-center gap-2 text-xs font-black text-accent/60 uppercase tracking-[0.2em] ml-1">
               <Zap className="h-3 w-3 text-primary" /> {isCampaignMode ? 'Campaign Objective' : 'Content Topic'}
             </label>
-            <input
-              type="text"
-              value={topic}
-              onChange={(e) => setTopic(e.target.value)}
-              placeholder="What's on your mind today?"
-              className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-accent/5 border border-border rounded-xl focus:ring-4 focus:ring-accent/10 focus:border-accent/40 text-foreground text-base sm:text-lg font-medium placeholder-accent/40 transition-all outline-none"
-            />
+            <div className="relative">
+              <input
+                type="text"
+                value={topic}
+                onChange={(e) => {
+                  if (e.target.value.length <= TOPIC_MAX_LENGTH) {
+                    setTopic(e.target.value);
+                  }
+                }}
+                placeholder="What's on your mind today?"
+                className="w-full px-4 sm:px-6 py-3 sm:py-4 bg-accent/5 border border-border rounded-xl focus:ring-4 focus:ring-accent/10 focus:border-accent/40 text-foreground text-base sm:text-lg font-medium placeholder-accent/40 transition-all outline-none"
+              />
+              <div className="absolute right-3 bottom-3 flex items-center gap-2">
+                {topic.length > 0 && (
+                  <span className={`text-[10px] font-bold ${
+                    topic.length < TOPIC_MIN_LENGTH ? 'text-red-500' : 
+                    topic.length > TOPIC_MAX_LENGTH * 0.9 ? 'text-orange-500' : 
+                    'text-gray-400'
+                  }`}>
+                    {topic.length}/{TOPIC_MAX_LENGTH}
+                  </span>
+                )}
+              </div>
+            </div>
+            {topic.length > 0 && topic.length < TOPIC_MIN_LENGTH && (
+              <p className="text-[10px] text-red-500 font-medium ml-1">
+                Minimum {TOPIC_MIN_LENGTH} characters required
+              </p>
+            )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
@@ -338,7 +499,7 @@ export default function Dashboard() {
                 {platforms.map((platform) => {
                   const isSelected = selectedPlatforms.includes(platform.id);
                   const IconComponent = platform.icon;
-                  
+
                   // Platform-specific colors when selected
                   const platformColors = {
                     twitter: 'border-blue-400 bg-blue-50 shadow-blue-100',
@@ -395,7 +556,7 @@ export default function Dashboard() {
 
             {/* Tone / Voice Selection */}
             <div className="space-y-3">
-              <label className="text-xs font-black text-accent/60 uppercase tracking-[0.2em] ml-1">Brand Voice (Aura)</label>
+              <label className="text-xs font-black text-accent/60 uppercase tracking-[0.2em] ml-1">Brand Voice</label>
 
               {voices.length > 0 ? (
                 <div className="flex flex-col gap-2">
@@ -444,7 +605,7 @@ export default function Dashboard() {
                 <div className="grid grid-cols-2 gap-2">
                   {tones.map((t) => {
                     const IconComponent = t.icon;
-                    
+
                     // Tone-specific colors when selected
                     const toneColors = {
                       professional: 'border-blue-500 bg-blue-50 shadow-blue-100',
@@ -514,10 +675,10 @@ export default function Dashboard() {
               <label className="text-xs font-black text-gray-500 uppercase tracking-[0.2em] ml-1">Quick Start</label>
               <div className="grid grid-cols-2 gap-2">
                 {[
-                  "🚀 Product launch announcement",
-                  "📊 Weekly business update", 
-                  "💡 Industry insights",
-                  "🎉 Company milestone"
+                  "Product launch announcement",
+                  "Weekly business update",
+                  "Industry insights",
+                  "Company milestone"
                 ].map((template) => (
                   <button
                     key={template}
@@ -531,48 +692,48 @@ export default function Dashboard() {
             </div>
 
             <motion.button
-              whileHover={(!generating && !!topic.trim() && selectedPlatforms.length > 0) ? { 
-                scale: 1.02, 
-                boxShadow: "0 25px 50px rgba(249, 115, 22, 0.4)" 
+              whileHover={(!generating && !!topic.trim() && topic.trim().length >= TOPIC_MIN_LENGTH && selectedPlatforms.length > 0) ? {
+                scale: 1.02,
+                boxShadow: "0 20px 40px rgba(249, 115, 22, 0.3)"
               } : {}}
               whileTap={{ scale: 0.98 }}
               onClick={handleGenerate}
-              disabled={generating || !topic.trim() || selectedPlatforms.length === 0}
-              className="w-full relative group premium-button bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 hover:from-orange-600 hover:via-orange-700 hover:to-orange-600 rounded-xl sm:rounded-2xl py-4 sm:py-6 px-4 sm:px-8 text-white font-black text-sm sm:text-lg tracking-wider sm:tracking-widest shadow-2xl shadow-orange-500/25 hover:shadow-orange-500/40 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-300"
+              disabled={generating || !topic.trim() || topic.trim().length < TOPIC_MIN_LENGTH || selectedPlatforms.length === 0}
+              className="w-full relative group premium-button bg-gradient-to-r from-orange-500 via-orange-600 to-orange-500 hover:from-orange-600 hover:via-orange-700 hover:to-orange-600 rounded-xl py-3.5 px-6 text-white font-bold text-sm tracking-wide shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 disabled:opacity-50 disabled:cursor-not-allowed transform transition-all duration-300"
             >
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl sm:rounded-2xl"></div>
-              <span className="relative z-10 flex items-center justify-center gap-2 sm:gap-3">
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl"></div>
+              <span className="relative z-10 flex items-center justify-center gap-2">
                 {generating ? (
                   <>
                     <motion.div
                       animate={{ rotate: 360 }}
                       transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                      className="h-4 w-4 sm:h-5 sm:w-5 border-2 border-white/30 border-t-white rounded-full"
+                      className="h-4 w-4 border-2 border-white/30 border-t-white rounded-full"
                     />
-                    CRAFTING...
+                    {generationProgress || 'Generating...'}
                   </>
                 ) : (
                   <>
-                    <Sparkles className="h-4 w-4 sm:h-6 sm:w-6 group-hover:rotate-12 transition-transform" />
-                    GENERATE UNIVERSE
+                    <Sparkles className="h-4 w-4 group-hover:rotate-12 transition-transform" />
+                    Generate Content
                   </>
                 )}
               </span>
             </motion.button>
             {/* Inline hint when button is disabled */}
             <AnimatePresence>
-              {!generating && (!topic.trim() || selectedPlatforms.length === 0) && (
+              {!generating && (!topic.trim() || topic.trim().length < TOPIC_MIN_LENGTH || selectedPlatforms.length === 0) && (
                 <motion.p
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -4 }}
                   className="text-center text-[11px] text-gray-300 font-bold tracking-widest uppercase"
                 >
-                  {!topic.trim() && selectedPlatforms.length === 0
-                    ? 'Add a topic and select at least one platform'
-                    : !topic.trim()
-                      ? '← Add a topic to activate'
-                      : 'Select at least one platform →'}
+                  {!topic.trim()
+                    ? 'Add a topic to get started'
+                    : topic.trim().length < TOPIC_MIN_LENGTH
+                      ? `Topic needs ${TOPIC_MIN_LENGTH - topic.trim().length} more characters`
+                      : 'Select at least one platform'}
                 </motion.p>
               )}
             </AnimatePresence>
@@ -588,11 +749,20 @@ export default function Dashboard() {
             animate={{ opacity: 1, y: 0 }}
             className="space-y-5 sm:space-y-6"
           >
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 bg-accent rounded-xl flex items-center justify-center shadow-lg shadow-accent/20 shrink-0">
-                <Target className="h-5 w-5 text-white" />
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3">
+                <div className="h-10 w-10 bg-gradient-to-br from-orange-500 to-orange-600 rounded-xl flex items-center justify-center shadow-lg shadow-orange-500/20 shrink-0">
+                  <Sparkles className="h-5 w-5 text-white" />
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight uppercase">Generated Content</h2>
               </div>
-              <h2 className="text-xl sm:text-2xl font-black text-foreground tracking-tight uppercase">Platform Previews</h2>
+              <Link
+                href="/library"
+                className="flex items-center gap-2 px-4 py-2 bg-purple-50 hover:bg-purple-100 border border-purple-200 rounded-lg text-purple-600 text-xs font-bold transition-all"
+              >
+                <BookOpen className="h-4 w-4" />
+                <span className="hidden sm:inline">View Library</span>
+              </Link>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
@@ -610,6 +780,8 @@ export default function Dashboard() {
                     isCampaignMode={isCampaignMode}
                     onUpdate={(varIdx, newContent) => handleUpdateVariation(index, varIdx, newContent)}
                     onStage={(content) => handleStageVariation(result.platform, content)}
+                    onSaveToLibrary={(content) => handleSaveToLibrary(result.platform, content)}
+                    savedToLibrary={savedToLibrary}
                   />
 
                   <AnimatePresence>

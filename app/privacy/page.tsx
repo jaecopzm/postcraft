@@ -22,34 +22,34 @@ export default function PrivacyPage() {
         {
             icon: Database,
             title: "Data Collection",
-            desc: "We collect only the essential neural blueprints required to personalize your brand voice and generate high-fidelity content."
+            desc: "We collect only the essential information required to personalize your brand voice and generate content."
         },
         {
             icon: Eye,
-            title: "Operational Visibility",
-            desc: "Your data is never visible to unauthorized entities. We use strictly isolated environments for generation processes."
+            title: "Data Visibility",
+            desc: "Your data is never visible to unauthorized parties. We use secure, isolated environments for all processing."
         },
         {
             icon: ShieldCheck,
             title: "Encryption Standards",
-            desc: "All data transfers are encrypted via enterprise-grade TLS 1.3 protocols, ensuring a secure uplink to the matrix."
+            desc: "All data transfers are encrypted via enterprise-grade TLS 1.3 protocols, ensuring secure communication."
         },
         {
             icon: Lock,
-            title: "User Sovereignty",
-            desc: "You retain full ownership and control over your neural blueprints. We act solely as a processing agent, never claiming rights to your intellectual property."
+            title: "User Ownership",
+            desc: "You retain full ownership and control over your data. We act solely as a processor, never claiming rights to your intellectual property."
         },
         {
-            icon: ChevronRight, // Using ChevronRight as an available icon, could be changed if a more fitting one is desired.
-            title: "Reseller Disclosure",
-            desc: "We do not resell or share your data with third-party entities for marketing or any other purposes. Your trust is our most valuable asset."
+            icon: ChevronRight,
+            title: "No Data Reselling",
+            desc: "We do not resell or share your data with third parties for marketing or any other purposes. Your trust is our most valuable asset."
         },
     ];
 
     return (
-        <div className="min-h-screen bg-background text-white selection:bg-primary/30 relative overflow-hidden font-sans pt-32 pb-20">
-            {/* Cinematic Background Artifacts */}
-            <div className="absolute top-0 left-0 w-[800px] h-[600px] bg-primary/5 blur-[150px] pointer-events-none rounded-full" />
+        <div className="min-h-screen bg-gradient-to-br from-white via-primary/5 to-accent/10 text-gray-900 selection:bg-primary/20 relative overflow-hidden font-sans pt-32 pb-20">
+            {/* Background glow */}
+            <div className="absolute top-0 left-0 w-[800px] h-[600px] bg-primary/[0.03] blur-[150px] pointer-events-none rounded-full" />
 
             <div className="max-w-4xl mx-auto px-6 relative z-10">
                 <motion.div
@@ -62,28 +62,28 @@ export default function PrivacyPage() {
                     <header className="text-center mb-16">
                         <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 bg-primary/10 border border-primary/20 rounded-full mb-6">
                             <Lock className="h-4 w-4 text-primary" />
-                            <span className="text-[10px] font-black tracking-[0.3em] uppercase text-primary">Privacy Protocol v4.2</span>
+                            <span className="text-[10px] font-bold uppercase text-primary">Privacy Policy</span>
                         </motion.div>
-                        <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-none">
-                            PRIVACY <span className="text-gradient">POLICY</span>
+                        <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-black tracking-tighter leading-none">
+                            Privacy <span className="text-gradient">Policy</span>
                         </motion.h1>
-                        <motion.p variants={itemVariants} className="text-gray-400 mt-6 font-bold tracking-widest uppercase text-xs">
-                            Secure Transmissions Enabled
+                        <motion.p variants={itemVariants} className="text-gray-500 mt-6 font-medium text-sm">
+                            Your data is secure with us
                         </motion.p>
                     </header>
 
                     {/* Protocol Grid */}
                     <div className="grid md:grid-cols-2 gap-8">
                         {protocols.map((protocol, i) => (
-                            <motion.div key={i} variants={itemVariants} className="glass-card p-10 rounded-2xl border-gray-200 relative group overflow-hidden">
+                            <motion.div key={i} variants={itemVariants} className="bg-white p-8 sm:p-10 rounded-2xl border border-gray-200 relative group overflow-hidden shadow-sm">
                                 <div className="absolute top-0 right-0 w-24 h-24 premium-gradient blur-[60px] opacity-0 group-hover:opacity-10 transition-opacity" />
-                                <div className="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-200 flex items-center justify-center mb-8">
+                                <div className="w-12 h-12 rounded-xl bg-primary/5 border border-primary/10 flex items-center justify-center mb-6">
                                     <protocol.icon className="h-5 w-5 text-primary" />
                                 </div>
-                                <h2 className="text-xl font-black tracking-widest uppercase mb-4 text-white group-hover:text-primary transition-colors">
+                                <h2 className="text-xl font-bold mb-4 text-gray-900 group-hover:text-primary transition-colors">
                                     {protocol.title}
                                 </h2>
-                                <p className="text-gray-400 leading-relaxed font-medium text-sm">
+                                <p className="text-gray-600 leading-relaxed font-medium text-sm">
                                     {protocol.desc}
                                 </p>
                             </motion.div>
@@ -91,17 +91,17 @@ export default function PrivacyPage() {
                     </div>
 
                     {/* Contact Integration */}
-                    <motion.div variants={itemVariants} className="p-8 bg-gray-50 border border-gray-200 rounded-3xl">
+                    <motion.div variants={itemVariants} className="p-8 bg-white border border-gray-200 rounded-2xl shadow-sm">
                         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
                             <div className="flex items-center gap-4 text-left">
                                 <div className="shrink-0">
                                     <ShieldCheck className="h-8 w-8 text-primary" />
                                 </div>
-                                <span className="text-sm font-bold text-gray-500 leading-tight">
-                                    Questions regarding your data sovereignty? Our Data Protection Officer is standing by to assist your inquiry.
+                                <span className="text-sm font-medium text-gray-600 leading-tight">
+                                    Questions about your data? Our Data Protection Officer is here to help.
                                 </span>
                             </div>
-                            <Link href="/contact" className="flex items-center gap-2 text-[10px] font-black tracking-[0.2em] uppercase text-primary hover:text-gray-900 transition-colors">
+                            <Link href="/contact" className="flex items-center gap-2 text-xs font-semibold text-primary hover:text-gray-900 transition-colors whitespace-nowrap">
                                 Contact DPO <ChevronRight className="h-4 w-4" />
                             </Link>
                         </div>
@@ -109,8 +109,8 @@ export default function PrivacyPage() {
 
                     {/* Footer Navigation Link */}
                     <motion.div variants={itemVariants} className="text-center pt-10">
-                        <Link href="/" className="text-gray-300 hover:text-gray-900 transition-colors text-xs font-black tracking-[0.3em] uppercase">
-                            ← Return to Matrix
+                        <Link href="/" className="text-gray-500 hover:text-gray-900 transition-colors text-sm font-semibold">
+                            ← Return to Home
                         </Link>
                     </motion.div>
                 </motion.div>

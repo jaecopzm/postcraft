@@ -56,6 +56,7 @@ export interface SubscriptionStatus {
   paddleSubscriptionId?: string;
   renewsAt?: Date;
   endsAt?: Date;
+  remainingGenerations?: number;
 }
 
 export interface StagedPost {
@@ -288,18 +289,25 @@ export async function getUserSubscription(userId: string): Promise<SubscriptionS
   const userDoc = await getDoc(userRef);
 
   if (!userDoc.exists()) {
-    return { isPro: false, status: 'none' };
+    return { isPro: false, status: 'none', remainingGenerations: 10 };
   }
 
   const data = userDoc.data();
   if (!data.subscription) {
-    return { isPro: false, status: 'none' };
+    // Calculate remaining generations for free users
+    const now = new Date();
+    const monthKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}`;
+    const generationsUsed = data.generationCounts?.[monthKey] || 0;
+    const remainingGenerations = Math.max(0, 10 - generationsUsed);
+    
+    return { isPro: false, status: 'none', remainingGenerations };
   }
 
   return {
     ...data.subscription,
     renewsAt: data.subscription.renewsAt?.toDate(),
-    endsAt: data.subscription.endsAt?.toDate()
+    endsAt: data.subscription.endsAt?.toDate(),
+    remainingGenerations: data.subscription.isPro ? undefined : 10
   } as SubscriptionStatus;
 }
 

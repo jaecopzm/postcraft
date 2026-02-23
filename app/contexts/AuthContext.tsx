@@ -46,6 +46,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return unsubscribe;
   }, []);
 
+  // If user is signed in and analytics consent was granted, load analytics lazily
+  useEffect(() => {
+    if (!user) return;
+    if (typeof window === 'undefined') return;
+
+    try {
+      const consent = window.localStorage.getItem('analytics_consent');
+      if (consent === 'granted') {
+        (async () => {
+          try {
+            const mod = await import('../../lib/firebase');
+            if (mod && typeof mod.loadAnalytics === 'function') {
+              await mod.loadAnalytics();
+            }
+          } catch (err) {
+            console.warn('Failed to load analytics after sign-in', err);
+          }
+        })();
+      }
+    } catch (e) {
+      // ignore access errors to localStorage
+    }
+  }, [user]);
+
   const signInWithGoogle = async () => {
     try {
       const { signInWithPopup, GoogleAuthProvider } = await import('firebase/auth');
